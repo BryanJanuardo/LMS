@@ -1,0 +1,6 @@
+/* Custom styles */
+*,
+*::before,
+*::after {
+    box-sizing: content-box; /* Override Bootstrap's box-sizing */
+}
