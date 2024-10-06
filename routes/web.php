@@ -7,8 +7,18 @@ use App\Http\Controllers\CourseController;
 use App\Http\Controllers\SessionController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', [Dashboard::class, 'index'])->name('dashboard');
+Route::get('/', function () {
+    return redirect()->route('dashboard');
+});
 
+Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+
+Route::get('/schedule', [ScheduleController::class, 'index'])->name('schedule');
+
+Route::get('/forum', [ForumController::class, 'index'])->name('forum');
+
+Route::get('/courses', [CourseController::class, 'index'])->name('courses');
+Route::get('/courses/{period}', [CourseController::class, 'getCoursesByPeriod'])->name('courses.period');
 Route::get('/schedule', [ScheduleController::class, 'index'])->name('schedule');
 Route::get('/forum', [ForumController::class, 'index'])->name('forum');
 Route::get('/courses', [CourseController::class, 'index'])->name('courses');
