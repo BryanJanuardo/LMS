@@ -4,17 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Models\Session;
-use DateTime;
 use Illuminate\Http\Request;
 
 class SessionController extends Controller
 {
-    const currentTimeZone = 'UTC';
-    private function generateTimeZone(){
-        $timeZone = new \DateTimeZone(self::currentTimeZone);
-        $currDate = new \DateTime(now(), $timeZone);
-        return $currDate;
-    }
     public function index(){
         return view('CourseSession');
     }
@@ -23,12 +16,15 @@ class SessionController extends Controller
         $data = $request->validate([
             'SessionName' => 'required',
             'SessionDescription' => 'required',
+            'SessionStart' => 'required',
+            'SessionEnd' => 'required',
         ]);
 
         Session::create([
             'SessionName' => $data['SessionName'],
             'SessionDescription' => $data['SessionDescription'],
-            'SessionDate' => $this->generateTimeZone()->format('Y-m-d H:i:s'),
+            'SessionStart' => $data['SessionStart'],
+            'SessionEnd' => $data['SessionEnd'],
         ]);
         return redirect()->back();
     }
@@ -37,12 +33,16 @@ class SessionController extends Controller
         $data = $request->validate([
             'SessionName' => 'required',
             'SessionDescription' => 'required',
+            'SessionStart' => 'required',
+            'SessionEnd' => 'required',
         ]);
 
         $session = Session::where('SessionID', '=', $SessionID)->firstOrFail();
         if($session){
             $session->SessionName = $data['SessionName'];
             $session->SessionDescription = $data['SessionDescription'];
+            $session->SessionStart = $data['SessionStart'];
+            $session->SessionEnd = $data['SessionEnd'];
             $session->save();
         }
         return redirect()->back();

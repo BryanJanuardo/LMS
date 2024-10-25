@@ -16,5 +16,7 @@ class Session extends Model
     protected $fillable = [
         'SessionName',
         'SessionDescription',
+        'SessionStart',
+        'SessionEnd',
     ];
 }
