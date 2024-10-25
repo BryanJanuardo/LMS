@@ -10,4 +10,5 @@ class ForumController extends Controller
     {
         return view('forum');
     }
+
 }

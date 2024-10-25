@@ -4,12 +4,12 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
-class CoursesController extends Controller
+class CourseController extends Controller
 {
     public function index()
     {
         $courses = $this->getCourses();
-        $periods = array_keys($courses); 
+        $periods = array_keys($courses);
 
         return view('courses', ['courses' => $courses, 'periods' => $periods]);
     }
