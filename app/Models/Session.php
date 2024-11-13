@@ -9,6 +9,7 @@ class Session extends Model
 {
     use HasFactory;
 
+    protected $table = 'sessionses';
     protected $primaryKey = 'SessionID';
     protected $incrementing = false;
     protected $keyType = 'string';

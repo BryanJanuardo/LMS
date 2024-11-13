@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('sessions', function (Blueprint $table) {
+        Schema::create('sessionses', function (Blueprint $table) {
             $table->string('SessionID')->primary();
             $table->string('SessionName');
             $table->string('SessionDescription');
