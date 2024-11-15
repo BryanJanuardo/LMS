@@ -5,6 +5,7 @@ use App\Http\Controllers\ScheduleController;
 use App\Http\Controllers\ForumController;
 use App\Http\Controllers\CourseController;
 use App\Http\Controllers\SessionController;
+use App\Http\Controllers\TaskController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
@@ -25,3 +26,5 @@ Route::prefix('/course/{CourseID}/session')->group(function () {
     Route::put('/{SessionID}', [SessionController::class, 'update'])->name('session.update');
     Route::delete('/{SessionID}', [SessionController::class, 'delete'])->name('session.delete');
 });
+
+Route::get('/task', [TaskController::class, 'index'])->name('tasks');
