@@ -5,34 +5,35 @@
 @push('styles')
     <link href="{{ asset('css/courses.css') }}" rel="stylesheet">
 @endpush
-
 @section('content')
-    <h1>My Courses</h1>
-
-    @php
-        $latestPeriod = last($periods); 
-    @endphp
-
-    <div class="top-box">
-        <p>Running Period:</p>
-        <select id="semesterDropdown">
-            @foreach ($periods as $period)
-                <option value="{{ $period }}" {{ $period == $latestPeriod ? 'selected' : '' }}>
-                    {{ $period }}
-                </option>
-            @endforeach
-        </select>
-    </div>
-
+    <h1 style="margin-bottom: 16px;">My Courses</h1>
     @include('components.divider')
+    <div id="courseList" class="course-container row">
+        @foreach ($courses as $course)
+            <div class="col-md-4 col-sm-6 mb-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ $course->CourseName }}</h5>
+                        <div class="course-details">
+                            <div class="course-detail">
+                                <i class="bi bi-person-badge-fill"></i>
+                                <span class="course-code">{{ $course->CourseID }}</span>
+                            </div>
+                            <div class="course-detail">
+                                <i class="bi bi-clipboard-check-fill"></i>
+                                <span class="course-credits">{{ $course->Credit }}</span>
+                            </div>
+                            <div class="course-detail">
+                                <i class="bi bi-people-fill"></i>
+                                <span class="course-class">{{ $course->semester ?? 'N/A' }}</span>
+                            </div>
+                        </div>
 
-    <div id="courseList" class="course-container">
-        <!-- Courses will be displayed here as cards -->
+                        <a href="{{ route('course.show', $course->CourseID) }}" class="btn btn-primary">View Details</a>
+                    </div>
+                </div>
+            </div>
+        @endforeach
     </div>
-
-    @include('components.course-card')
-
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="{{ asset('js/courses.js') }}"></script>
 
 @endsection

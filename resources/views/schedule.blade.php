@@ -20,8 +20,8 @@
                 <tr>
                     <td>{{ $schedule['courseCode'] }}</td>
                     <td>{{ $schedule['title'] }}</td>
-                    <td>{{ $schedule['day'] }}</td>
-                    <td>{{ $schedule['time'] }}</td>
+                    <td>{{ $schedule['sessionStart'] }}</td>
+                    <td>{{ $schedule['sessionEnd'] }}</td>
                 </tr>
             @endforeach
         </tbody>

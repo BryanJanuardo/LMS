@@ -8,6 +8,9 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;@600;@700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/css/sidebar.css">
     <link rel="stylesheet" href="/css/global.css">
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js"></script>
+
     @stack('styles')
     <title>@yield('title')</title>
 </head>

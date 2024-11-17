@@ -2,14 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Controllers\CoursesController;
+use App\Http\Controllers\CourseController;
 
 class ScheduleController extends Controller
 {
     public function index()
     {
-        $coursesController = new CoursesController();
-        $courses = $coursesController->getCourses();
+        $CourseController = new CourseController();
+        $courses = $CourseController->getCourses();
 
         $semesters = array_keys($courses);
         $lastSemester = end($semesters);
@@ -21,8 +21,8 @@ class ScheduleController extends Controller
                 $schedules[] = [
                     'courseCode' => $course['courseCode'],
                     'title' => $course['title'],
-                    'day' => $course['day'],
-                    'time' => $course['time'],
+                    'sessionStart' => $course['sessionStart']->format('d M Y, H:i'), 
+                    'sessionEnd' => $course['sessionEnd']->format('d M Y, H:i'),
                 ];
             }
         }

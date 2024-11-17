@@ -2,27 +2,30 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Course;
+use App\Models\ForumPost;
 use Illuminate\Http\Request;
+use App\Models\Session;
 
-class CoursesController extends Controller
+class CourseController extends Controller
 {
     public function index()
     {
-        $courses = $this->getCourses();
-        $periods = array_keys($courses); 
-
-        return view('courses', ['courses' => $courses, 'periods' => $periods]);
+        $courses = Course::all();
+        return view('courses', compact('courses'));
     }
 
-    public function getCoursesByPeriod($period)
+
+
+    public function show($courseId)
     {
-        $courses = $this->getCourses();
-        if (array_key_exists($period, $courses)) {
-            return response()->json($courses[$period]);
-        }
-        return response()->json([]);
-    }
 
+        $course = Course::where('CourseID', $courseId)->firstOrFail();
+        $sessions = Session::where('course_id', $courseId)->get();
+        $forumPosts = ForumPost::with('replies')->get();
+        return view('course-details', compact('course', 'sessions', 'forumPosts'));
+    }
+// ini cuma buat schedule sementara
     public function getCourses()
     {
         return [
@@ -88,4 +91,5 @@ class CoursesController extends Controller
 
         ];
     }
+
 }
