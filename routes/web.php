@@ -15,10 +15,17 @@ Route::get('/schedule', [ScheduleController::class, 'index'])->name('schedule');
 Route::get('/forum', [ForumController::class, 'index'])->name('forum');
 
 Route::get('/courses', [CourseController::class, 'index'])->name('courses');
+Route::get('/courseManagement', [CourseController::class, 'courseManagement'])->name('courseManagement');
+Route::post('/courseCreate', [CourseController::class, 'store'])->name('courseCreate.store');
+Route::get('/courseManagement/{course}/edit', [CourseController::class, 'edit'])->name('courseManagement.edit');
+Route::put('/courseManagement/{course}/update', [CourseController::class, 'update'])->name('courseManagement.update');
+Route::delete('/courseManagement/{course}/destroy', [CourseController::class, 'destroy'])->name('courseManagement.destroy');
+Route::get('/courseCreate', [CourseController::class, 'create'])->name('courses.create');
 Route::get('/courses/{period}', [CourseController::class, 'getCoursesByPeriod'])->name('courses.period');
+
+
 Route::get('/schedule', [ScheduleController::class, 'index'])->name('schedule');
 Route::get('/forum', [ForumController::class, 'index'])->name('forum');
-Route::get('/courses', [CourseController::class, 'index'])->name('courses');
 
 Route::prefix('/course/{CourseID}/session')->group(function () {
     Route::get('/{SessionID}', [SessionController::class, 'index'])->name('session');
