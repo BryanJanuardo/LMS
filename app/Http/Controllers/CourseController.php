@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Course;
 use Illuminate\Http\Request;
 
 class CourseController extends Controller
@@ -87,5 +88,50 @@ class CourseController extends Controller
 
 
         ];
+    }
+
+    public function create(){
+        return view('courseCreate');
+    }
+
+    public function courseManagement(){
+        $courses = Course::all();
+        return view('courseManagement', ['courses' => $courses]);
+    }
+
+    public function store(Request $request){
+        $data = $request->validate([
+            'CourseName' => 'required',
+            'CourseDescription' => 'required',
+            'SKS' => 'required|numeric'
+        ]);
+
+        $newCourse = Course::create($data);
+        // dd($request);
+        return redirect(route('courseManagement'));
+    }
+
+    public function edit($courseID){
+        // dd($courseID);
+        $course = Course::find($courseID);
+        // return view('edit');
+        return view('edit', ['course' => $course]);
+    }
+
+    public function update(Course $course, Request $request){
+        $data = $request->validate([
+            'CourseName' => 'required',
+            'CourseDescription' => 'required',
+            'SKS' => 'required|numeric'
+        ]);
+
+        $course->update($data);
+        return redirect(route('courseManagement'));
+    }
+
+    public function destroy($courseID){
+        $course = Course::find($courseID);
+        $course->delete();
+        return redirect(route('courseManagement'));
     }
 }

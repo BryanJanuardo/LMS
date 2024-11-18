@@ -29,4 +29,10 @@
             <span class="nav-text">Tasks</span>
         </a>
     </li>
+    <li class="nav-item">
+        <a href="{{ route('courseManagement') }}" class="nav-link {{ request()->is('tasks') ? 'active' : '' }}">
+            <img src="" class="icon">
+            <span class="nav-text">Course Management</span>
+        </a>
+    </li>
 </ul>
