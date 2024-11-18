@@ -12,7 +12,7 @@
         </a>
     </li>
     <li class="nav-item">
-        <a href="{{ route('forum') }}" class="nav-link {{ request()->is('forum') ? 'active' : '' }}">
+        <a href="#" class="nav-link disabled {{ request()->is('forum') ? 'active' : '' }} text-muted">
             <img src="/images/icon/material-symbols_forum.svg" alt="Forum Icon" class="icon">
             <span class="nav-text">Forum</span>
         </a>

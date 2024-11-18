@@ -20,4 +20,9 @@ class Session extends Model
         'SessionStart',
         'SessionEnd',
     ];
+
+    public function course()
+    {
+        return $this->belongsTo(Course::class, 'course_id');
+    }
 }

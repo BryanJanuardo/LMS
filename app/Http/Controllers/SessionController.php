@@ -3,14 +3,22 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Models\Course;
 use App\Models\Session;
 use Illuminate\Http\Request;
 
 class SessionController extends Controller
 {
-    public function index(){
-        return view('CourseSession');
+
+    public function index()
+    {
+        $sessions = Session::all();
+        return view('course-details', [
+            'sessions' => $sessions
+        ]);
     }
+
+
 
     public function store(Request $request){
         $data = $request->validate([
@@ -55,4 +63,12 @@ class SessionController extends Controller
         }
         return redirect()->back();
     }
+
+
+    public function getSessionsByCourse($courseId)
+    {
+        $sessions = Session::where('course_id', $courseId)->get();
+        return view('sessions.index', compact('sessions'));
+    }
+
 }

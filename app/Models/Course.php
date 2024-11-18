@@ -9,11 +9,19 @@ class Course extends Model
 {
     use HasFactory;
 
+    protected $primaryKey = 'CourseID';
+    public $incrementing = false;
+    protected $keyType = 'string';
+
     protected $fillable = [
         'CourseName',
         'CourseDescription',
         'SKS'
     ];
 
-    protected $primaryKey = 'CourseID';
+public function sessions()
+{
+    return $this->hasMany(Session::class, 'course_id');
+}
+
 }

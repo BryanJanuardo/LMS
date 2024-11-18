@@ -1,0 +1,42 @@
+.content-area{
+    background-color: #FBFCFD;
+}
+
+.course-info{
+    display: flex;
+    gap: 24px;
+    margin-top: 24px;
+}
+
+.teacher-section{
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.tabs li{
+    padding-bottom: 0 !important;
+}
+
+.nav-tabs .nav-link.active {
+    background-color: #007AFF;
+    color: white;
+}
+
+
+/* Custom blue card background */
+.blue-card {
+    background-color: #007bff; /* Bootstrap primary blue */
+    color: white;
+    border: none; /* Optional: remove border */
+}
+.blue-card .nav-link {
+    color: white; /* Adjust tab link color */
+}
+.blue-card .nav-link.active {
+    background-color: rgba(255, 255, 255, 0.2); /* Active tab background */
+    color: white;
+}
+.blue-card .card-header {
+    border-bottom: none; /* Optional: remove header border */
+}
