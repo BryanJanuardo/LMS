@@ -34,8 +34,11 @@ Route::prefix('/course/{CourseID}/session')->group(function () {
     Route::delete('/{SessionID}', [SessionController::class, 'delete'])->name('session.delete');
 });
 
+Route::get('/register', function () {
+    return view('register');
+});
 
 Route::get('/task', [TaskController::class, 'index'])->name('tasks');
 
 
-Route::get('/course/{courseCode}', [CourseDetailController::class, 'showCourseDetails']);
+// Route::get('/course/{courseCode}', [CourseDetailController::class, 'showCourseDetails']);
