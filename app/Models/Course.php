@@ -19,9 +19,4 @@ class Course extends Model
         'SKS'
     ];
 
-public function sessions()
-{
-    return $this->hasMany(Session::class, 'course_id');
-}
-
 }

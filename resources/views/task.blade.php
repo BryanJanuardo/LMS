@@ -16,7 +16,7 @@
             </tr>
         </thead>
         <tbody>
-            @if (count($tasks) > 0)
+            @if ($tasks != null)
             @foreach($tasks as $task)
                 <tr>
                     <td>{{ $task['TaskName'] }}</td>

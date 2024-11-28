@@ -9,9 +9,9 @@
 @section('content')
 
     <h1>Edit a course</h1>
-    <form method="post" action=" {{ route('courseManagement.update', ['course' => $course]) }}">
+    <form method="post" action=" {{ route('course.update', ['courseId' => $course]) }}">
         @csrf
-        @method('PUT ')
+        @method('PUT')
         <div>
             <label for="">Name</label>
             <input type="name" name="CourseName" placeholder="name" value="{{ $course->CourseName }}" />

@@ -6,7 +6,7 @@
         </a>
     </li>
     <li class="nav-item">
-        <a href="{{ route('schedule') }}" class="nav-link {{ request()->is('schedule') ? 'active' : '' }}">
+        <a href="{{ route('schedule.index') }}" class="nav-link {{ request()->is('schedule') ? 'active' : '' }}">
             <img src="/images/icon/ion_calendar-sharp.svg" alt="Calendar Icon" class="icon">
             <span class="nav-text">Schedule</span>
         </a>
@@ -18,19 +18,19 @@
         </a>
     </li>
     <li class="nav-item">
-        <a href="{{ route('courses') }}" class="nav-link {{ request()->is('courses') ? 'active' : '' }}">
+        <a href="{{ route('course.index') }}" class="nav-link {{ request()->is('courses') ? 'active' : '' }}">
             <img src="/images/icon/graduation-hat.svg" alt="Graduation Hat Icon" class="icon">
             <span class="nav-text">Courses</span>
         </a>
     </li>
     <li class="nav-item">
-        <a href="{{ route('tasks') }}" class="nav-link {{ request()->is('tasks') ? 'active' : '' }}">
+        <a href="{{ route('task.index') }}" class="nav-link {{ request()->is('tasks') ? 'active' : '' }}">
             <img src="" class="icon">
             <span class="nav-text">Tasks</span>
         </a>
     </li>
     <li class="nav-item">
-        <a href="{{ route('courseManagement') }}" class="nav-link {{ request()->is('tasks') ? 'active' : '' }}">
+        <a href="{{ route('course.management') }}" class="nav-link {{ request()->is('tasks') ? 'active' : '' }}">
             <img src="" class="icon">
             <span class="nav-text">Course Management</span>
         </a>

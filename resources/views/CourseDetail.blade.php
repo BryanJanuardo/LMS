@@ -7,10 +7,10 @@
     <link href="{{ asset('css/course-details.css') }}" rel="stylesheet">
 @endpush
 @section('content')
-    <h1>{{ $course->CourseName }}</h1>
+    <h1>{{ $course->course->CourseName }}</h1>
     <div class="course-info">
         <p><strong>Course Code:</strong> {{ $course->CourseID }}</p>
-        <p><strong>Credits:</strong> {{ $course->Credit }}</p>
+        <p><strong>Credits:</strong> {{ $course->course->SKS }}</p>
     </div>
 
     @include('components.divider')
@@ -24,7 +24,7 @@
 
     <div class="tabs">
         <ul class="nav nav-tabs" id="sessionTabs" role="tablist">
-            @foreach ($sessions as $key => $session)
+            @foreach ($course->sessionLearnings as $key => $session)
                 <li class="nav-item" role="presentation">
                     <a class="nav-link {{ $loop->first ? 'active' : '' }}" id="tab-{{ $key }}" data-bs-toggle="tab"
                         data-bs-target="#session-{{ $key }}" role="tab"
@@ -36,7 +36,7 @@
         </ul>
 
         <div class="tab-content" id="sessionTabsContent">
-            @foreach ($sessions as $key => $session)
+            @foreach ($course->sessionLearnings as $key => $session)
                 <div class="tab-pane fade {{ $loop->first ? 'show active' : '' }}" id="session-{{ $key }}"
                     role="tabpanel" aria-labelledby="tab-{{ $key }}">
 
@@ -56,9 +56,9 @@
                 </div>
             @endforeach
         </div>
+        @include('components.forum', ['sessionLearning' => $course->sessionLearnings[0]])
     </div>
 
-    @include('components.forum', ['forumPosts' => $forumPosts])
 @endsection
 
 

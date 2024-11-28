@@ -11,7 +11,6 @@ class Session extends Model
 
     protected $table = 'sessionses';
     protected $primaryKey = 'SessionID';
-    protected $incrementing = false;
     protected $keyType = 'string';
 
     protected $fillable = [
@@ -21,8 +20,8 @@ class Session extends Model
         'SessionEnd',
     ];
 
-    public function course()
+    public function sessionLearning()
     {
-        return $this->belongsTo(Course::class, 'course_id');
+        return $this->hasOne(SessionLearning::class);
     }
 }

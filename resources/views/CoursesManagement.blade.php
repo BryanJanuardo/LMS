@@ -9,7 +9,7 @@
 @section('content')
 
     <h1>Course Management</h1>
-    <a href="courseCreate">create new course</a>
+    <a href="{{ route('course.create')}}">create new course</a>
 
     <div>
         <table border="1" style="border: 1px solid black; border-collapse: collapse;">
@@ -21,17 +21,17 @@
                 <th>Edit</th>
                 <th>Delete</th>
             </tr>
-            @foreach($courses as $item)
+            @foreach($courses as $course)
                 <tr>
-                    <td>{{ $item->CourseID }}</td>
-                    <td>{{ $item->CourseName }}</td>
-                    <td>{{ $item->CourseDescription }}</td>
-                    <td>{{ $item->SKS }}</td>
+                    <td>{{ $course->CourseID }}</td>
+                    <td>{{ $course->CourseName }}</td>
+                    <td>{{ $course->CourseDescription }}</td>
+                    <td>{{ $course->SKS }}</td>
                     <td>
-                        <a href="{{ route('courseManagement.edit', ['course' => $item->CourseID]) }}">Edit</a>
+                        <a href="{{ route('course.edit', ['courseId' => $course->CourseID]) }}">Edit</a>
                     </td>
                     <td>
-                        <form action="{{ route('courseManagement.destroy', ['course' => $item->CourseID]) }}" method="post">
+                        <form action="{{ route('course.destroy', ['courseId' => $course->CourseID]) }}" method="post">
                             @csrf
                             @method('delete')
                             <input type="submit" value="Delete">

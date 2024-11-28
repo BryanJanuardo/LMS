@@ -9,7 +9,7 @@
 @section('content')
 
 <h1>Create a course</h1>
-<form method="post" action="{{ route('courseCreate.store') }}">
+<form method="post" action="{{ route('course.store') }}">
     @csrf
     @method('POST')
     <div>

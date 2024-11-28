@@ -13,10 +13,12 @@ return new class extends Migration
     {
         Schema::create('forum_replies', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('post_id')->constrained('forum_posts')->onDelete('cascade');
-            $table->string('username'); 
-            $table->text('content');
+            $table->unsignedBigInteger('PostID');
+            $table->date('CreatedDate');
+            $table->text('ReplyMessages');
+            $table->string('FilePath');
             $table->timestamps();
+            $table->foreign('PostID')->references('id')->on('forum_posts')->onDelete('cascade');
         });
     }
 

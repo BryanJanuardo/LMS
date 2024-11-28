@@ -13,8 +13,12 @@ return new class extends Migration
     {
         Schema::create('forum_posts', function (Blueprint $table) {
             $table->id();
-            $table->string('username'); 
-            $table->text('content');
+            $table->string('ForumTitle');
+            $table->text('ForumDescription');
+            $table->date('CreatedDate');
+            $table->string('FilePath');
+            $table->unsignedBigInteger('SessionLearningID');
+            $table->foreign('SessionLearningID')->references('id')->on('session_learnings')->onDelete('cascade');
             $table->timestamps();
         });
     }
