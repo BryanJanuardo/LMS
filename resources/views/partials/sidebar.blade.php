@@ -25,7 +25,7 @@
     </li>
     <li class="nav-item">
         <a href="{{ route('task.index') }}" class="nav-link {{ request()->is('tasks') ? 'active' : '' }}">
-            <img src="" class="icon">
+            <img src="/images/icon/clipboard-fill.svg" class="icon">
             <span class="nav-text">Tasks</span>
         </a>
     </li>
