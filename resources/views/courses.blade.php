@@ -29,7 +29,7 @@
                             </div>
                         </div>
 
-                        <a href="{{ route('course.show', $course->CourseID) }}" class="btn btn-primary">View Details</a>
+                        <a href="{{ route('course.detail', $course->CourseID) }}" class="btn btn-primary">View Details</a>
                     </div>
                 </div>
             </div>

@@ -1,13 +1,26 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use App\Models\SessionLearning;
 use App\Models\ForumPost;
 use App\Models\ForumReply;
 use Illuminate\Http\Request;
 
 class ForumController extends Controller
 {
+    public function showForum($CourseID, $SessionID)
+    {
+        $sessionLearning = SessionLearning::with('courseLearning', 'forumPosts.replies') // Load relationships
+            ->where('id', $SessionID)
+            ->first();
+
+        if (!$sessionLearning) {
+            abort(404, 'Session Learning not found.');
+        }
+
+        return view('components.forum', compact('sessionLearning'));
+    }
+
     public function index(Request $request)
     {
         $forumPosts = ForumPost::with('replies')->get();
@@ -41,4 +54,5 @@ class ForumController extends Controller
 
         return redirect()->back()->with('success', 'Reply posted successfully.');
     }
+
 }

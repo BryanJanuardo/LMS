@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('sessionses', function (Blueprint $table) {
             $table->string('SessionID')->primary();
             $table->string('SessionName');
-            $table->string('SessionDescription');
+            $table->longText('SessionDescription');
             $table->date('SessionStart');
             $table->date('SessionEnd');
             $table->timestamps();

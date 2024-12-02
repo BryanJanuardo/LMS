@@ -10,10 +10,21 @@ class TaskController extends Controller
 {
     public function index(){
         $tasks = Task::all();
-
-        return view('task', ['tasks' => $tasks]);
+        dd($tasks);
+        return view('components.resources-card', compact('tasks'));
     }
 
+
+    // public function showTasks($CourseID, $SessionID)
+    // {
+    //     // Retrieve tasks related to a specific course and session (adjust according to your relationships)
+    //     $tasks = Task::where('course_id', $CourseID)
+    //                   ->where('session_id', $SessionID)
+    //                   ->get();
+
+    //     // Return the view with the tasks
+    //     return view('components.resources-card', compact('tasks'));
+    // }
     public function store(Request $request){
         $data = $request->validate([
             'TaskName' => 'required',
@@ -60,4 +71,12 @@ class TaskController extends Controller
         }
         return redirect()->back();
     }
+
+    public function getTasksByDate($date)
+    {
+        // Assuming 'TaskDueDate' is the name of the field in your database
+        $tasks = Task::where('TaskDueDate', $date)->get();
+        return response()->json($tasks);
+    }
+
 }

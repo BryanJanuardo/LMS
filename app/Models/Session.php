@@ -8,10 +8,20 @@ use Illuminate\Database\Eloquent\Model;
 class Session extends Model
 {
     use HasFactory;
+
     protected $table = 'sessionses';
-    
-    public function course()
+    protected $primaryKey = 'SessionID';
+    protected $keyType = 'string';
+
+    protected $fillable = [
+        'SessionName',
+        'SessionDescription',
+        'SessionStart',
+        'SessionEnd',
+    ];
+
+    public function sessionLearnings()
     {
-        return $this->belongsTo(Course::class, 'course_id');
+        return $this->hasMany(SessionLearning::class, 'SessionID'); // foreign key: 'SessionID'
     }
 }

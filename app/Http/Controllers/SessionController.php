@@ -18,7 +18,13 @@ class SessionController extends Controller
         ]);
     }
 
+    public function showSessionsWithTasks()
+    {
+        // Get all sessions with their associated tasks
+        $sessions = Session::with('tasks')->get();
 
+        return view('test', compact('sessions'));
+    }
 
     public function store(Request $request){
         $data = $request->validate([
@@ -65,10 +71,10 @@ class SessionController extends Controller
     }
 
 
-    public function getSessionsByCourse($courseId)
-    {
-        $sessions = Session::where('course_id', $courseId)->get();
-        return view('sessions.index', compact('sessions'));
-    }
+    // public function getSessionsByCourse($courseId)
+    // {
+    //     $sessions = Session::where('course_id', $courseId)->get();
+    //     return view('sessions.index', compact('sessions'));
+    // }
 
 }

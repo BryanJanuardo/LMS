@@ -10,20 +10,21 @@ return new class extends Migration
      * Run the migrations.
      */
     public function up()
-    {
-        Schema::create('forum_posts', function (Blueprint $table) {
-            $table->id();
-            $table->string('username'); 
-            $table->text('content');
-            $table->timestamps();
-        });
-    }
+{
+    Schema::create('announcements', function (Blueprint $table) {
+        $table->id();
+        $table->foreignId('schedule_id')->constrained('schedules')->onDelete('cascade');
+        $table->string('message');
+        $table->timestamps();
+    });
+}
+
 
     /**
      * Reverse the migrations.
      */
     public function down(): void
     {
-        Schema::dropIfExists('forum_posts');
+        Schema::dropIfExists('announcements');
     }
 };

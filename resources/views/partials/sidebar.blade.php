@@ -12,20 +12,8 @@
         </a>
     </li>
     <li class="nav-item">
-        <a href="#" class="nav-link disabled {{ request()->is('forum') ? 'active' : '' }} text-muted">
-            <img src="/images/icon/material-symbols_forum.svg" alt="Forum Icon" class="icon">
-            <span class="nav-text">Forum</span>
-        </a>
-    </li>
-    {{-- <li class="nav-item">
-        <a href="{{ route('courses') }}" class="nav-link {{ request()->is('courses') ? 'active' : '' }}">
-            <img src="/images/icon/graduation-hat.svg" alt="Graduation Hat Icon" class="icon">
-            <span class="nav-text">Courses</span>
-        </a>
-    </li> --}}
-    <li class="nav-item">
         <a href="/course"
-           class="nav-link {{ request()->is('course') || request()->is('course/*') ? 'active' : '' }}">
+           class="nav-link {{ request()->is('course*') ? 'active' : '' }}">
             <img src="/images/icon/graduation-hat.svg" alt="Courses Icon" class="icon">
             <span class="nav-text">Courses</span>
         </a>
