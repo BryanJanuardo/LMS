@@ -11,20 +11,9 @@ class TaskController extends Controller
     public function index(){
         $tasks = Task::all();
         dd($tasks);
-        return view('components.resources-card', compact('tasks'));
+        return view('CourseDetail', compact('tasks'));
     }
 
-
-    // public function showTasks($CourseID, $SessionID)
-    // {
-    //     // Retrieve tasks related to a specific course and session (adjust according to your relationships)
-    //     $tasks = Task::where('course_id', $CourseID)
-    //                   ->where('session_id', $SessionID)
-    //                   ->get();
-
-    //     // Return the view with the tasks
-    //     return view('components.resources-card', compact('tasks'));
-    // }
     public function store(Request $request){
         $data = $request->validate([
             'TaskName' => 'required',

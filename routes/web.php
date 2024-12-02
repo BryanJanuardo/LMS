@@ -14,7 +14,6 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
 
-// Route::get('/schedule', [ScheduleController::class, 'index'])->name('schedule.index');
 Route::get('/task', [TaskController::class, 'index'])->name('task.index');
 // Route::get('/forum', [ForumController::class, 'index'])->name('forum');
 
@@ -44,7 +43,9 @@ Route::prefix('/course/{CourseID}/session/{SessionID}/forum')->group(function ()
     });
 });
 
-
+Route::get('/schedule', function () {
+    return view('schedule'); // This will load resources/views/schedule.blade.php
+})->name('schedule');
 
 Route::prefix('/course/{CourseID}/session')->group(function () {
     Route::get('/{SessionID}', [SessionController::class, 'index'])->name('session.show');
@@ -60,6 +61,7 @@ Route::prefix('/course/{CourseID}/session/{SessionID}/task')->group(function () 
 // Route::get('/courses/{period}', [CourseController::class, 'getCoursesByPeriod'])->name('courses.period');
 Route::view('/register', 'register')->name('register');
 Route::view('/login', 'login')->name('login');
-Route::get('/schedule/{date}', [TaskController::class, 'getTasksByDate'])->name('schedule');
+
+// Route::get('/schedule/{date}', [TaskController::class, 'getTasksByDate'])->name('schedule');
 
 

@@ -31,13 +31,12 @@ class SessionLearning extends Model
     // }
     public function session()
     {
-        return $this->belongsTo(Session::class, 'SessionID'); // foreign key: 'SessionID'
+        return $this->belongsTo(Session::class, 'SessionID'); 
     }
 
-    // A SessionLearning has many Tasks through TaskID
     public function tasks()
     {
-        return $this->hasMany(Task::class, 'TaskID'); // foreign key: 'TaskID' in session_learnings table
+        return $this->hasMany(Task::class, 'TaskID');
     }
 
     // A SessionLearning has many ForumPosts
@@ -47,5 +46,5 @@ class SessionLearning extends Model
     }
 
 
-    
+
 }

@@ -32,8 +32,6 @@ class CourseController extends Controller
     //     return view('CourseDetail', ['course' => $course]);
     // }
 
-    // app/Http/Controllers/CourseController.php
-
     public function detail($courseID)
     {
         $course = Course::with(['sessionLearnings.session', 'sessionLearnings.forumPosts'])

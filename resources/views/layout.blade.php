@@ -33,9 +33,6 @@
                     <i class="bi bi-person-circle"></i>
                 </button>
                 <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="profileDropdown">
-                    <!-- Use the route() helper to generate the URL for the 'course.management' route -->
-                    <li><a class="dropdown-item" href="{{ route('course.management') }}">Course Management</a></li>
-                    <li><hr class="dropdown-divider"></li>
                     <li><a class="dropdown-item" href="/logout">Logout</a></li>
                 </ul>
             </div>

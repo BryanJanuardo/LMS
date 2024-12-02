@@ -1,86 +1,97 @@
 @extends('layout')
 
-@section('title', 'Schedule and Announcements')
-
-@push('styles')
-<link href="https://cdn.jsdelivr.net/npm/fullcalendar@3.0.0/dist/fullcalendar.min.css" rel="stylesheet">
-@endpush
+@section('title', 'Schedule')
 
 @section('content')
-<div class="container my-5">
-    <h2>Task Calendar</h2>
-    <div id="calendar" class="table-responsive"></div>
-    <div id="task-modal" class="modal fade" tabindex="-1" role="dialog">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Tasks for <span id="task-date"></span></h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <ul id="task-list" class="list-group"></ul>
+    <body>
+        <div class="container-fluid"> 
+            <div class="row justify-content-center">
+                <div class="mt-3">
+                    <div id="calendar" class="custom-calendar"></div>
                 </div>
             </div>
         </div>
-    </div>
-</div>
-@endsection
 
-@push('scripts')
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
-<script>
-    const today = new Date();
-    const year = today.getFullYear();
-    const month = today.getMonth();
+        <div id="modal-action" class="modal" tabindex="-1"></div>
 
-    const renderCalendar = () => {
-        let calendarHtml = `<table class="table table-bordered"><thead><tr>`;
-        const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
-        days.forEach(day => calendarHtml += `<th>${day}</th>`);
-        calendarHtml += `</tr></thead><tbody>`;
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.4/jquery.min.js"
+                integrity="sha512-pumBsjNRGGqkPzKHndZMaAG+bir374sORyzM3uulLV14lN5LyykqNk8eEeUlUkB3U0M4FApyaHraT65ihJhDpQ=="
+                crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+        <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.7/index.global.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/@fullcalendar/bootstrap5@6.1.7/index.global.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/izitoast/1.4.0/js/iziToast.min.js"
+                integrity="sha512-Zq9o+E00xhhR/7vJ49mxFNJ0KQw1E1TMWkPTxrWcnpfEFDEXgUiwJHIKit93EW/XxE31HSI5GEOW06G6BF1AtA=="
+                crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"
+                integrity="sha512-T/tUfKSV1bihCnd+MxKD0Hm1uBBroVYBOYSk1knyvQ9VyZJpc/ALb4P0r6ubwVPSGB2GvjeoMAJJImBG12TiaQ=="
+                crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
-        const firstDay = new Date(year, month, 1).getDay();
-        const lastDate = new Date(year, month + 1, 0).getDate();
+        <style>
+            body {
+                background-color: #f8f9fa;
+            }
 
-        let date = 1;
-        for (let i = 0; i < 6; i++) {
-            calendarHtml += `<tr>`;
-            for (let j = 0; j < 7; j++) {
-                if (i === 0 && j < firstDay) {
-                    calendarHtml += `<td></td>`;
-                } else if (date > lastDate) {
-                    break;
-                } else {
-                    const formattedDate = `${year}-${String(month + 1).padStart(2, '0')}-${String(date).padStart(2, '0')}`;
-                    calendarHtml += `<td onclick="fetchTasks('${formattedDate}')">${date}</td>`;
-                    date++;
+            #calendar {
+                background-color: white !important;
+                padding: 50px;
+                border-radius: 15px;
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+                width: 1600px;
+                max-width: 100%;
+                margin: 0 auto;
+            }
+
+            @media (max-width: 1400px) {
+                #calendar {
+                    width: 95%;
                 }
             }
-            calendarHtml += `</tr>`;
-            if (date > lastDate) break;
-        }
+        </style>
 
-        calendarHtml += `</tbody></table>`;
-        document.getElementById('calendar').innerHTML = calendarHtml;
-    };
+        <script>
+            const events = [
+                {
+                    title: 'Event 1',
+                    start: '2024-12-01',
+                    end: '2024-12-01',
+                    description: 'This is event 1'
+                },
+                {
+                    title: 'Event 2',
+                    start: '2024-12-03',
+                    end: '2024-12-04',
+                    description: 'This is event 2'
+                }
+            ];
 
-    const fetchTasks = (date) => {
-    $.ajax({
-        url: '/schedule/2024-11-20', // Hardcoded test date
-        method: 'GET',
-        success: (tasks) => {
-            console.log(tasks); // Check if tasks are fetched
-        },
-        error: (xhr, status, error) => {
-            console.error(`Error fetching tasks: ${error}`);
-        }
-    });
-};
+            document.addEventListener('DOMContentLoaded', function () {
+                var calendarEl = document.getElementById('calendar');
+                var calendar = new FullCalendar.Calendar(calendarEl, {
+                    initialView: 'timeGridWeek', // Current week view
+                    themeSystem: 'bootstrap5',
+                    events: events,
+                    editable: true,
+                    height: '750px',
+                    dateClick: function (info) {
+                        alert('Date clicked: ' + info.dateStr);
+                    },
+                    eventClick: function ({ event }) {
+                        alert('Event clicked: ' + event.title);
+                    },
+                    eventDrop: function (info) {
+                        const event = info.event;
+                        alert('Event dropped: ' + event.title);
+                    },
+                    eventResize: function (info) {
+                        const event = info.event;
+                        alert('Event resized: ' + event.title);
+                    }
+                });
+                calendar.render();
+            });
 
-    };
-
-    document.addEventListener('DOMContentLoaded', () => {
-        renderCalendar();
-    });
-</scri>
+        </script>
+    </body>
+</html>
+@endsection
