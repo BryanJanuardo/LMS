@@ -21,6 +21,7 @@ class ForumPosts extends Seeder
                 'ForumDescription' => $faker->paragraph(),
                 'CreatedDate' => $faker->dateTimeBetween('now', '+1 year'),
                 'FilePath' => $faker->imageUrl(),
+                'UserID' => rand(1, 20),
                 'SessionLearningID' => rand(1, 30)
             ]);
         }

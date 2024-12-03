@@ -1,6 +1,6 @@
 @extends('layout')
 
-@section('title', 'Courses')
+@section('title', 'Course Management')
 
 @push('styles')
     <link href="{{ asset('css/courses.css') }}" rel="stylesheet">

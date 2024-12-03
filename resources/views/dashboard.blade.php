@@ -8,7 +8,7 @@
 @section('content')
     <div class="heading-text">
         <h1>Dashboard</h1>
-        <p style="font-size: 18px">Welcome back, User!</p>
+        <p style="font-size: 18px">Welcome back, {{Auth::user()->UserName}}!</p>
     </div>
 
 

@@ -11,11 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('course_learnings', function (Blueprint $table) {
+        Schema::create('roles', function (Blueprint $table) {
             $table->id();
-            $table->string('ClassName');
-            $table->string('CourseID');
-            $table->foreign('CourseID')->references('CourseID')->on('courses')->onDelete('cascade');
+            $table->string('RoleName');
             $table->timestamps();
         });
     }
@@ -25,6 +23,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('course_learnings');
+        Schema::dropIfExists('roles');
     }
 };

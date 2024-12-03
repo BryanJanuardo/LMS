@@ -7,13 +7,20 @@ use App\Http\Controllers\CourseController;
 use App\Http\Controllers\CourseDetailController;
 use App\Http\Controllers\SessionController;
 use App\Http\Controllers\TaskController;
-
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
 
 Route::get('/schedule', [ScheduleController::class, 'index'])->name('schedule.index');
 Route::get('/task', [TaskController::class, 'index'])->name('task.index');
+
+Route::get('/register', [UserController::class, 'register'])->name('register.index');
+Route::post('/register', [UserController::class, 'create'])->name('register.store');
+
+Route::get('/login', [UserController::class, 'login'])->name('login.index');
+Route::post('/login', [UserController::class, 'auth'])->name('login.store');
+
 // Route::get('/forum', [ForumController::class, 'index'])->name('forum');
 
 Route::get('/course/management', [CourseController::class, 'manage'])->name('course.management');

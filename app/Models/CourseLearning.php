@@ -16,6 +16,10 @@ class CourseLearning extends Model
     }
 
     public function sessionLearnings(){
-        return $this->hasMany(SessionLearning::class, 'id', 'SessionLearningID');
+        return $this->hasMany(SessionLearning::class, 'CourseLearningID', 'id');
+    }
+
+    public function userCourses(){
+        return $this->hasMany(UserCourse::class, 'CourseLearningID', 'id');
     }
 }

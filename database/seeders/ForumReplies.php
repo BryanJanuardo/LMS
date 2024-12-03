@@ -18,6 +18,7 @@ class ForumReplies extends Seeder
         for($i = 1; $i <= 30; $i++) {
             ForumReply::create([
                 'PostID' => rand(1, 30),
+                'UserID' => rand(1, 20),
                 'CreatedDate' => $faker->dateTimeBetween('now', '+1 year'),
                 'ReplyMessages' => $faker->paragraph(),
                 'FilePath' => $faker->imageUrl()

@@ -9,27 +9,25 @@ return new class extends Migration
     /**
      * Run the migrations.
      */
-    public function up()
+    public function up(): void
     {
-        Schema::create('forum_replies', function (Blueprint $table) {
+        Schema::create('user_courses', function (Blueprint $table) {
             $table->id();
-            $table->date('CreatedDate');
-            $table->text('ReplyMessages');
-            $table->string('FilePath');
-            $table->unsignedBigInteger('PostID');
             $table->unsignedBigInteger('UserID');
-            $table->foreign('PostID')->references('id')->on('forum_posts')->onDelete('cascade');
+            $table->unsignedBigInteger('CourseLearningID');
+            $table->unsignedBigInteger('RoleID');
             $table->foreign('UserID')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('CourseLearningID')->references('id')->on('course_learnings')->onDelete('cascade');
+            $table->foreign('RoleID')->references('id')->on('roles')->onDelete('cascade');
             $table->timestamps();
         });
     }
-
 
     /**
      * Reverse the migrations.
      */
     public function down(): void
     {
-        Schema::dropIfExists('forum_replies');
+        Schema::dropIfExists('user_courses');
     }
 };

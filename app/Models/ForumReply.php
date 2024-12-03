@@ -9,10 +9,23 @@ class ForumReply extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['post_id', 'username', 'content'];
+    protected $table = 'forum_replies';
+
+    protected $fillable = [
+        'UserID',
+        'PostID',
+        'CreatedDate',
+        'ReplyMessages',
+        'FilePath'
+    ];
 
     public function post()
     {
         return $this->belongsTo(ForumPost::class, 'id');
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'UserID');
     }
 }

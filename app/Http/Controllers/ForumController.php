@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\ForumPost;
 use App\Models\ForumReply;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ForumController extends Controller
 {
@@ -14,29 +15,59 @@ class ForumController extends Controller
         return view('components.forum', compact('forumPosts'));
     }
 
-    public function store(Request $request)
+    public function store(Request $request, $CourseID, $SessionID)
     {
         $request->validate([
-            'content' => 'required|string|max:1000',
+            'ForumTitle' => 'required|string|max:255|min:5',
+            'ForumDescription' => 'required|string|max:1000|min:10',
+            'FilePath' => 'nullable|mimetypes:image/jpeg,image/png,image/jpg,image/gif,image/svg,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document|max:2048',
         ]);
 
+        $postId = (ForumPost::orderBy('id', 'desc')->first()->id) + 1;
+        $File = null;
+
+        if ($request->hasFile('FilePath')) {
+            $extension = $request->file('FilePath')->getClientOriginalExtension();
+            $File = 'Form_' .  $postId . '_User_' . (Auth::user()->id) . '.' . $extension;
+            $request->file('FilePath')->storeAs('public/Forum', $File);
+        }
+
         ForumPost::create([
-            'username' => 'UserTest',
-            'content' => $request->input('content'),
+            'UserID' => Auth::user()->id,
+            'SessionLearningID' => $SessionID,
+            'ForumTitle' => $request->ForumTitle,
+            'ForumDescription' => $request->ForumDescription,
+            'CreatedDate' => now(),
+            'FilePath' => $File,
         ]);
 
         return redirect()->back()->with('success', 'Comment posted successfully.');
     }
-    public function reply(Request $request, $postId)
+
+    public function reply(Request $request, $CourseID, $SessionID, $postId)
     {
         $request->validate([
-            'content' => 'required|string|max:1000',
+            'ReplyMessages' => 'required|string|max:1000|min:5',
+            'FilePath' => 'nullable|mimetypes:image/jpeg,image/png,image/jpg,image/gif,image/svg,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document|max:2048',
         ]);
 
+        $replyId = (ForumReply::orderBy('id', 'desc')->first()->id) + 1;
+        $File = null;
+
+        if ($request->hasFile('FilePath')) {
+            $extension = $request->file('FilePath')->getClientOriginalExtension();
+            $File = 'Form_' .  $postId .
+            '_Reply_' . $replyId .
+            '_User_' . (Auth::user()->id) . '.' . $extension;
+            $request->file('FilePath')->storeAs('public/Forum', $File);
+        }
+
         ForumReply::create([
-            'post_id' => $postId,
-            'username' => 'UserTest',
-            'content' => $request->input('content'),
+            'UserID' => Auth::user()->id,
+            'PostID' => $postId,
+            'CreatedDate' => now(),
+            'ReplyMessages' => $request->ReplyMessages,
+            'FilePath' => $File,
         ]);
 
         return redirect()->back()->with('success', 'Reply posted successfully.');

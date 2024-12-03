@@ -5,7 +5,9 @@ namespace App\Http\Controllers;
 use App\Models\Course;
 use App\Models\CourseLearning;
 use App\Models\ForumPost;
+use App\Models\UserCourse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class CourseController extends Controller
 {
@@ -18,7 +20,7 @@ class CourseController extends Controller
     //     return response()->json([]);
     // }
     public function index(){
-        $courses = Course::all();
+        $courses = UserCourse::where('UserID', '=', Auth::user()->id)->get();
         return view('Courses', ['courses' => $courses]);
     }
 
@@ -28,7 +30,12 @@ class CourseController extends Controller
     }
 
     public function detail($courseID){
-        $course = CourseLearning::where('CourseID', '=', $courseID)->first();
+        $usercourse = UserCourse::where('CourseLearningID', $courseID)
+        ->where('UserID', Auth::user()->id)
+        ->first();
+
+
+        $course = $usercourse->courseLearning;
         return view('CourseDetail', ['course' => $course]);
     }
 
