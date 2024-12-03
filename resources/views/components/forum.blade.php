@@ -11,10 +11,10 @@
                     <p>{{ $post->ForumDescription }}</p>
                     <div class="d-flex flex-column">
                         <small class="text-muted"><span>Posted on {{ $post->CreatedDate }}</span> | <span>By: {{ $post->user->UserName }}</span></small>
-                        <small class="text-muted"><a href="{{ $post->FilePath }}"  target="_blank">{{ $post->FilePath }}</a></small>
+                        <small class="text-muted"><a href="{{ $post->FilePath }}"  target="_blank"></a></small>
                     </div>
 
-                    <button type="button" style="my: 4; padding: 0" class="btn btn-link toggle-reply-btn">Reply</button>
+                    <button type="button" id="replyBtn" style="my: 4; padding: 0" class="btn btn-link toggle-reply-btn">Reply</button>
                     <ul class="mt-2 ps-4 border-start">
                         @foreach ($post->replies as $reply)
                             <li class="d-flex flex-column">
@@ -66,10 +66,11 @@
 
 <script>
     document.addEventListener('DOMContentLoaded', function () {
-        const toggleButtons = document.querySelectorAll('.toggle-reply-btn');
-
+        const toggleButtons = document.querySelectorAll('#replyBtn');
+        console.log(toggleButtons);
         toggleButtons.forEach(button => {
             button.addEventListener('click', function () {
+                console.log("dadw");
                 const replyForm = this.closest('li').querySelector('.reply-form');
                 replyForm.classList.toggle('hidden');
             });

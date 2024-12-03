@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
 
 Route::get('/schedule', [ScheduleController::class, 'index'])->name('schedule.index');
+Route::get('/schedule/getListCourses', [ScheduleController::class, 'getListCourses'])->name('schedule.getListCourses');
 Route::get('/task', [TaskController::class, 'index'])->name('task.index');
 
 Route::get('/register', [UserController::class, 'register'])->name('register.index');
@@ -20,7 +21,7 @@ Route::post('/register', [UserController::class, 'create'])->name('register.stor
 
 Route::get('/login', [UserController::class, 'login'])->name('login.index');
 Route::post('/login', [UserController::class, 'auth'])->name('login.store');
-
+Route::get('/tes', [ScheduleController::class, 'getListCourses'])->name('tes');
 // Route::get('/forum', [ForumController::class, 'index'])->name('forum');
 
 Route::get('/course/management', [CourseController::class, 'manage'])->name('course.management');
@@ -47,8 +48,9 @@ Route::prefix('/course/{CourseID}/session/{SessionID}/forum')->group(function ()
 });
 
 Route::prefix('/course/{CourseID}/session')->group(function () {
+    Route::get('/create', [SessionController::class, 'create'])->name('session.create');
+    Route::post('/store', [SessionController::class, 'store'])->name('session.store');
     Route::get('/{SessionID}', [SessionController::class, 'index'])->name('session.show');
-    Route::post('/create', [SessionController::class, 'store'])->name('session.store');
     Route::put('/{SessionID}', [SessionController::class, 'update'])->name('session.update');
     Route::delete('/{SessionID}', [SessionController::class, 'delete'])->name('session.delete');
 });

@@ -14,6 +14,7 @@ class Session extends Model
     protected $keyType = 'string';
 
     protected $fillable = [
+        'SessionID',
         'SessionName',
         'SessionDescription',
         'SessionStart',

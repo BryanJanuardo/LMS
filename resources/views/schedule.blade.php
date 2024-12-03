@@ -1,34 +1,3 @@
-{{-- <!DOCTYPE html>
-<html>
-<head>
-    <title>Course Schedules - {{ $semester }}</title>
-</head>
-<body>
-    <h1>Course Schedules for {{ $semester }}</h1>
-
-    <table border="1">
-        <thead>
-            <tr>
-                <th>Course Code</th>
-                <th>Course Title</th>
-                <th>Day</th>
-                <th>Time</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach($schedules as $schedule)
-                <tr>
-                    <td>{{ $schedule['courseCode'] }}</td>
-                    <td>{{ $schedule['title'] }}</td>
-                    <td>{{ $schedule['sessionStart'] }}</td>
-                    <td>{{ $schedule['sessionEnd'] }}</td>
-                </tr>
-            @endforeach
-        </tbody>
-    </table>
-</body>
-</html> --}}
-
 @extends('layout')
 
 @section('title', 'Schedule')
@@ -71,6 +40,7 @@
                 width: 1600px;
                 max-width: 100%;
                 margin: 0 auto;
+                overflow-y: scroll;
             }
 
             @media (max-width: 1400px) {
@@ -81,43 +51,35 @@
         </style>
 
         <script>
-            const events = [
-                {
-                    title: 'Event 1',
-                    start: '2024-12-01',
-                    end: '2024-12-01',
-                    description: 'This is event 1'
-                },
-                {
-                    title: 'Event 2',
-                    start: '2024-12-03',
-                    end: '2024-12-04',
-                    description: 'This is event 2'
-                }
-            ];
-
             document.addEventListener('DOMContentLoaded', function () {
                 var calendarEl = document.getElementById('calendar');
                 var calendar = new FullCalendar.Calendar(calendarEl, {
-                    initialView: 'timeGridWeek', // Current week view
-                    themeSystem: 'bootstrap5',
-                    events: events,
-                    editable: true,
-                    height: '750px',
-                    dateClick: function (info) {
-                        alert('Date clicked: ' + info.dateStr);
-                    },
+                        initialView: 'timeGridWeek',
+                        themeSystem: 'bootstrap5',
+                        events: function (info, successCallback, failureCallback) {
+                            $.ajax({
+                                url: '{{ route('schedule.getListCourses') }}',
+                                method: 'GET',
+                                data: {
+                                    DateStart: info.startStr,
+                                    DateEnd: info.endStr
+                                },
+                                success: function (data) {
+                                    successCallback(data);
+                                },
+                                error: function () {
+                                    failureCallback();
+                                }
+                            });
+                        },
+                        editable: false,
+                        eventResizableFromStart: false,
+                        eventDurationEditable: false,
+                        height: '750px',
                     eventClick: function ({ event }) {
-                        alert('Event clicked: ' + event.title);
+                        window.location.href = `{{ route('course.detail', ['courseId' => '__ID__']) }}`.replace('__ID__', event.id);
+                        console.log(event.id);
                     },
-                    eventDrop: function (info) {
-                        const event = info.event;
-                        alert('Event dropped: ' + event.title);
-                    },
-                    eventResize: function (info) {
-                        const event = info.event;
-                        alert('Event resized: ' + event.title);
-                    }
                 });
                 calendar.render();
             });

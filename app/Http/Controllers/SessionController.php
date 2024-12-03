@@ -10,6 +10,9 @@ use Illuminate\Http\Request;
 
 class SessionController extends Controller
 {
+    public function create($courseID){
+        return view('SessionCreate')->with('courseID', $courseID);
+    }
 
     public function index($CourseID, $SessionID)
     {
@@ -18,8 +21,7 @@ class SessionController extends Controller
     }
 
 
-
-    public function store(Request $request){
+    public function store(Request $request, $CourseID){
         $data = $request->validate([
             'SessionName' => 'required',
             'SessionDescription' => 'required',
@@ -27,13 +29,26 @@ class SessionController extends Controller
             'SessionEnd' => 'required',
         ]);
 
-        Session::create([
+        $latestSession = Session::latest('SessionID')->first();
+        $latestSessionID = $latestSession ? substr($latestSession->SessionID, 1) : 0;
+        $newSessionID = 'S' . str_pad((intval($latestSessionID) + 1), 8, '0', STR_PAD_LEFT);
+
+        // dd($newSessionID);
+
+        $session = Session::create([
+            'SessionID' => $newSessionID,
             'SessionName' => $data['SessionName'],
             'SessionDescription' => $data['SessionDescription'],
             'SessionStart' => $data['SessionStart'],
             'SessionEnd' => $data['SessionEnd'],
         ]);
-        return redirect()->back();
+
+        SessionLearning::create([
+            'CourseLearningID' => $CourseID,
+            'SessionID' => $newSessionID
+        ]);
+
+        return redirect()->route('course.detail', ['courseId' => $CourseID]);
     }
 
     public function update(Request $request, $SessionID){
