@@ -1,4 +1,3 @@
-
 @extends('layout')
 
 @section('title', 'Course Details')
@@ -6,68 +5,59 @@
 @push('styles')
     <link href="{{ asset('css/course-details.css') }}" rel="stylesheet">
 @endpush
+
 @section('content')
-    <h1>{{ $course->course->CourseName }}</h1>
-    <div class="course-info">
-        <p><strong>Course Code:</strong> {{ $course->CourseID }}</p>
-        <p><strong>Credits:</strong> {{ $course->course->SKS }}</p>
-    </div>
-
-    @include('components.divider')
-
-    <div class="teacher-section" style="margin-bottom: 24px;">
-        <div>
-            <h5>John Doe, S.Kom., M.TI</h5>
-            <p>Role: Instructor</p>
+    @if ($course)
+        <h1>{{ $course->course->CourseName }}</h1>
+        <div class="course-info">
+            <p><strong>Course Code:</strong> {{ $course->CourseID }}</p>
+            <p><strong>Credits:</strong> {{ $course->course->SKS }}</p>
         </div>
-    </div>
 
-    <div class="tabs">
-        <ul class="nav nav-tabs" id="sessionTabs" role="tablist">
-            @foreach ($course->sessionLearnings as $key => $session)
-                <li class="nav-item" role="presentation">
-                    <a class="nav-link {{ $loop->first ? 'active' : '' }}" id="tab-{{ $key }}" data-bs-toggle="tab"
-                        data-bs-target="#session-{{ $key }}" role="tab"
-                        aria-controls="session-{{ $key }}" aria-selected="{{ $loop->first ? 'true' : 'false' }}">
-                        Session {{ $loop->index + 1 }}
-                    </a>
-                </li>
-            @endforeach
-        </ul>
+        @include('components.divider')
 
-        <div class="tab-content" id="sessionTabsContent">
-            @foreach ($course->sessionLearnings as $key => $session)
-                <div class="tab-pane fade {{ $loop->first ? 'show active' : '' }}" id="session-{{ $key }}"
-                    role="tabpanel" aria-labelledby="tab-{{ $key }}">
-
-                    <div class="row mt-4">
-                        <div class="col-md-6">
-                            <h5>{{ $session->SessionName }}</h5>
-                            <p>{{ $session->SessionDescription }}</p>
-                            <p><strong>Start:</strong>
-                                {{ \Carbon\Carbon::parse($session->SessionStart)->format('M d, Y') }}</p>
-                            <p><strong>End:</strong> {{ \Carbon\Carbon::parse($session->SessionEnd)->format('M d, Y') }}
-                            </p>
-                        </div>
-
-                        @include('components.resources-card')
-                    </div>
-
+        <div class="tabs">
+            <ul class="nav nav-tabs" id="sessionTabs" role="tablist">
+                @foreach ($course->sessionLearnings as $key => $sessionLearning)
+                    <li class="nav-item" role="presentation">
+                        <a class="nav-link {{ $loop->first ? 'active' : '' }}" id="tab-{{ $key }}" data-bs-toggle="tab"
+                            id="session-link"
+                            data-url="{{ route('session.show', ['CourseID' => $course->id, 'SessionID' => $sessionLearning->id]) }}"
+                            data-bs-target="#session-{{ $key }}" role="tab"
+                            aria-controls="session-{{ $key }}" aria-selected="{{ $loop->first ? 'true' : 'false' }}">
+                            Session {{ $loop->index + 1 }}
+                        </a>
+                    </li>
+                @endforeach
+            </ul>
+            @if ($course->sessionLearnings)
+                <div class="tab-content" id="sessionTabsContent">
+                    @include('components.session-content', ['sessionLearning' => $course->sessionLearnings[0]])
                 </div>
-            @endforeach
+            @endif
         </div>
-        @include('components.forum', ['sessionLearning' => $course->sessionLearnings[0]])
-    </div>
 
+    @else
+        <p>Course not found.</p>
+    @endif
 @endsection
 
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const tabs = document.querySelectorAll('#sessionTabs .nav-link');
 
-@section('scripts')
-    <script>
-        document.querySelectorAll('.nav-link').forEach(function(tab) {
-            tab.addEventListener('click', function(e) {
-                console.log('Tab clicked:', e.target.id);
-            });
+    tabs.forEach(tab => {
+        tab.addEventListener('click', function (event) {
+            event.preventDefault();
+            const url = this.getAttribute('data-url');
+
+            fetch(url)
+                .then(response => response.text())
+                .then(html => {
+                    document.querySelector('#sessionTabsContent').innerHTML = html;
+                })
+                .catch(error => console.error('Error fetching session details:', error));
         });
-    </script>
-@endsection
+    });
+});
+</script>

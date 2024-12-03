@@ -13,15 +13,15 @@
             <div class="col-md-4 col-sm-6 mb-4">
                 <div class="card">
                     <div class="card-body">
-                        <h5 class="card-title">{{ $course->CourseName }}</h5>
+                        <h5 class="card-title">{{ $course->courseLearning->course->CourseName }}</h5>
                         <div class="course-details">
                             <div class="course-detail">
                                 <i class="bi bi-person-badge-fill"></i>
-                                <span class="course-code">{{ $course->CourseID }}</span>
+                                <span class="course-code">{{ $course->courseLearning->ClassName }}</span>
                             </div>
                             <div class="course-detail">
                                 <i class="bi bi-clipboard-check-fill"></i>
-                                <span class="course-credits">{{ $course->Credit }}</span>
+                                <span class="course-credits">{{ $course->courseLearning->course->SKS }}</span>
                             </div>
                             <div class="course-detail">
                                 <i class="bi bi-people-fill"></i>
@@ -29,7 +29,7 @@
                             </div>
                         </div>
 
-                        <a href="{{ route('course.detail', $course->CourseID) }}" class="btn btn-primary">View Details</a>
+                        <a href="{{ route('course.detail', ['courseId' => $course->courseLearning->id]) }}" class="btn btn-primary">View Details</a>
                     </div>
                 </div>
             </div>

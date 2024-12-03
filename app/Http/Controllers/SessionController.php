@@ -5,17 +5,16 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use App\Models\Course;
 use App\Models\Session;
+use App\Models\SessionLearning;
 use Illuminate\Http\Request;
 
 class SessionController extends Controller
 {
 
-    public function index()
+    public function index($CourseID, $SessionID)
     {
-        $sessions = Session::all();
-        return view('course-details', [
-            'sessions' => $sessions
-        ]);
+        $sessionLearning = SessionLearning::find($SessionID);
+        return view('components.session-content')->with('sessionLearning', $sessionLearning);
     }
 
 

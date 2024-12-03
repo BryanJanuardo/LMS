@@ -9,7 +9,16 @@ class ForumPost extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['username', 'content'];
+    protected $table = 'forum_posts';
+
+    protected $fillable = [
+        'UserID',
+        'SessionLearningID',
+        'ForumTitle',
+        'ForumDescription',
+        'CreatedDate',
+        'FilePath'
+    ];
 
     public function sessionLearning(){
         return $this->belongsTo(SessionLearning::class, 'id');
@@ -17,6 +26,11 @@ class ForumPost extends Model
 
     public function replies()
     {
-        return $this->hasMany(ForumReply::class, 'id');
+        return $this->hasMany(ForumReply::class, 'PostID');
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'UserID');
     }
 }

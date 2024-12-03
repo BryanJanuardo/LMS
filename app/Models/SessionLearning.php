@@ -12,7 +12,7 @@ class SessionLearning extends Model
     protected $table = 'session_learnings';
 
     public function courseLearning(){
-        return $this->belongsTo(CourseLearning::class, 'id');
+        return $this->belongsTo(CourseLearning::class, 'CourseLearningID');
     }
 
     public function tasks()
@@ -27,6 +27,6 @@ class SessionLearning extends Model
 
     public function forumPosts()
     {
-        return $this->hasMany(ForumPost::class, 'id');
+        return $this->hasMany(ForumPost::class, 'SessionLearningID');
     }
 }

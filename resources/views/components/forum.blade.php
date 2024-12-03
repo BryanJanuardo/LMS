@@ -9,25 +9,39 @@
                 <li class="border-bottom pb-2 mb-2">
                     <strong>{{ $post->ForumTitle }}:</strong>
                     <p>{{ $post->ForumDescription }}</p>
-                    <small class="text-muted">Posted on {{ $post->CreatedDate }}</small>
-                    <small>Nama: blablabla</small>
-                    <small class="text-muted"><a href="{{ $post->FilePath }}">{{ $post->FilePath }}</a></small>
+                    <div class="d-flex flex-column">
+                        <small class="text-muted"><span>Posted on {{ $post->CreatedDate }}</span> | <span>By: {{ $post->user->UserName }}</span></small>
+                        <small class="text-muted"><a href="{{ $post->FilePath }}"  target="_blank">{{ $post->FilePath }}</a></small>
+                    </div>
 
-                    <button type="button" class="btn btn-link toggle-reply-btn">Reply</button>
+                    <button type="button" style="my: 4; padding: 0" class="btn btn-link toggle-reply-btn">Reply</button>
                     <ul class="mt-2 ps-4 border-start">
                         @foreach ($post->replies as $reply)
-                            <li>
-                                {{-- <strong>{{ $reply->username }}:</strong> --}}
+                            <li class="d-flex flex-column">
                                 <p>{{ $reply->ReplyMessages }}</p>
-                                <small class="text-muted">Replied on {{ $reply->CreatedDate }}</small>
+                                <small class="text-muted"><span>Replied on {{ $reply->CreatedDate }}</span> | <span>By: {{ $reply->user->UserName }}</span></small>
+                                <small class="text-muted"><a href="{{ $reply->FilePath }}"  target="_blank">{{ $reply->FilePath }}</a></small>
                             </li>
                         @endforeach
                     </ul>
 
-                    <form action="{{ route('forum.reply', ['CourseID' => $sessionLearning->courseLearning->CourseID, 'SessionID' => $sessionLearning->id, 'postId' => $post->id]) }}" method="POST" class="mt-2 reply-form hidden">
+                    <form action="{{ route('forum.reply', ['CourseID' => $sessionLearning->courseLearning->id, 'SessionID' => $sessionLearning->id, 'postId' => $post->id]) }}" method="POST" class="mt-2 reply-form hidden"  enctype="multipart/form-data">
+                        @method('POST')
                         @csrf
-                        <textarea name="content" class="form-control" rows="2" placeholder="Write your reply..." required></textarea>
-                        <div class="text-end mt-2">
+                        <div class="d-flex flex-column gap-2">
+                            <textarea name="ReplyMessages" class="form-control" rows="3" placeholder="Write your comment here..." required></textarea>
+                            <input name="FilePath" class="form-control" type="file">
+                            @if ($errors->any())
+                                <div class="alert alert-danger">
+                                    <ul>
+                                        @foreach ($errors->all() as $error)
+                                            <li>{{ $error }}</li>
+                                        @endforeach
+                                    </ul>
+                                </div>
+                            @endif
+                        </div>
+                        <div class="text-end my-2">
                             <button type="submit" class="btn btn-sm btn-secondary">Send Reply</button>
                             <button type="button" class="btn btn-sm btn-danger cancel-reply-btn">Cancel</button>
                         </div>
@@ -35,13 +49,6 @@
                 </li>
             @endforeach
         </ul>
-
-        <h6>Add a Post:</h6>
-        <form action="{{ route('forum.store', ['CourseID' => $sessionLearning->courseLearning->CourseID, 'SessionID' => $sessionLearning->id, 'postId' => $post->id]) }}" method="POST">
-            @csrf
-            <textarea name="content" class="form-control" rows="3" placeholder="Write your comment here..." required></textarea>
-            <button type="submit" class="btn btn-primary mt-2">Submit</button>
-        </form>
     </div>
 </div>
 
