@@ -13,12 +13,15 @@ class DatabaseSeeder extends Seeder
     {
         $this->call([
             Course::class,
-            TasksTableSeeder::class,
+            Tasks::class,
             Sessionses::class,
             SessionLearnings::class,
             CourseLearnings::class,
             ForumPosts::class,
-            ForumReplies::class
+            ForumReplies::class,
+            Materials::class,
+            MaterialLearnings::class,
+            TaskLearnings::class
         ]);
 
     }

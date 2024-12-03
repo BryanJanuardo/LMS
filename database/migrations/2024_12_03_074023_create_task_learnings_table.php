@@ -13,6 +13,11 @@ return new class extends Migration
     {
         Schema::create('task_learnings', function (Blueprint $table) {
             $table->id('TaskLearningID');
+            $table->unsignedBigInteger('SessionLearningID');
+            $table->unsignedBigInteger('TaskID');
+            $table->foreign('SessionLearningID')->references('id')->on('session_learnings')->onDelete('cascade');
+            $table->foreign('TaskID')->references('TaskID')->on('tasks')->onDelete('cascade');
+            $table->string('TaskType');
             $table->timestamps();
         });
     }

@@ -7,10 +7,10 @@ use Illuminate\Database\Eloquent\Model;
 
 class TaskLearning extends Model
 {
-    public function material()
-    {
-        return $this->hasOne(Material::class, 'MaterialID');
-    }
+    use HasFactory;
+
+    protected $primaryKey = 'TaskLearningID';
+    protected $fillable = ['TaskID', 'SessionLearningID', 'TaskType'];
 
     public function task()
     {

@@ -62,4 +62,9 @@ class MaterialController extends Controller
     {
         //
     }
+
+    public function getMaterialById($id){
+        $material = Material::where('MaterialID', '=', $id)->first();
+        return $material;
+    }
 }

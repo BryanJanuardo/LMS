@@ -15,7 +15,6 @@ return new class extends Migration
             $table->id('TaskID');
             $table->string('TaskName');
             $table->string('TaskDesc');
-            $table->string('TaskType');
             $table->date('TaskDueDate');
             $table->timestamps();
         });

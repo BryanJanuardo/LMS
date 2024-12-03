@@ -14,7 +14,6 @@ class task extends Model
     protected $fillable = [
         'TaskName',
         'TaskDesc',
-        'TaskType',
         'TaskDueDate',
     ];
 }

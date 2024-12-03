@@ -12,7 +12,11 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('material_learnings', function (Blueprint $table) {
-            $table->id('MaterialLearningID');
+            $table->id('MaterialLearningID')->primary();
+            $table->unsignedBigInteger('SessionLearningID');
+            $table->string('MaterialID');
+            $table->foreign('SessionLearningID')->references('id')->on('session_learnings')->onDelete('cascade');
+            $table->foreign('MaterialID')->references('MaterialID')->on('materials')->onDelete('cascade');
             $table->timestamps();
         });
     }
