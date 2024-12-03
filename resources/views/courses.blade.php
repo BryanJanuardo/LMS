@@ -21,7 +21,7 @@
                             </div>
                             <div class="course-detail">
                                 <i class="bi bi-clipboard-check-fill"></i>
-                                <span class="course-credits">{{ $course->Credit }}</span>
+                                <span class="course-credits">{{ $course->SKS }}</span>
                             </div>
                             <div class="course-detail">
                                 <i class="bi bi-people-fill"></i>

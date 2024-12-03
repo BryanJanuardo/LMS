@@ -1,33 +1,26 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use App\Models\Schedule;
 use App\Http\Controllers\CourseController;
 
 use Illuminate\Http\Request;
 class ScheduleController extends Controller
 {
     public function index()
-    {
-        $CourseController = new CourseController();
-        $courses = $CourseController->getCourses();
+{
+    $schedules = Schedule::all();
+    return view('schedule', compact('schedules'));
+}
 
-        $semesters = array_keys($courses);
-        $lastSemester = end($semesters);
+public function show($id)
+{
+    $schedule = Schedule::findOrFail($id);
+    $announcements = $schedule->announcements;
+    return response()->json([
+        'schedule' => $schedule,
+        'announcements' => $announcements,
+    ]);
+}
 
-        $schedules = [];
-
-        if (array_key_exists($lastSemester, $courses)) {
-            foreach ($courses[$lastSemester] as $course) {
-                $schedules[] = [
-                    'courseCode' => $course['courseCode'],
-                    'title' => $course['title'],
-                    'sessionStart' => $course['sessionStart']->format('d M Y, H:i'),
-                    'sessionEnd' => $course['sessionEnd']->format('d M Y, H:i'),
-                ];
-            }
-        }
-
-        return view('schedule', ['schedules' => $schedules, 'semester' => $lastSemester]);
-    }
 }

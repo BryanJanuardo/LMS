@@ -35,10 +35,23 @@
                     <p class="mt-3">No quiz available for this session.</p>
                 </div>
                 <!-- Task Tab -->
-                <div class="tab-pane fade" id="task-{{ $key }}" role="tabpanel"
-                    aria-labelledby="task-tab-{{ $key }}">
-                    <p class="mt-3">No tasks available for this session.</p>
+                <div class="tab-pane fade" id="task-{{ $key }}" role="tabpanel" aria-labelledby="task-tab-{{ $key }}">
+                    @if ($tasks->isEmpty())
+                        <p class="mt-3">No tasks available for this session.</p>
+                    @else
+                        <ul class="list-group mt-3">
+                            @foreach ($tasks as $task)
+                                <li class="list-group-item">
+                                    <h6>{{ $task->TaskName }}</h6>
+                                    <p>{{ $task->TaskDesc }}</p>
+                                    <span class="badge bg-primary">{{ $task->TaskType }}</span>
+                                    <span class="text-muted float-end">Due: {{ $task->TaskDueDate }}</span>
+                                </li>
+                            @endforeach
+                        </ul>
+                    @endif
                 </div>
+
             </div>
         </div>
     </div>

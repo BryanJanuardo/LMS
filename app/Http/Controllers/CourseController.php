@@ -27,10 +27,27 @@ class CourseController extends Controller
         return view('CoursesManagement', ['courses' => $courses]);
     }
 
-    public function detail($courseID){
-        $course = CourseLearning::where('CourseID', '=', $courseID)->first();
+    // public function detail($courseID){
+    //     $course = CourseLearning::where('CourseID', '=', $courseID)->first();
+    //     return view('CourseDetail', ['course' => $course]);
+    // }
+
+    public function detail($courseID)
+    {
+        $course = Course::with(['sessionLearnings.session', 'sessionLearnings.forumPosts'])
+                        ->where('CourseID', '=', $courseID)
+                        ->first();
+
+        if (!$course) {
+            return redirect()->back()->with('error', 'Course not found.');
+        }
+        // dd($course->toArray());
+        // dd($sessionLearning);
+
         return view('CourseDetail', ['course' => $course]);
     }
+
+
 
     public function create(){
         return view('CourseCreate');

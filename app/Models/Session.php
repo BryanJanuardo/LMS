@@ -20,8 +20,8 @@ class Session extends Model
         'SessionEnd',
     ];
 
-    public function sessionLearning()
+    public function sessionLearnings()
     {
-        return $this->hasOne(SessionLearning::class);
+        return $this->hasMany(SessionLearning::class, 'SessionID'); // foreign key: 'SessionID'
     }
 }

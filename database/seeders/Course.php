@@ -13,7 +13,7 @@ class Course extends Seeder
      */
     public function run(): void
     {
-        //
+       
         DB::table('courses')->insert([
             'CourseID' => 'FLA001',
             'CourseName' => 'Framework Architecture Layer1',

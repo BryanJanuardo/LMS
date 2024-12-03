@@ -11,11 +11,19 @@ class CourseLearning extends Model
 
     protected $table = 'course_learnings';
 
-    public function course(){
-        return $this->belongsTo(Course::class,  'CourseID', 'CourseID');
+    // public function course(){
+    //     return $this->belongsTo(Course::class,  'CourseID', 'CourseID');
+    // }
+
+    public function course()
+    {
+        return $this->belongsTo(Course::class, 'CourseID'); // foreign key: 'CourseID'
     }
 
-    public function sessionLearnings(){
-        return $this->hasMany(SessionLearning::class, 'id', 'SessionLearningID');
+    // A CourseLearning belongs to a SessionLearning
+    public function sessionLearning()
+    {
+        return $this->belongsTo(SessionLearning::class, 'SessionLearningID'); // foreign key: 'SessionLearningID'
     }
+
 }

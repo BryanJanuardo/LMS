@@ -16,14 +16,27 @@
 </head>
 
 <body>
-    <header class="header">
+    <header class="header d-flex justify-content-between align-items-center">
         <div class="header-content">
             <h1 class="header-title">LEARNING MANAGEMENT SYSTEMS</h1>
-            <div class="notification-button">
-                <button aria-label="Notifications">
+        </div>
+        <div class="header-icons d-flex align-items-center">
+            <div class="notification-button me-3">
+                <button aria-label="Notifications" class="btn btn-light">
                     <i class="bi bi-bell-fill"></i>
                 </button>
             </div>
+
+            <!-- Profile Dropdown -->
+            <div class="dropdown">
+                <button class="btn btn-light dropdown-toggle" type="button" id="profileDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                    <i class="bi bi-person-circle"></i>
+                </button>
+                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="profileDropdown">
+                    <li><a class="dropdown-item" href="/logout">Logout</a></li>
+                </ul>
+            </div>
+
         </div>
     </header>
 

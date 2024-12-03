@@ -15,18 +15,36 @@ class SessionLearning extends Model
         return $this->belongsTo(CourseLearning::class, 'id');
     }
 
-    public function tasks()
-    {
-        return $this->belongsToMany(Task::class, 'TaskID');
-    }
+    // public function tasks()
+    // {
+    //     return $this->belongsToMany(Task::class, 'TaskID');
+    // }
 
+    // public function session()
+    // {
+    //     return $this->belongsTo(Session::class, 'SessionID');
+    // }
+
+    // public function forumPosts()
+    // {
+    //     return $this->hasMany(ForumPost::class, 'id');
+    // }
     public function session()
     {
-        return $this->belongsTo(Session::class, 'SessionID');
+        return $this->belongsTo(Session::class, 'SessionID'); 
     }
 
+    public function tasks()
+    {
+        return $this->hasMany(Task::class, 'TaskID');
+    }
+
+    // A SessionLearning has many ForumPosts
     public function forumPosts()
     {
-        return $this->hasMany(ForumPost::class, 'id');
+        return $this->hasMany(ForumPost::class, 'SessionLearningID');
     }
+
+
+
 }
