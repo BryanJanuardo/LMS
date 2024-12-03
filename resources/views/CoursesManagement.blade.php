@@ -7,39 +7,50 @@
 @endpush
 
 @section('content')
+    <div class="container mt-4">
+        <h1 class="mb-4">Course Management</h1>
 
-    <h1>Course Management</h1>
-    <a href="{{ route('course.create')}}">create new course</a>
+        <!-- Create New Course Button -->
+        <a href="{{ route('course.create') }}" class="btn btn-primary mb-4">
+            Create New Course
+        </a>
 
-    <div>
-        <table border="1" style="border: 1px solid black; border-collapse: collapse;">
-            <tr>
-                <th>ID</th>
-                <th>Course Name</th>
-                <th>Course Description</th>
-                <th>SKS</th>
-                <th>Edit</th>
-                <th>Delete</th>
-            </tr>
-            @foreach($courses as $course)
-                <tr>
-                    <td>{{ $course->CourseID }}</td>
-                    <td>{{ $course->CourseName }}</td>
-                    <td>{{ $course->CourseDescription }}</td>
-                    <td>{{ $course->SKS }}</td>
-                    <td>
-                        <a href="{{ route('course.edit', ['courseId' => $course->CourseID]) }}">Edit</a>
-                    </td>
-                    <td>
-                        <form action="{{ route('course.destroy', ['courseId' => $course->CourseID]) }}" method="post">
-                            @csrf
-                            @method('delete')
-                            <input type="submit" value="Delete">
-                        </form>
-                    </td>
-                </tr>
-            @endforeach
-        </table>
+        <!-- Course Table -->
+        <div class="table-responsive">
+            <table class="table table-bordered table-striped">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Course Name</th>
+                        <th>Course Description</th>
+                        <th>SKS</th>
+                        <th>Edit</th>
+                        <th>Delete</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach($courses as $course)
+                        <tr>
+                            <td>{{ $course->CourseID }}</td>
+                            <td>{{ $course->CourseName }}</td>
+                            <td>{{ $course->CourseDescription }}</td>
+                            <td>{{ $course->SKS }}</td>
+                            <td>
+                                <a href="{{ route('course.edit', ['courseId' => $course->CourseID]) }}" class="btn btn-warning btn-sm">
+                                    Edit
+                                </a>
+                            </td>
+                            <td>
+                                <form action="{{ route('course.destroy', ['courseId' => $course->CourseID]) }}" method="post" onsubmit="return confirm('Are you sure you want to delete this course?');">
+                                    @csrf
+                                    @method('delete')
+                                    <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                                </form>
+                            </td>
+                        </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
     </div>
-
 @endsection

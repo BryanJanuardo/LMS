@@ -15,8 +15,8 @@ return new class extends Migration
             $table->string('SessionID')->primary();
             $table->string('SessionName');
             $table->longText('SessionDescription');
-            $table->date('SessionStart');
-            $table->date('SessionEnd');
+            $table->dateTime('SessionStart');
+            $table->dateTime('SessionEnd');
             $table->timestamps();
         });
     }

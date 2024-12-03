@@ -11,6 +11,11 @@ class SessionLearning extends Model
 
     protected $table = 'session_learnings';
 
+    protected $fillable = [
+        'SessionID',
+        'CourseLearningID',
+    ];
+
     public function courseLearning(){
         return $this->belongsTo(CourseLearning::class, 'CourseLearningID');
     }
