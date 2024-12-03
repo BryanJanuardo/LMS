@@ -1,4 +1,4 @@
-@extends('guest-layout')
+@extends('partials.guest-layout')
 
 @section('title', 'Register')
 
@@ -6,7 +6,8 @@
 <div class="row justify-content-center">
     <div class="col-md-6">
         <h2 class="text-center mb-4">Register</h2>
-        <form>
+        <form action="{{ route('register.store') }}" method="POST">
+            @csrf
             <div class="mb-3">
                 <label for="UserName" class="form-label">Name</label>
                 <input type="text" class="form-control" id="UserName" name="UserName" placeholder="Enter your name">
