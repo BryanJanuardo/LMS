@@ -23,20 +23,23 @@
                             <tr>
                                 <th>#</th>
                                 <th>Material Name</th>
-                                <th>Description</th>
+                                <th>Link</th>
+                                <th>Type</th>
                                 <th>Actions</th>
                             </tr>
                         </thead>
                         <tbody id="materialsTableBody">
-                            <tr id="materialRow-1">
-                                <td>1</td>
-                                <td>Introduction to Topic</td>
-                                <td>A brief overview of the topic.</td>
-                                <td>
-                                    <button class="btn btn-secondary btn-sm" data-bs-toggle="modal" data-bs-target="#materialModal" onclick="editMaterial(1, 'Introduction to Topic', 'A brief overview of the topic.')">Edit</button>
-                                    <button class="btn btn-danger btn-sm" onclick="deleteMaterial(1)">Delete</button>
-                                </td>
-                            </tr>
+                            @foreach ($sessionLearning->materialLearnings as $materialLearns)
+                                <tr id="materialRow-{{ $materialLearns->id }}">
+                                    <td>{{ $loop->iteration}}</td>
+                                    <td>{{ $materialLearns->material->MaterialName }}</td>
+                                    <td>{{ $materialLearns->material->MaterialPath }}</td>
+                                    <td>{{ $materialLearns->material->MaterialType }}</td>
+                                    <td>
+                                        <button class="btn btn-secondary btn-sm" data-bs-toggle="modal" data-bs-target="#materialModal" onclick="editMaterial(1, 'Introduction to Topic', 'A brief overview of the topic.')">Edit</button>
+                                        <button class="btn btn-danger btn-sm" onclick="deleteMaterial(1)">Delete</button>
+                                    </td>
+                            @endforeach
                         </tbody>
                     </table>
                     <div class="d-flex justify-content-end mt-3">
