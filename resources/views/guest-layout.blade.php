@@ -6,12 +6,26 @@
     <title>@yield('title')</title>
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .navbar {
+            background-color: #007AFF !important;
+        }
+        .navbar-brand, .nav-link {
+            color: white !important;
+        }
+        .nav-link:hover {
+            color: #cce7ff !important;
+        }
+        footer {
+            color: #007AFF !important;
+        }
+    </style>
 </head>
 <body>
     <!-- Navbar -->
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <nav class="navbar navbar-expand-lg">
         <div class="container">
-            <a class="navbar-brand" href="#">MyApp</a>
+            <a class="navbar-brand fw-bold" href="#">LEARNING MANAGEMENT SYSTEM</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
@@ -35,7 +49,7 @@
 
     <!-- Footer -->
     <footer class="text-center mt-5">
-        <p class="text-muted">&copy; {{ date('Y') }} MyApp. All rights reserved.</p>
+        <p>&copy; {{ date('Y') }} MyApp. All rights reserved.</p>
     </footer>
 
     <!-- Bootstrap JS -->
