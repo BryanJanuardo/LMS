@@ -10,7 +10,7 @@
         @endif
     </div>
 
-    @include('components.resources-card', ['key' => 3])
+    @include('components.resources-card', ['key' => 3, 'sessionLearning' => $sessionLearning])
 </div>
 
 @include('components.forum', ['sessionLearning' => $sessionLearning])

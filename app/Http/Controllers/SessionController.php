@@ -14,6 +14,7 @@ class SessionController extends Controller
     public function index($CourseID, $SessionID)
     {
         $sessionLearning = SessionLearning::find($SessionID);
+        
         return view('components.session-content')->with('sessionLearning', $sessionLearning);
     }
 

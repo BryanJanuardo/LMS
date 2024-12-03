@@ -27,7 +27,28 @@
                 <!-- Materials Tab -->
                 <div class="tab-pane fade show active" id="materials-{{ $key }}"
                     role="tabpanel" aria-labelledby="materials-tab-{{ $key }}">
-                    <p class="mt-3">No materials available for this session.</p>
+                    {{-- @foreach ($sessionLearning->materialLearnings as $materialLearns)
+                        @if ($materialLearns)
+                            @php
+                                $material = $materialLearns->material;
+                            @endphp
+                            @if ($material)
+                                <p class="mt-3">{{$material->MaterialName}}</p>
+                            @else
+                                <p class="mt-3">No material available for this session.</p>
+                            @endif
+                            @else
+                                <p class="mt-3">No materialLearns available for this session.</p>
+                        @endif
+                    @endforeach --}}
+                    @foreach ($sessionLearning->materialLearnings as $materialLearns)
+                        {{-- @foreach ($materialLearns->material as $material )
+                        <strong>{{ $material->MaterialName }}:</strong>
+                        <p>{{ $material->MaterialType }}</p>
+                        @endforeach --}}
+                        <strong>{{ $materialLearns->material->MaterialName }}:</strong>
+                        <p>{{ $materialLearns->material->MaterialType }}</p>
+                    @endforeach
                 </div>
                 <!-- Quiz Tab -->
                 <div class="tab-pane fade" id="quiz-{{ $key }}" role="tabpanel"

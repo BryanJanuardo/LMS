@@ -7,8 +7,13 @@ use Illuminate\Database\Eloquent\Model;
 
 class Material extends Model
 {
+    use HasFactory;
+
+    protected $primaryKey = 'MaterialID';
+    protected $fillable = ['MaterialName', 'MaterialType', 'MaterialPath'];
+
     public function materialLearning()
     {
-        return $this->belongsTo(MaterialLearning::class, 'MaterialLearningID');
+        return $this->hasOne(MaterialLearning::class);
     }
 }

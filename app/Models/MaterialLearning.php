@@ -14,6 +14,10 @@ class MaterialLearning extends Model
 
     public function material()
     {
-        return $this->hasOne(Material::class, 'MaterialID');
+        return $this->belongsTo(Material::class, 'MaterialID');
+    }
+
+    public function sessionLearning(){
+        return $this->belongsTo(SessionLearning::class, 'id');
     }
 }
