@@ -54,19 +54,22 @@
                                 <th>#</th>
                                 <th>Quiz Name</th>
                                 <th>Description</th>
+                                <th>Due Date</th>
                                 <th>Actions</th>
                             </tr>
                         </thead>
                         <tbody id="quizTableBody">
-                            <tr id="quizRow-1">
-                                <td>1</td>
-                                <td>Introduction Quiz</td>
-                                <td>A quiz to test basic knowledge.</td>
-                                <td>
-                                    <button class="btn btn-secondary btn-sm" data-bs-toggle="modal" data-bs-target="#quizModal" onclick="editQuiz(1, 'Introduction Quiz', 'A quiz to test basic knowledge.')">Edit</button>
-                                    <button class="btn btn-danger btn-sm" onclick="deleteQuiz(1)">Delete</button>
-                                </td>
-                            </tr>
+                            @foreach ($sessionLearning->taskLearnings->where('TaskType', 'Quiz') as $quizLearns)
+                                <tr id="quizRow-{{ $quizLearns->id }}">
+                                    <td>{{ $loop->iteration}}</td>
+                                    <td>{{ $quizLearns->task->TaskName }}</td>
+                                    <td>{{ $quizLearns->task->TaskDesc }}</td>
+                                    <td>{{ $quizLearns->task->TaskDueDate}}</td>
+                                    <td>
+                                        <button class="btn btn-secondary btn-sm" data-bs-toggle="modal" data-bs-target="#materialModal" onclick="editMaterial(1, 'Introduction to Topic', 'A brief overview of the topic.')">Edit</button>
+                                        <button class="btn btn-danger btn-sm" onclick="deleteMaterial(1)">Delete</button>
+                                    </td>
+                            @endforeach
                         </tbody>
                     </table>
 
