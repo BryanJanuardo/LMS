@@ -58,4 +58,7 @@ Route::prefix('/course/{CourseID}/session/{SessionID}/task')->group(function () 
 
 });
 
+Route::get('/user', [UserController::class, 'edit'])->name('user.edit');
+Route::put('/user/update', [UserController::class, 'update'])->name('user.update');
+
 // Route::get('/courses/{period}', [CourseController::class, 'getCoursesByPeriod'])->name('courses.period');

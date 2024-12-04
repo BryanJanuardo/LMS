@@ -58,4 +58,31 @@ class UserController extends Controller
             return redirect()->route('dashboard');
         }
     }
+
+
+    public function edit(){
+
+        $user = Auth::user();
+        return view('UserProfile', ['user' => $user]);
+    }
+
+    public function update(Request $request)
+    {
+
+        $user = Auth::user();
+        $data = $request->validate([
+            'UserName' => 'required|string|max:255',
+            'UserEmail' => 'required|string|max:255|email',
+            'UserPassword' => 'required|string|min:6',
+            'UserDOB' => 'required|date',
+        ]);
+
+        $user = User::find($user->id);
+
+        $user->update($data);
+
+        // dd($user);
+        return redirect()->route('dashboard')->with('success', 'Profile updated successfully.');
+    }
+
 }

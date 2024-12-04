@@ -35,4 +35,10 @@
             <span class="nav-text">Course Management</span>
         </a>
     </li>
+    <li class="nav-item">
+        <a href="{{ route('user.edit') }}" class="nav-link {{ request()->is('user') ? 'active' : '' }}">
+            <img src="" class="icon">
+            <span class="nav-text">User</span>
+        </a>
+    </li>
 </ul>
