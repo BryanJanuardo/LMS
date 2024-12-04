@@ -11,9 +11,4 @@ class task extends Model
 
     protected $primaryKey = 'TaskID';
     protected $fillable = ['TaskName', 'TaskDesc', 'TaskDueDate'];
-
-    public function taskLearning()
-    {
-        return $this->hasOne(TaskLearning::class);
-    }
 }

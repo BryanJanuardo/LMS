@@ -15,4 +15,3 @@
 
 @include('components.forum', ['sessionLearning' => $sessionLearning])
 @include('components.AddPost', ['sessionLearning' => $sessionLearning])
-
