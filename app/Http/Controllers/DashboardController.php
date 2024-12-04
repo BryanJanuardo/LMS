@@ -2,34 +2,24 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\UserCourse;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class DashboardController extends Controller
 {
     public function index()
     {
-        $classes = [
-            [
-                'title' => 'Framework Layer Architecture',
-                'session' => 'Session 1',
-                'time' => '12:00 - 15:00 WIB',
-            ],
-            [
-                'title' => 'Advanced PHP Techniques',
-                'session' => 'Session 2',
-                'time' => '10:00 - 12:00 WIB',
-            ],
-            [
-                'title' => 'Introduction to Laravel',
-                'session' => 'Session 3',
-                'time' => '13:00 - 15:00 WIB',
-            ],
-            [
-                'title' => 'JavaScript Fundamentals',
-                'session' => 'Session 4',
-                'time' => '09:00 - 11:00 WIB',
-            ],
-        ];
+        $classes = UserCourse::where('UserID', Auth::user()->id)
+        ->join('course_learnings', 'user_courses.CourseLearningID', '=', 'course_learnings.id')
+        ->join('courses', 'course_learnings.CourseID', '=', 'courses.CourseID')
+        ->join('session_learnings', 'course_learnings.id', '=', 'session_learnings.CourseLearningID')
+        ->join('sessionses', 'session_learnings.SessionID', '=', 'sessionses.SessionID')
+        ->where('sessionses.SessionStart', '>=', Carbon::now())
+        ->where('sessionses.SessionEnd', '<', Carbon::tomorrow())
+        ->select('course_learnings.id', 'courses.CourseName', 'course_learnings.ClassName', 'sessionses.SessionStart', 'sessionses.SessionEnd')
+        ->get();
 
         $announcements = [
             [
@@ -50,29 +40,6 @@ class DashboardController extends Controller
             ],
         ];
 
-        $forums = [
-            [
-                'author' => 'Dosen 1',
-                'posted_at' => '10:00 AM, 1 Oct 2024',
-                'content' => 'Dear All, Silakan kirimkan output berupa SS NavBar Project kalian. Code tidak perlu. Notes: -Tugas ini dikerjakan secara personal',
-            ],
-            [
-                'author' => 'Dosen 2',
-                'posted_at' => '11:30 AM, 1 Oct 2024',
-                'content' => 'Reminder: Submission deadline is this Friday. Don’t forget!',
-            ],
-            [
-                'author' => 'Dosen 3',
-                'posted_at' => '02:00 PM, 1 Oct 2024',
-                'content' => 'Great job on the last assignment! Keep up the good work!',
-            ],
-            [
-                'author' => 'Dosen 4',
-                'posted_at' => '09:15 AM, 1 Oct 2024',
-                'content' => 'Feel free to reach out if you have any questions about the project.',
-            ],
-        ];
-
-        return view('dashboard', compact('classes', 'announcements', 'forums'));
+        return view('dashboard')->with('classes', $classes)->with('announcements', $announcements);
     }
 }

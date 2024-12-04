@@ -11,6 +11,34 @@ use Illuminate\Support\Facades\Auth;
 
 class CourseController extends Controller
 {
+    private function getClassName(){
+        $class = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'];
+        return $class[rand(0, 25)] . $class[rand(0, 25)] . '-' . str_pad(rand(1, 100), 2, '0', STR_PAD_LEFT);
+    }
+
+    private function toAcronym(string $str){
+        $words = explode(' ', $str);
+
+        $acronym = array_reduce($words, function ($carry, $word) {
+            return $carry . strtoupper($word[0]);
+        }, '');
+
+        return substr($acronym, 0, 3);
+    }
+
+    private function getCourseId(string $courseName){
+        $acronym = $this->toAcronym($courseName);
+        $course = Course::where('CourseID', 'like', $acronym . '%')->latest()->first();
+
+        $latestCourseID = $course ? substr($course->CourseID, 3) : 0;
+        $newCourseID = $acronym . str_pad((intval($latestCourseID) + 1), 3, '0', STR_PAD_LEFT);
+        return $newCourseID;
+    }
+
+    private function getClassId(){
+
+    }
+
     // public function getCoursesByPeriod($period)
     // {
     //     $courses = $this->getCourses();
@@ -25,7 +53,11 @@ class CourseController extends Controller
     }
 
     public function manage(){
-        $courses = Course::all();
+        $userId = Auth::user()->id;
+        $courses = UserCourse::where('UserID', '=', $userId)
+        ->where('RoleID', '=', 1)
+        ->get();
+
         return view('CoursesManagement', ['courses' => $courses]);
     }
 
@@ -50,14 +82,29 @@ class CourseController extends Controller
             'SKS' => 'required|numeric'
         ]);
 
-        $newCourse = Course::create($data);
-        // dd($request);
+        $newCourse = Course::create([
+            'CourseID' => $this->getCourseId($request->CourseName),
+            'CourseName' => $request->CourseName,
+            'CourseDescription' => $request->CourseDescription,
+            'SKS' => $request->SKS
+        ]);
+
+        $newCourseLearning = CourseLearning::create([
+            'CourseID' => $newCourse->CourseID,
+            'ClassName' => $this->getClassName()
+        ]);
+
+        UserCourse::create([
+            'UserID' => Auth::user()->id,
+            'CourseLearningID' => $newCourseLearning->id,
+            'RoleID' => 1
+        ]);
+
         return redirect(route('course.management'));
     }
 
     public function edit($courseID){
-        // dd($courseID);
-        $course = Course::find($courseID);
+        $course = CourseLearning::find($courseID);
         return view('CourseEdit', ['course' => $course]);
     }
 

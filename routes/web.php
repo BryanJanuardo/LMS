@@ -21,8 +21,6 @@ Route::post('/register', [UserController::class, 'create'])->name('register.stor
 
 Route::get('/login', [UserController::class, 'login'])->name('login.index');
 Route::post('/login', [UserController::class, 'auth'])->name('login.store');
-Route::get('/tes', [ScheduleController::class, 'getListCourses'])->name('tes');
-// Route::get('/forum', [ForumController::class, 'index'])->name('forum');
 
 Route::get('/course/management', [CourseController::class, 'manage'])->name('course.management');
 

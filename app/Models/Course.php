@@ -14,6 +14,7 @@ class Course extends Model
     protected $keyType = 'string';
 
     protected $fillable = [
+        'CourseID',
         'CourseName',
         'CourseDescription',
         'SKS'

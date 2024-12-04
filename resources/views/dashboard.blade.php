@@ -14,39 +14,56 @@
 
     @include('components.divider')
 
+    <style>
+        .card-wrapper {
+            margin-bottom: 30px;
+        }
+
+        .class-link {
+            text-decoration: none;
+            display: block;
+            margin-bottom: 20px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .class-link:hover .course-block {
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+        }
+
+        .course-block {
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            background-color: #fff;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .class-name, .class-date, .class-time {
+            margin: 5px 0;
+        }
+    </style>
+
     <div class="top-box">
         <div class="card-wrapper">
-            <h3>Today Classes</h3>
-            @foreach ($classes as $class)
-                <div class="course-block">
-                    <h5>{{ $class['title'] }}</h5>
-                    <p>{{ $class['session'] }}</p>
-                    <p>
-                        <i class="bi bi-clock-fill"></i>
-                        {{ $class['time'] }}
-                    </p>
-                </div>
-            @endforeach
-        </div>
-
-
-        <div class="card-wrapper">
-            <h3>Forum</h3>
-            @foreach ($forums as $forum)
-                <div class="forum-block">
-                    <div class="forum-header">
-                        <i class="bi bi-person-fill" style="margin-right:12px; font-size: 48px"></i>
-                        <div class="forum-details">
-                            <h5>{{ $forum['author'] }}</h5>
-                            <p class="time-posted">Posted at {{ $forum['posted_at'] }}</p>
-                        </div>
+            <h3>Today's Classes</h3>
+            @forelse ($classes as $class)
+                <a href="{{ route('course.detail', ['courseId' => $class->id]) }}" class="class-link">
+                    <div class="course-block">
+                        <h5>{{ $class->CourseName }}</h5>
+                        <p class="class-name">{{ $class->ClassName }}</p>
+                        <p class="class-date">
+                            <i class="bi bi-calendar-week-fill"></i>
+                            {{ \Carbon\Carbon::parse($class->SessionStart)->toFormattedDateString() }}
+                        </p>
+                        <p class="class-time">
+                            <i class="bi bi-clock-fill"></i>
+                            {{ \Carbon\Carbon::parse($class->SessionStart)->format('H:i') }} - {{ \Carbon\Carbon::parse($class->SessionEnd)->format('H:i') }}
+                        </p>
                     </div>
-
-                    <p class="forum-content">{{ $forum['content'] }}</p>
-
-                    @include('components.divider')
-                </div>
-            @endforeach
+                </a>
+            @empty
+                <p class="no-classes">No classes scheduled for today.</p>
+            @endforelse
         </div>
 
         <div class="card-wrapper">
