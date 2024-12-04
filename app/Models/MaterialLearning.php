@@ -10,7 +10,7 @@ class MaterialLearning extends Model
     use HasFactory;
 
     protected $primaryKey = 'MaterialLearningID';
-    protected $fillable = ['MaterialID', 'TaskID', 'SessionLearningID'];
+    protected $fillable = ['MaterialID', 'SessionLearningID'];
 
     public function material()
     {

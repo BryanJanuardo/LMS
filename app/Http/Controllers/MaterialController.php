@@ -7,64 +7,49 @@ use Illuminate\Http\Request;
 
 class MaterialController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
-    {
-        //
+    public function index(){
+        $materials = Material::all();
+
+        return view('material', ['materials' => $materials]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
+    public function store(Request $request){
+        $data = $request->validate([
+            'MaterialName' => 'required',
+            'MaterialType' => 'required',
+            'MaterialPath' => 'required',
+        ]);
+
+        Material::create([
+            'MaterialName' => $data['MaterialName'],
+            'MaterialType' => $data['MaterialType'],
+            'MaterialPath' => $data['MaterialPath'],
+        ]);
+
+        return redirect()->back();
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
+    public function update(Request $request, $MaterialID){
+        $data = $request->validate([
+            'MaterialName' => 'required',
+            'MaterialType' => 'required',
+            'MaterialPath' => 'required',
+        ]);
+
+        $material = Material::findOrFail($MaterialID);
+
+        $material->MaterialName = $data['MaterialName'];
+        $material->MaterialType = $data['MaterialType'];
+        $material->MaterialPath = $data['MaterialPath'];
+        $material->save();
+
+        return redirect()->back();
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Material $material)
-    {
-        //
-    }
+    public function delete($MaterialID){
+        $material = Material::findOrFail($MaterialID);
+        $material->delete();
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Material $material)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Material $material)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Material $material)
-    {
-        //
-    }
-
-    public function getMaterialById($id){
-        $material = Material::where('MaterialID', '=', $id)->first();
-        return $material;
+        return redirect()->back();
     }
 }

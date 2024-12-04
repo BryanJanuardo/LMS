@@ -5,6 +5,7 @@ use App\Http\Controllers\ScheduleController;
 use App\Http\Controllers\ForumController;
 use App\Http\Controllers\CourseController;
 use App\Http\Controllers\CourseDetailController;
+use App\Http\Controllers\MaterialController;
 use App\Http\Controllers\SessionController;
 use App\Http\Controllers\TaskController;
 use App\Http\Controllers\UserController;
@@ -55,8 +56,19 @@ Route::prefix('/course/{CourseID}/session')->group(function () {
     Route::delete('/{SessionID}', [SessionController::class, 'delete'])->name('session.delete');
 });
 
+Route::prefix('/course/{CourseID}/session/{SessionID}/material')->group(function () {
+    Route::get('/create', [MaterialController::class, 'create'])->name('material.create');
+    Route::post('/store', [MaterialController::class, 'store'])->name('material.store');
+    Route::put('/{MaterialID}', [MaterialController::class, 'update'])->name('material.update');
+    Route::delete('/{MaterialID}', [MaterialController::class, 'destroy'])->name('material.destroy');
+
+});
+
 Route::prefix('/course/{CourseID}/session/{SessionID}/task')->group(function () {
-    Route::get('/task', [TaskController::class, 'index'])->name('tasks.index');
+    Route::get('/create', [TaskController::class, 'create'])->name('task.create');
+    Route::post('/store', [TaskController::class, 'store'])->name('task.store');
+    Route::put('/{TaskID}', [TaskController::class, 'update'])->name('task.update');
+    Route::delete('/{TaskID}', [TaskController::class, 'destroy'])->name('task.destroy');
 
 });
 

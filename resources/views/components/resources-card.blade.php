@@ -36,14 +36,14 @@
                                     <td>{{ $materialLearns->material->MaterialPath }}</td>
                                     <td>{{ $materialLearns->material->MaterialType }}</td>
                                     <td>
-                                        <button class="btn btn-secondary btn-sm" data-bs-toggle="modal" data-bs-target="#materialModal" onclick="editMaterial(1, 'Introduction to Topic', 'A brief overview of the topic.')">Edit</button>
-                                        <button class="btn btn-danger btn-sm" onclick="deleteMaterial(1)">Delete</button>
+                                        <button class="btn btn-secondary btn-sm" data-bs-toggle="modal" data-bs-target="#materialModal" id="editMaterialBtn" >Edit</button>
+                                        <button class="btn btn-danger btn-sm" id="deleteMaterialBtn">Delete</button>
                                     </td>
                             @endforeach
                         </tbody>
                     </table>
                     <div class="d-flex justify-content-end mt-3">
-                        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#materialModal" onclick="clearModal()">Add Material</button>
+                        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#materialModal" >Add Material</button>
                     </div>
                 </div>
 
@@ -89,15 +89,17 @@
                             </tr>
                         </thead>
                         <tbody id="taskTableBody">
-                            <tr id="taskRow-1">
-                                <td>1</td>
-                                <td>Complete Assignment</td>
-                                <td>A task to complete the assignment.</td>
-                                <td>
-                                    <button class="btn btn-secondary btn-sm" data-bs-toggle="modal" data-bs-target="#taskModal" onclick="editTask(1, 'Complete Assignment', 'A task to complete the assignment.')">Edit</button>
-                                    <button class="btn btn-danger btn-sm" onclick="deleteTask(1)">Delete</button>
-                                </td>
-                            </tr>
+                            @foreach ($sessionLearning->taskLearnings->where('TaskType', 'Assignment') as $quizLearns)
+                                <tr id="quizRow-{{ $quizLearns->id }}">
+                                    <td>{{ $loop->iteration}}</td>
+                                    <td>{{ $quizLearns->task->TaskName }}</td>
+                                    <td>{{ $quizLearns->task->TaskDesc }}</td>
+                                    <td>{{ $quizLearns->task->TaskDueDate}}</td>
+                                    <td>
+                                        <button class="btn btn-secondary btn-sm" data-bs-toggle="modal" data-bs-target="#materialModal" onclick="editMaterial(1, 'Introduction to Topic', 'A brief overview of the topic.')">Edit</button>
+                                        <button class="btn btn-danger btn-sm" onclick="deleteMaterial($quizLearns->id)">Delete</button>
+                                    </td>
+                            @endforeach
                         </tbody>
                     </table>
 
@@ -124,14 +126,18 @@
                         <input type="text" class="form-control" id="materialName" placeholder="Enter material name">
                     </div>
                     <div class="mb-3">
-                        <label for="materialDescription" class="form-label">Description</label>
-                        <textarea class="form-control" id="materialDescription" rows="3" placeholder="Enter description"></textarea>
+                        <label for="materialType" class="form-label">Material Type</label>
+                        <textarea class="form-control" id="materialDescription" rows="3" placeholder="Enter material type"></textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label for="materialPath" class="form-label">Material Path</label>
+                        <textarea class="form-control" id="materialDescription" rows="3" placeholder="Enter material path"></textarea>
                     </div>
                 </form>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                <button type="button" class="btn btn-primary" onclick="saveMaterial()">Save</button>
+                <button type="button" class="btn btn-primary" id="saveMaterialBtn">Save</button>
             </div>
         </div>
     </div>
@@ -191,65 +197,130 @@
 </div>
 
 <script>
-    function clearModal() {
-        document.getElementById('materialForm').reset();
-    }
-    function saveMaterial() {
-        const name = document.getElementById('materialName').value;
-        const description = document.getElementById('materialDescription').value;
+document.addEventListener('DOMContentLoaded', function () {
+    document.querySelectorAll('#saveMaterialBtn').forEach(button => {
+        button.addEventListener('click', function () {
+            const name = document.getElementById('materialName').value;
+            const type = document.getElementById('materialType').value;
+            const path = document.getElementById('materialPath').value;
 
-        if (name && description) {
-            alert('Material saved: ' + name);
-        }
-    }
-    function editMaterial(id, name, description) {
-        document.getElementById('materialName').value = name;
-        document.getElementById('materialDescription').value = description;
-    }
-    function deleteMaterial(id) {
-        if (confirm('Are you sure you want to delete this material?')) {
-            alert('Material ' + id + ' deleted');
-        }
-    }
-    function clearQuizModal() {
-        document.getElementById('quizForm').reset();
-    }
-    function saveQuiz() {
-        const name = document.getElementById('quizName').value;
-        const description = document.getElementById('quizDescription').value;
+            if (name && type && path) {
+                alert('Material saved: ' + name);
+            }
+            console.log('Test');
+        });
+    });
 
-        if (name && description) {
-            alert('Quiz saved: ' + name);
-        }
-    }
-    function editQuiz(id, name, description) {
-        document.getElementById('quizName').value = name;
-        document.getElementById('quizDescription').value = description;
-    }
-    function deleteQuiz(id) {
-        if (confirm('Are you sure you want to delete this quiz?')) {
-            alert('Quiz ' + id + ' deleted');
-        }
-    }
-    function clearTaskModal() {
-        document.getElementById('taskForm').reset();
-    }
+    document.querySelectorAll('#editMaterialBtn').forEach(button => {
+        button.addEventListener('click', function () {
+            const materialId = this.dataset.materialId;
+            const materialName = this.dataset.materialName;
+            const materialType = this.dataset.materialType;
+            const materialPath = this.dataset.materialPath;
+            const courseId = this.dataset.courseId;
+            const sessionId = this.dataset.sessionId;
 
-    function saveTask() {
-        const name = document.getElementById('taskName').value;
-        const description = document.getElementById('taskDescription').value;
+            document.getElementById('materialName').value = materialName;
+            document.getElementById('materialType').value = materialType;
+            document.getElementById('materialPath').value = materialPath;
 
-        if (name && description) {
-            alert('Task saved: ' + name);
-        }
-    }
-    function editTask(id, name, description) {
-        document.getElementById('taskName').value = name;
-        document.getElementById('taskDescription').value = description;
-    }
-    function deleteTask(id) {
-        if (confirm('Are you sure you want to delete this task?')) {
-            alert('Task ' + id + ' deleted');
-        }
-    }
+            const form = document.getElementById('materialForm');
+            form.action = `/course/${courseId}/session/${sessionId}/materials/${materialId}`;
+            form.method = 'PUT';
+        });
+    });
+
+    document.querySelectorAll('#deleteMaterialBtn').forEach(button => {
+        button.addEventListener('click', function () {
+            const materialId = this.dataset.materialId;
+            if (confirm('Are you sure you want to delete this material?')) {
+                alert('Material ' + materialId + ' deleted');
+            }
+        });
+    });
+
+    // Handle Quiz Button Actions
+    document.querySelectorAll('#saveQuizBtn').forEach(button => {
+        button.addEventListener('click', function () {
+            const name = document.getElementById('quizName').value;
+            const description = document.getElementById('quizDescription').value;
+
+            if (name && description) {
+                alert('Quiz saved: ' + name);
+            }
+        });
+    });
+
+    document.querySelectorAll('#editQuizBtn').forEach(button => {
+        button.addEventListener('click', function () {
+            const quizId = this.dataset.quizId;
+            const quizName = this.dataset.quizName;
+            const quizDescription = this.dataset.quizDescription;
+
+            document.getElementById('quizName').value = quizName;
+            document.getElementById('quizDescription').value = quizDescription;
+        });
+    });
+
+    document.querySelectorAll('#deleteQuizBtn').forEach(button => {
+        button.addEventListener('click', function () {
+            const quizId = this.dataset.quizId;
+            if (confirm('Are you sure you want to delete this quiz?')) {
+                alert('Quiz ' + quizId + ' deleted');
+            }
+        });
+    });
+
+    // Handle Task Button Actions
+    document.querySelectorAll('#saveTaskBtn').forEach(button => {
+        button.addEventListener('click', function () {
+            const name = document.getElementById('taskName').value;
+            const description = document.getElementById('taskDescription').value;
+
+            if (name && description) {
+                alert('Task saved: ' + name);
+            }
+        });
+    });
+
+    document.querySelectorAll('#editTaskBtn').forEach(button => {
+        button.addEventListener('click', function () {
+            const taskId = this.dataset.taskId;
+            const taskName = this.dataset.taskName;
+            const taskDescription = this.dataset.taskDescription;
+
+            document.getElementById('taskName').value = taskName;
+            document.getElementById('taskDescription').value = taskDescription;
+        });
+    });
+
+    document.querySelectorAll('#deleteTaskBtn').forEach(button => {
+        button.addEventListener('click', function () {
+            const taskId = this.dataset.taskId;
+            if (confirm('Are you sure you want to delete this task?')) {
+                alert('Task ' + taskId + ' deleted');
+            }
+        });
+    });
+
+    // Clear Modal Actions
+    document.querySelectorAll('#clearMaterialModalBtn').forEach(button => {
+        button.addEventListener('click', function () {
+            document.getElementById('materialForm').reset();
+            document.getElementById('materialForm').action = '/materials';
+        });
+    });
+
+    document.querySelectorAll('#clearQuizModalBtn').forEach(button => {
+        button.addEventListener('click', function () {
+            document.getElementById('quizForm').reset();
+        });
+    });
+
+    document.querySelectorAll('#clearTaskModalBtn').forEach(button => {
+        button.addEventListener('click', function () {
+            document.getElementById('taskForm').reset();
+        });
+    });
+});
 </script>
