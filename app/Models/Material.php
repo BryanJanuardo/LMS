@@ -10,6 +10,8 @@ class Material extends Model
     use HasFactory;
 
     protected $primaryKey = 'MaterialID';
+    public $incrementing = false;
+    protected $keyType = 'string';
     protected $fillable = ['MaterialName', 'MaterialType', 'MaterialPath'];
 
     public function materialLearning()

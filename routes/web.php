@@ -61,14 +61,17 @@ Route::prefix('/course/{CourseID}/session/{SessionID}/material')->group(function
     Route::post('/store', [MaterialController::class, 'store'])->name('material.store');
     Route::put('/{MaterialID}', [MaterialController::class, 'update'])->name('material.update');
     Route::delete('/{MaterialID}', [MaterialController::class, 'destroy'])->name('material.destroy');
+    Route::get('/edit/{MaterialID}', [MaterialController::class, 'edit'])->name('material.edit');
 
 });
+
 
 Route::prefix('/course/{CourseID}/session/{SessionID}/task')->group(function () {
     Route::get('/create', [TaskController::class, 'create'])->name('task.create');
     Route::post('/store', [TaskController::class, 'store'])->name('task.store');
     Route::put('/{TaskID}', [TaskController::class, 'update'])->name('task.update');
     Route::delete('/{TaskID}', [TaskController::class, 'destroy'])->name('task.destroy');
+    Route::get('/edit/{TaskID}', [TaskController::class, 'edit'])->name('task.edit');
 
 });
 

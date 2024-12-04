@@ -60,4 +60,10 @@ class TaskController extends Controller
         }
         return redirect()->back();
     }
+
+    public function edit($TaskID){
+        $task = Task::findOrFail($TaskID);
+
+        return view('TaskEdit', ['task' => $task]);
+    }
 }

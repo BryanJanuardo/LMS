@@ -17,6 +17,8 @@
             </ul>
 
             <div class="tab-content" id="resourceTabsContent-{{ $key }}">
+
+                <!-- Materials Tab -->
                 <div class="tab-pane fade show active" id="materials-{{ $key }}" role="tabpanel" aria-labelledby="materials-tab-{{ $key }}">
                     <table class="table table-striped mt-3">
                         <thead>
@@ -36,17 +38,23 @@
                                     <td>{{ $materialLearns->material->MaterialPath }}</td>
                                     <td>{{ $materialLearns->material->MaterialType }}</td>
                                     <td>
-                                        <button class="btn btn-secondary btn-sm" data-bs-toggle="modal" data-bs-target="#materialModal" id="editMaterialBtn" >Edit</button>
-                                        <button class="btn btn-danger btn-sm" id="deleteMaterialBtn">Delete</button>
+                                        <a href="{{ route('material.edit', ['CourseID' => $sessionLearning->courseLearning->id, 'SessionID' => $sessionLearning->id, 'MaterialID' => $materialLearns->material->MaterialID]) }}" class="btn btn-secondary btn-sm">Edit</a>
+                                        <form action="{{ route('material.destroy', ['CourseID' => $sessionLearning->courseLearning->id, 'SessionID' => $sessionLearning->id, 'MaterialID' => $materialLearns->material->MaterialID]) }}" method="POST" class="d-inline-block">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                                        </form>
                                     </td>
+                                </tr>
                             @endforeach
                         </tbody>
                     </table>
                     <div class="d-flex justify-content-end mt-3">
-                        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#materialModal" >Add Material</button>
+                        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#materialModal">Add Material</button>
                     </div>
                 </div>
 
+                <!-- Quiz Tab -->
                 <div class="tab-pane fade" id="quiz-{{ $key }}" role="tabpanel" aria-labelledby="quiz-tab-{{ $key }}">
                     <table class="table table-striped mt-3">
                         <thead>
@@ -64,20 +72,25 @@
                                     <td>{{ $loop->iteration}}</td>
                                     <td>{{ $quizLearns->task->TaskName }}</td>
                                     <td>{{ $quizLearns->task->TaskDesc }}</td>
-                                    <td>{{ $quizLearns->task->TaskDueDate}}</td>
+                                    <td>{{ $quizLearns->task->TaskDueDate }}</td>
                                     <td>
-                                        <button class="btn btn-secondary btn-sm" data-bs-toggle="modal" data-bs-target="#materialModal" onclick="editMaterial(1, 'Introduction to Topic', 'A brief overview of the topic.')">Edit</button>
-                                        <button class="btn btn-danger btn-sm" onclick="deleteMaterial(1)">Delete</button>
+                                        <a href="{{ route('task.edit', ['CourseID' => $sessionLearning->courseLearning->id, 'SessionID' => $sessionLearning->id, 'TaskID' => $quizLearns->task->TaskID]) }}" class="btn btn-secondary btn-sm">Edit</a>
+                                        <form action="{{ route('task.destroy', ['CourseID' => $sessionLearning->courseLearning->id, 'SessionID' => $sessionLearning->id, 'TaskID' => $quizLearns->task->TaskID]) }}" method="POST" class="d-inline-block">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                                        </form>
                                     </td>
+                                </tr>
                             @endforeach
                         </tbody>
                     </table>
-
                     <div class="d-flex justify-content-end mt-3">
-                        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#quizModal" onclick="clearQuizModal()">Add Quiz</button>
+                        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#quizModal">Add Quiz</button>
                     </div>
                 </div>
 
+                <!-- Task Tab -->
                 <div class="tab-pane fade" id="task-{{ $key }}" role="tabpanel" aria-labelledby="task-tab-{{ $key }}">
                     <table class="table table-striped mt-3">
                         <thead>
@@ -89,24 +102,28 @@
                             </tr>
                         </thead>
                         <tbody id="taskTableBody">
-                            @foreach ($sessionLearning->taskLearnings->where('TaskType', 'Assignment') as $quizLearns)
-                                <tr id="quizRow-{{ $quizLearns->id }}">
+                            @foreach ($sessionLearning->taskLearnings->where('TaskType', 'Assignment') as $taskLearns)
+                                <tr id="taskRow-{{ $taskLearns->id }}">
                                     <td>{{ $loop->iteration}}</td>
-                                    <td>{{ $quizLearns->task->TaskName }}</td>
-                                    <td>{{ $quizLearns->task->TaskDesc }}</td>
-                                    <td>{{ $quizLearns->task->TaskDueDate}}</td>
+                                    <td>{{ $taskLearns->task->TaskName }}</td>
+                                    <td>{{ $taskLearns->task->TaskDesc }}</td>
                                     <td>
-                                        <button class="btn btn-secondary btn-sm" data-bs-toggle="modal" data-bs-target="#materialModal" onclick="editMaterial(1, 'Introduction to Topic', 'A brief overview of the topic.')">Edit</button>
-                                        <button class="btn btn-danger btn-sm" onclick="deleteMaterial($quizLearns->id)">Delete</button>
+                                        <a href="{{ route('task.edit', ['CourseID' => $sessionLearning->courseLearning->id, 'SessionID' => $sessionLearning->id, 'TaskID' => $taskLearns->task->TaskID]) }}" class="btn btn-secondary btn-sm">Edit</a>
+                                        <form action="{{ route('task.destroy', ['CourseID' => $sessionLearning->courseLearning->id, 'SessionID' => $sessionLearning->id, 'TaskID' => $taskLearns->task->TaskID]) }}" method="POST" class="d-inline-block">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                                        </form>
                                     </td>
+                                </tr>
                             @endforeach
                         </tbody>
                     </table>
-
                     <div class="d-flex justify-content-end mt-3">
-                        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#taskModal" onclick="clearTaskModal()">Add Task</button>
+                        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#taskModal">Add Task</button>
                     </div>
                 </div>
+
             </div>
         </div>
     </div>
@@ -195,132 +212,3 @@
         </div>
     </div>
 </div>
-
-<script>
-document.addEventListener('DOMContentLoaded', function () {
-    document.querySelectorAll('#saveMaterialBtn').forEach(button => {
-        button.addEventListener('click', function () {
-            const name = document.getElementById('materialName').value;
-            const type = document.getElementById('materialType').value;
-            const path = document.getElementById('materialPath').value;
-
-            if (name && type && path) {
-                alert('Material saved: ' + name);
-            }
-            console.log('Test');
-        });
-    });
-
-    document.querySelectorAll('#editMaterialBtn').forEach(button => {
-        button.addEventListener('click', function () {
-            const materialId = this.dataset.materialId;
-            const materialName = this.dataset.materialName;
-            const materialType = this.dataset.materialType;
-            const materialPath = this.dataset.materialPath;
-            const courseId = this.dataset.courseId;
-            const sessionId = this.dataset.sessionId;
-
-            document.getElementById('materialName').value = materialName;
-            document.getElementById('materialType').value = materialType;
-            document.getElementById('materialPath').value = materialPath;
-
-            const form = document.getElementById('materialForm');
-            form.action = `/course/${courseId}/session/${sessionId}/materials/${materialId}`;
-            form.method = 'PUT';
-        });
-    });
-
-    document.querySelectorAll('#deleteMaterialBtn').forEach(button => {
-        button.addEventListener('click', function () {
-            const materialId = this.dataset.materialId;
-            if (confirm('Are you sure you want to delete this material?')) {
-                alert('Material ' + materialId + ' deleted');
-            }
-        });
-    });
-
-    // Handle Quiz Button Actions
-    document.querySelectorAll('#saveQuizBtn').forEach(button => {
-        button.addEventListener('click', function () {
-            const name = document.getElementById('quizName').value;
-            const description = document.getElementById('quizDescription').value;
-
-            if (name && description) {
-                alert('Quiz saved: ' + name);
-            }
-        });
-    });
-
-    document.querySelectorAll('#editQuizBtn').forEach(button => {
-        button.addEventListener('click', function () {
-            const quizId = this.dataset.quizId;
-            const quizName = this.dataset.quizName;
-            const quizDescription = this.dataset.quizDescription;
-
-            document.getElementById('quizName').value = quizName;
-            document.getElementById('quizDescription').value = quizDescription;
-        });
-    });
-
-    document.querySelectorAll('#deleteQuizBtn').forEach(button => {
-        button.addEventListener('click', function () {
-            const quizId = this.dataset.quizId;
-            if (confirm('Are you sure you want to delete this quiz?')) {
-                alert('Quiz ' + quizId + ' deleted');
-            }
-        });
-    });
-
-    // Handle Task Button Actions
-    document.querySelectorAll('#saveTaskBtn').forEach(button => {
-        button.addEventListener('click', function () {
-            const name = document.getElementById('taskName').value;
-            const description = document.getElementById('taskDescription').value;
-
-            if (name && description) {
-                alert('Task saved: ' + name);
-            }
-        });
-    });
-
-    document.querySelectorAll('#editTaskBtn').forEach(button => {
-        button.addEventListener('click', function () {
-            const taskId = this.dataset.taskId;
-            const taskName = this.dataset.taskName;
-            const taskDescription = this.dataset.taskDescription;
-
-            document.getElementById('taskName').value = taskName;
-            document.getElementById('taskDescription').value = taskDescription;
-        });
-    });
-
-    document.querySelectorAll('#deleteTaskBtn').forEach(button => {
-        button.addEventListener('click', function () {
-            const taskId = this.dataset.taskId;
-            if (confirm('Are you sure you want to delete this task?')) {
-                alert('Task ' + taskId + ' deleted');
-            }
-        });
-    });
-
-    // Clear Modal Actions
-    document.querySelectorAll('#clearMaterialModalBtn').forEach(button => {
-        button.addEventListener('click', function () {
-            document.getElementById('materialForm').reset();
-            document.getElementById('materialForm').action = '/materials';
-        });
-    });
-
-    document.querySelectorAll('#clearQuizModalBtn').forEach(button => {
-        button.addEventListener('click', function () {
-            document.getElementById('quizForm').reset();
-        });
-    });
-
-    document.querySelectorAll('#clearTaskModalBtn').forEach(button => {
-        button.addEventListener('click', function () {
-            document.getElementById('taskForm').reset();
-        });
-    });
-});
-</script>

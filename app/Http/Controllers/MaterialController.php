@@ -29,27 +29,35 @@ class MaterialController extends Controller
         return redirect()->back();
     }
 
-    public function update(Request $request, $MaterialID){
+    public function update(Request $request){
         $data = $request->validate([
             'MaterialName' => 'required',
             'MaterialType' => 'required',
             'MaterialPath' => 'required',
         ]);
 
-        $material = Material::findOrFail($MaterialID);
+        $material = Material::where('MaterialID', $request->MaterialID)->firstOrFail();
 
-        $material->MaterialName = $data['MaterialName'];
-        $material->MaterialType = $data['MaterialType'];
-        $material->MaterialPath = $data['MaterialPath'];
-        $material->save();
+        if($material){
+            $material->MaterialName = $data['MaterialName'];
+            $material->MaterialType = $data['MaterialType'];
+            $material->MaterialPath = $data['MaterialPath'];
+            $material->save();
+        }
+
+        return redirect($request->PreviousURL)->with('success', 'Data saved successfully');
+    }
+
+    public function delete($MaterialID){
+        $material = Material::where('MaterialID', $MaterialID)->firstOrFail();
+        $material->delete();
 
         return redirect()->back();
     }
 
-    public function delete($MaterialID){
-        $material = Material::findOrFail($MaterialID);
-        $material->delete();
+    public function edit(Request $request){
+        $material = Material::where('MaterialID', $request->MaterialID)->firstOrFail();
 
-        return redirect()->back();
+        return view('MaterialEdit', ['material' => $material, 'CourseID' => $request->CourseID, 'SessionID' => $request->SessionID, 'MaterialID' => $request->MaterialID]);
     }
 }
