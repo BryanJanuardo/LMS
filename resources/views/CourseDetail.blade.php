@@ -29,10 +29,14 @@
                         </a>
                     </li>
                 @endforeach
+                <li>
+                    <a class="nav-link" id="add-session" href="{{ route('session.create', ['CourseID' => $course->id]) }}">
+                        Add Session
+                    </a>
+                </li>
             </ul>
             @if ($course->sessionLearnings)
                 <div class="tab-content" id="sessionTabsContent">
-                    @include('components.session-content', ['sessionLearning' => $course->sessionLearnings[0]])
                 </div>
             @endif
         </div>
@@ -44,7 +48,14 @@
 
 <script>
 document.addEventListener('DOMContentLoaded', function () {
-    const tabs = document.querySelectorAll('#sessionTabs .nav-link');
+    const tabs = document.querySelectorAll('#sessionTabs .nav-item a');
+    const addSession = document.querySelector('#add-session');
+
+    if (addSession) {
+        addSession.addEventListener('click', function () {
+            document.querySelector('#sessionTabsContent').innerHTML = '';
+        });
+    }
 
     tabs.forEach(tab => {
         tab.addEventListener('click', function (event) {
@@ -55,9 +66,37 @@ document.addEventListener('DOMContentLoaded', function () {
                 .then(response => response.text())
                 .then(html => {
                     document.querySelector('#sessionTabsContent').innerHTML = html;
+                    initializeReplyButtons();
                 })
                 .catch(error => console.error('Error fetching session details:', error));
         });
     });
+
+    function initializeReplyButtons() {
+        const toggleButtons = document.querySelectorAll('#replyBtn');
+
+        toggleButtons.forEach(button => {
+            button.addEventListener('click', function () {
+                const replyForm = this.closest('li').querySelector('.reply-form');
+                replyForm.classList.toggle('hidden');
+            });
+        });
+
+        const cancelButtons = document.querySelectorAll('.cancel-reply-btn');
+
+        cancelButtons.forEach(button => {
+            button.addEventListener('click', function () {
+                const replyForm = this.closest('li').querySelector('.reply-form');
+                replyForm.classList.add('hidden');
+                replyForm.querySelector('textarea').value = '';
+            });
+        });
+    }
+    initializeReplyButtons();
+
+    const firstTab = document.querySelector('#sessionTabs .nav-link.active');
+    if (firstTab) {
+        firstTab.click();
+    }
 });
 </script>
