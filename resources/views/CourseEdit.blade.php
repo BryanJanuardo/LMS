@@ -11,7 +11,7 @@
         <h1 class="mb-4">Edit Course</h1>
 
         <!-- Edit Course Form -->
-        <form method="post" action="{{ route('course.update', ['courseId' => $course->courseLearning->id]) }}">
+        <form method="post" action="{{ route('course.update', ['CourseID' => $course->courseLearning->id]) }}">
             @csrf
             @method('PUT')
 

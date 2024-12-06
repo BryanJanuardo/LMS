@@ -23,16 +23,17 @@ Route::get('/login', [UserController::class, 'login'])->name('login.index');
 Route::post('/login', [UserController::class, 'auth'])->name('login.store');
 
 Route::get('/course/management', [CourseController::class, 'manage'])->name('course.management');
-
+Route::get('/course/session', [SessionController::class, 'course'])->name('session.course');
+Route::get('/course/{CourseID}/session/management', [SessionController::class, 'manage'])->name('session.management');
 
 Route::prefix('/course')->group(function () {
     Route::get('/', [CourseController::class, 'index'])->name('course.index');
     Route::get('/create', [CourseController::class, 'create'])->name('course.create');
     Route::post('/store', [CourseController::class, 'store'])->name('course.store');
-    Route::get('/{courseId}', [CourseController::class, 'detail'])->name('course.detail');
-    Route::get('/{courseId}/edit', [CourseController::class, 'edit'])->name('course.edit');
-    Route::put('/{courseId}/update', [CourseController::class, 'update'])->name('course.update');
-    Route::delete('/{courseId}/destroy', [CourseController::class, 'destroy'])->name('course.destroy');
+    Route::get('/{CourseID}', [CourseController::class, 'detail'])->name('course.detail');
+    Route::get('/{CourseID}/edit', [CourseController::class, 'edit'])->name('course.edit');
+    Route::put('/{CourseID}/update', [CourseController::class, 'update'])->name('course.update');
+    Route::delete('/{CourseID}/destroy', [CourseController::class, 'destroy'])->name('course.destroy');
 });
 
 Route::prefix('/course/{CourseID}/session/{SessionID}/forum')->group(function () {

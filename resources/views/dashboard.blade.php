@@ -47,7 +47,7 @@
         <div class="card-wrapper">
             <h3>Today's Classes</h3>
             @forelse ($classes as $class)
-                <a href="{{ route('course.detail', ['courseId' => $class->id]) }}" class="class-link">
+                <a href="{{ route('course.detail', ['CourseID' => $class->id]) }}" class="class-link">
                     <div class="course-block">
                         <h5>{{ $class->CourseName }}</h5>
                         <p class="class-name">{{ $class->ClassName }}</p>

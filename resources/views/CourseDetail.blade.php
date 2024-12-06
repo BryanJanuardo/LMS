@@ -30,7 +30,7 @@
                     </li>
                 @endforeach
                 <li>
-                    <a class="nav-link" id="add-session" href="{{ route('session.create', ['CourseID' => $course->id]) }}">
+                    <a class="nav-link" id="add-session" href="{{ route('session.management', ['CourseID' => $course->id]) }}">
                         Add Session
                     </a>
                 </li>
@@ -50,12 +50,6 @@
 document.addEventListener('DOMContentLoaded', function () {
     const tabs = document.querySelectorAll('#sessionTabs .nav-item a');
     const addSession = document.querySelector('#add-session');
-
-    if (addSession) {
-        addSession.addEventListener('click', function () {
-            document.querySelector('#sessionTabsContent').innerHTML = '';
-        });
-    }
 
     tabs.forEach(tab => {
         tab.addEventListener('click', function (event) {

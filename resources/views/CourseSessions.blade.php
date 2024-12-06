@@ -29,7 +29,7 @@
                             </div>
                         </div>
 
-                        <a href="{{ route('course.detail', ['CourseID' => $course->courseLearning->id]) }}" class="btn btn-primary">View Details</a>
+                        <a href="{{ route('session.management', ['CourseID' => $course->courseLearning->id]) }}" class="btn btn-primary">View Details</a>
                     </div>
                 </div>
             </div>

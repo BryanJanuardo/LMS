@@ -77,7 +77,7 @@
                         eventDurationEditable: false,
                         height: '750px',
                     eventClick: function ({ event }) {
-                        window.location.href = `{{ route('course.detail', ['courseId' => '__ID__']) }}`.replace('__ID__', event.id);
+                        window.location.href = `{{ route('course.detail', ['CourseID' => '__ID__']) }}`.replace('__ID__', event.id);
                         console.log(event.id);
                     },
                 });

@@ -17,14 +17,15 @@
             <span class="nav-text">Courses</span>
         </a>
     </li>
-    <!-- Management Dropdown -->
+
     <li class="nav-item dropdown">
         <a href="#" class="nav-link dropdown-toggle {{ request()->is('course.management') ? 'active' : '' }}" id="managementDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
             <i class="bi bi-archive-fill"></i>
             <span class="nav-text">Management</span>
         </a>
         <ul class="dropdown-menu" aria-labelledby="managementDropdown">
-            <li><a class="dropdown-item" href="{{ route('course.management') }}">Course Management</a></li>
+            <li><a class="dropdown-item py-2" href="{{ route('course.management') }}">Course Management</a></li>
+            <li><a class="dropdown-item py-2" href="{{ route('session.course') }}">Session Management</a></li>
         </ul>
     </li>
 </ul>
