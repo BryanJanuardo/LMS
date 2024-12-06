@@ -15,13 +15,16 @@ class DatabaseSeeder extends Seeder
             UserSeeder::class,
             RoleSeeder::class,
             Course::class,
-            TasksTableSeeder::class,
+            Tasks::class,
             Sessionses::class,
             CourseLearnings::class,
             SessionLearnings::class,
             ForumPosts::class,
             ForumReplies::class,
-            UserCourseSeeder::class
+            UserCourseSeeder::class,
+            Materials::class,
+            MaterialLearnings::class,
+            TaskLearnings::class
         ]);
 
     }

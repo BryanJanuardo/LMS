@@ -34,4 +34,14 @@ class SessionLearning extends Model
     {
         return $this->hasMany(ForumPost::class, 'SessionLearningID');
     }
+
+    public function materialLearnings()
+    {
+        return $this->hasMany(MaterialLearning::class, 'SessionLearningID');
+    }
+
+    public function taskLearnings()
+    {
+        return $this->hasMany(TaskLearning::class, 'SessionLearningID');
+    }
 }

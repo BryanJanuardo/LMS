@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\UserCourse;
 use Carbon\Carbon;
+use App\Models\SessionLearning;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
