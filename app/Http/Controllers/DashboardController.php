@@ -1,7 +1,8 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use Illuminate\Support\Facades\Auth;
+use App\Models\CourseLearning;
 use App\Models\UserCourse;
 use Carbon\Carbon;
 use App\Models\SessionLearning;
@@ -41,6 +42,27 @@ class DashboardController extends Controller
             ],
         ];
 
-        return view('dashboard')->with('classes', $classes)->with('announcements', $announcements);
+        return view('dashboard', compact('classes', 'announcements', 'forums'));
     }
+
+    // app/Http/Controllers/DashboardController.php
+    public function search(Request $request)
+    {
+        $searchTerm = $request->input('search');  // Get the search term from the form
+
+        // Fetch courses with the search term
+        $courses = CourseLearning::query()
+            ->leftJoin('user_courses', 'course_learnings.id', '=', 'user_courses.CourseLearningID')
+            ->where(function ($query) {
+                $query->whereNull('user_courses.UserID')
+                    ->orWhere('user_courses.UserID', '!=', Auth::id());
+            })
+            ->where('course_learnings.ClassName', 'like', '%' . $searchTerm . '%') // Filter by search term
+            ->select('course_learnings.*')
+            ->distinct()
+            ->get();
+
+        return view('dashboard', compact('courses'));
+    }
+
 }

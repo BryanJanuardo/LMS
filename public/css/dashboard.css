@@ -1,83 +1,12 @@
-p{
-    margin-bottom: 0px;
-}
 .content-area{
     background-color: #FBFCFD;
 }
-
-.top-box {
-    display: flex;
-    justify-content: space-between;
-    gap: 10px;
+.clickable-card {
+    cursor: pointer;
+    transition: transform 0.2s ease;
 }
 
-.card-wrapper{
-    background-color: white;
-    padding: 24px;
-    border: #E3E8EF solid 1px;
-    border-radius: 6px;
-    max-height: 700px;
-    margin-bottom: 24px;
-    padding-right: 16px;
-}
-
-.course-block{
-    padding: 16px;
-    border-left: 8px solid #007AFF;
-    border-radius: 4px;
-    margin-bottom: 24px;
-}
-.course-block:last-child {
-    margin-bottom: 0;
-}
-
-.course-block h5{
-    width: 420px;
-}
-
-.course-block p{
-    padding-bottom: 4px;
-    font-size: 16px;
-    color: #121926;
-}
-
-.card-wrapper h3{
-    padding-bottom: 12px;
-    font-weight: 600;
-    color: #121926;
-}
-
-.forum-content{
-    width: 550px;
-}
-
-.announcement-content{
-    width: 450px;
-}
-
-.forum-header{
-    display: flex;
-    align-items: center;
-    margin-bottom: 4px;
-}
-
-.forum-photo{
-    margin-right: 16px;
-    object-fit: cover;
-}
-
-
-.announcement-block{
-    background-color: #d1e0ff9a;
-    padding: 16px;
-    border-radius: 4px;
-    margin-bottom: 24px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-
-}
-
-.forum-block:last-child .divider {
-    display: none; 
+.clickable-card:hover {
+    transform: scale(1.02);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
 }
