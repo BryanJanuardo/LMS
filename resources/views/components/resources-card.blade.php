@@ -39,7 +39,7 @@
                                     <td>{{ $materialLearns->material->MaterialType }}</td>
                                     <td>
                                         <a href="{{ route('material.edit', ['CourseID' => $sessionLearning->courseLearning->id, 'SessionID' => $sessionLearning->id, 'MaterialID' => $materialLearns->material->MaterialID]) }}" class="btn btn-secondary btn-sm">Edit</a>
-                                        <form action="{{ route('material.destroy', ['CourseID' => $sessionLearning->courseLearning->id, 'SessionID' => $sessionLearning->id, 'MaterialID' => $materialLearns->material->MaterialID]) }}" method="POST" class="d-inline-block">
+                                        <form action="{{ route('material.destroy', ['CourseID' => $sessionLearning->courseLearning->id, 'SessionID' => $sessionLearning->id, 'MaterialID' => $materialLearns->material->MaterialID, 'PreviousURL' => URL::previous()]) }}" method="POST" class="d-inline-block">
                                             @csrf
                                             @method('DELETE')
                                             <button type="submit" class="btn btn-danger btn-sm">Delete</button>
@@ -50,7 +50,7 @@
                         </tbody>
                     </table>
                     <div class="d-flex justify-content-end mt-3">
-                        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#materialModal">Add Material</button>
+                        <a href="{{ route('material.add', ['CourseID' => $sessionLearning->courseLearning->id, 'SessionID' => $sessionLearning->id]) }}" class="btn btn-primary"  data-bs-target="#materialModal">Add Material</a>
                     </div>
                 </div>
 
@@ -75,7 +75,7 @@
                                     <td>{{ $quizLearns->task->TaskDueDate }}</td>
                                     <td>
                                         <a href="{{ route('task.edit', ['CourseID' => $sessionLearning->courseLearning->id, 'SessionID' => $sessionLearning->id, 'TaskID' => $quizLearns->task->TaskID]) }}" class="btn btn-secondary btn-sm">Edit</a>
-                                        <form action="{{ route('task.destroy', ['CourseID' => $sessionLearning->courseLearning->id, 'SessionID' => $sessionLearning->id, 'TaskID' => $quizLearns->task->TaskID]) }}" method="POST" class="d-inline-block">
+                                        <form action="{{ route('task.destroy', ['CourseID' => $sessionLearning->courseLearning->id, 'SessionID' => $sessionLearning->id, 'TaskID' => $quizLearns->task->TaskID, 'PreviousURL' => URL::previous()]) }}" method="POST" class="d-inline-block">
                                             @csrf
                                             @method('DELETE')
                                             <button type="submit" class="btn btn-danger btn-sm">Delete</button>
@@ -86,7 +86,7 @@
                         </tbody>
                     </table>
                     <div class="d-flex justify-content-end mt-3">
-                        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#quizModal">Add Quiz</button>
+                        <a class="btn btn-primary" href="{{ route('task.add', ['CourseID' => $sessionLearning->courseLearning->id, 'SessionID' => $sessionLearning->id, 'TaskType' => 'Quiz']) }}" >Add Quiz</a>
                     </div>
                 </div>
 
@@ -98,6 +98,7 @@
                                 <th>#</th>
                                 <th>Task Name</th>
                                 <th>Description</th>
+                                <th>Due Date</th>
                                 <th>Actions</th>
                             </tr>
                         </thead>
@@ -107,9 +108,10 @@
                                     <td>{{ $loop->iteration}}</td>
                                     <td>{{ $taskLearns->task->TaskName }}</td>
                                     <td>{{ $taskLearns->task->TaskDesc }}</td>
+                                    <td>{{ $taskLearns->task->TaskDueDate }}</td>
                                     <td>
                                         <a href="{{ route('task.edit', ['CourseID' => $sessionLearning->courseLearning->id, 'SessionID' => $sessionLearning->id, 'TaskID' => $taskLearns->task->TaskID]) }}" class="btn btn-secondary btn-sm">Edit</a>
-                                        <form action="{{ route('task.destroy', ['CourseID' => $sessionLearning->courseLearning->id, 'SessionID' => $sessionLearning->id, 'TaskID' => $taskLearns->task->TaskID]) }}" method="POST" class="d-inline-block">
+                                        <form action="{{ route('task.destroy', ['CourseID' => $sessionLearning->courseLearning->id, 'SessionID' => $sessionLearning->id, 'TaskID' => $taskLearns->task->TaskID, 'PreviousURL' => URL::previous()]) }}" method="POST" class="d-inline-block">
                                             @csrf
                                             @method('DELETE')
                                             <button type="submit" class="btn btn-danger btn-sm">Delete</button>
@@ -120,7 +122,7 @@
                         </tbody>
                     </table>
                     <div class="d-flex justify-content-end mt-3">
-                        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#taskModal">Add Task</button>
+                        <a class="btn btn-primary" href="{{ route('task.add', ['CourseID' => $sessionLearning->courseLearning->id, 'SessionID' => $sessionLearning->id, 'TaskType' => 'Assignment']) }}">Add Task</a>
                     </div>
                 </div>
 
@@ -129,7 +131,7 @@
     </div>
 </div>
 
-<div class="modal fade" id="materialModal" tabindex="-1" aria-labelledby="materialModalLabel" aria-hidden="true">
+{{-- <div class="modal fade" id="materialModal" tabindex="-1" aria-labelledby="materialModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -211,4 +213,4 @@
             </div>
         </div>
     </div>
-</div>
+</div> --}}

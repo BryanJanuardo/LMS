@@ -59,6 +59,7 @@ Route::prefix('/course/{CourseID}/session')->group(function () {
 Route::prefix('/course/{CourseID}/session/{SessionID}/material')->group(function () {
     Route::get('/create', [MaterialController::class, 'create'])->name('material.create');
     Route::post('/store', [MaterialController::class, 'store'])->name('material.store');
+    Route::get('/add', [MaterialController::class, 'add'])->name('material.add');
     Route::put('/{MaterialID}', [MaterialController::class, 'update'])->name('material.update');
     Route::delete('/{MaterialID}', [MaterialController::class, 'destroy'])->name('material.destroy');
     Route::get('/edit/{MaterialID}', [MaterialController::class, 'edit'])->name('material.edit');
@@ -69,6 +70,7 @@ Route::prefix('/course/{CourseID}/session/{SessionID}/material')->group(function
 Route::prefix('/course/{CourseID}/session/{SessionID}/task')->group(function () {
     Route::get('/create', [TaskController::class, 'create'])->name('task.create');
     Route::post('/store', [TaskController::class, 'store'])->name('task.store');
+    Route::get('/add', [TaskController::class, 'add'])->name('task.add');
     Route::put('/{TaskID}', [TaskController::class, 'update'])->name('task.update');
     Route::delete('/{TaskID}', [TaskController::class, 'destroy'])->name('task.destroy');
     Route::get('/edit/{TaskID}', [TaskController::class, 'edit'])->name('task.edit');

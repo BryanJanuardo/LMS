@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Controllers;
 use Illuminate\Http\Request;
 Use App\Models\Task;
+use App\Models\TaskLearning;
 
 class TaskController extends Controller
 {
@@ -18,52 +19,58 @@ class TaskController extends Controller
         $data = $request->validate([
             'TaskName' => 'required',
             'TaskDesc' => 'required',
-            'TaskType' => 'required',
             'TaskDueDate' => 'required',
         ]);
 
-        Task::create([
+        $task = Task::create([
             'TaskName' => $data['TaskName'],
             'TaskDesc' => $data['TaskDesc'],
-            'TaskType' => $data['TaskType'],
             'TaskDueDate' => $data['TaskDueDate'],
         ]);
 
-        return redirect()->back();
+        TaskLearning::create([
+            'SessionLearningID' => $request->SessionID,
+            'TaskID' => $task->TaskID,
+            'TaskType' => $request->TaskType
+        ]);
+
+        return redirect($request->PreviousURL)->with('success', 'Task added successfully');
     }
 
-    public function update(Request $request, $TaskID){
+    public function update(Request $request){
         $data = $request->validate([
             'TaskName' => 'required',
             'TaskDesc' => 'required',
-            'TaskType' => 'required',
             'TaskDueDate' => 'required',
         ]);
 
-        $task = Task::find($TaskID)->firstOrFail();
+        $task = Task::where('TaskID', $request->TaskID)->firstOrFail();
 
         if($task){
             $task->TaskName = $data['TaskName'];
             $task->TaskDesc = $data['TaskDesc'];
-            $task->TaskType = $data['TaskType'];
             $task->TaskDueDate = $data['TaskDueDate'];
             $task->save();
         }
 
-        return redirect()->back();
+        return redirect($request->PreviousURL)->with('success', 'Task saved successfully');
     }
 
-    public function delete($TaskID){
-        $task = Task::find($TaskID)->firstOrFail();
+    public function destroy(Request $request){
+        $task = Task::where('TaskID', $request->TaskID)->firstOrFail();
         if($task){
             $task->delete();
         }
-        return redirect()->back();
+        return redirect($request->PreviousURL)->with('success', 'Task deleted successfully');
     }
 
-    public function edit($TaskID){
-        $task = Task::findOrFail($TaskID);
+    public function edit(Request $request, $TaskID){
+        $task = Task::where('TaskID', $request->TaskID)->firstOrFail();
 
-        return view('TaskEdit', ['task' => $task]);
+        return view('TaskEdit', ['task' => $task, 'CourseID' => $request->CourseID, 'SessionID' => $request->SessionID]);
+    }
+
+    public function add(Request $request){
+        return view('TaskAdd', ['CourseID' => $request->CourseID, 'SessionID' => $request->SessionID, 'TaskType' => $request->TaskType]);
     }
 }

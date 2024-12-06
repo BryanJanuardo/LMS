@@ -12,7 +12,7 @@ class Material extends Model
     protected $primaryKey = 'MaterialID';
     public $incrementing = false;
     protected $keyType = 'string';
-    protected $fillable = ['MaterialName', 'MaterialType', 'MaterialPath'];
+    protected $fillable = ['MaterialID', 'MaterialName', 'MaterialType', 'MaterialPath'];
 
     public function materialLearning()
     {
