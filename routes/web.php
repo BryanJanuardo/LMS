@@ -58,4 +58,6 @@ Route::prefix('/course/{CourseID}/session/{SessionID}/task')->group(function () 
 
 });
 
-// Route::get('/courses/{period}', [CourseController::class, 'getCoursesByPeriod'])->name('courses.period');
+Route::get('/dashboard/search', [DashboardController::class, 'search'])->name('dashboard.search');
+Route::post('/join-course', [CourseController::class, 'join'])->name('join.course');
+

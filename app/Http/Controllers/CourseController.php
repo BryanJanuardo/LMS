@@ -77,5 +77,7 @@ class CourseController extends Controller
         $course->delete();
         return redirect(route('course.management'));
     }
+
+    
 }
 
