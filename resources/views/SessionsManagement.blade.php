@@ -17,6 +17,7 @@
             <table class="table table-bordered table-striped">
                 <thead>
                     <tr>
+                        <th>No</th>
                         <th>Session Name</th>
                         <th>Session Description</th>
                         <th>Session Start</th>
@@ -28,6 +29,7 @@
                 <tbody>
                     @foreach($sessionLearnings as $sessionLearning)
                         <tr>
+                            <td>{{ $loop->iteration }}</td>
                             <td>{{ $sessionLearning->session->SessionName }}</td>
                             <td>{{ $sessionLearning->session->SessionDescription }}</td>
                             <td>{{ $sessionLearning->session->SessionStart }}</td>
