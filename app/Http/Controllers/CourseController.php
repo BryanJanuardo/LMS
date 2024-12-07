@@ -35,21 +35,16 @@ class CourseController extends Controller
         return $newCourseID;
     }
 
-    private function getClassId(){
-
-    }
-
-    // public function getCoursesByPeriod($period)
-    // {
-    //     $courses = $this->getCourses();
-    //     if (array_key_exists($period, $courses)) {
-    //         return response()->json($courses[$period]);
-    //     }
-    //     return response()->json([]);
-    // }
     public function index(){
-        $courses = UserCourse::where('UserID', '=', Auth::user()->id)->get();
-        return view('Courses', ['courses' => $courses]);
+        $myCourses = UserCourse::where('UserID', '=', Auth::user()->id)
+        ->where('RoleID', '=', 1)
+        ->get();
+
+        $enrolledCourses = UserCourse::where('UserID', '=', Auth::user()->id)
+        ->where('RoleID', '=', 2)
+        ->get();
+
+        return view('Courses', ['myCourses' => $myCourses, 'enrolledCourses' => $enrolledCourses]);
     }
 
     public function manage(){
@@ -61,14 +56,37 @@ class CourseController extends Controller
         return view('CoursesManagement', ['courses' => $courses]);
     }
 
+    public function enroll(Request $request){
+        $request->validate([
+            'CourseLearningID' => 'required',
+        ]);
+
+        $validationCourse = UserCourse::where('CourseLearningID', $request->CourseLearningID)
+        ->where('UserID', Auth::user()->id)
+        ->get();
+
+        dd($validationCourse);
+
+        if(!$validationCourse){
+            dd("dwada");
+            UserCourse::create([
+                'UserID' => Auth::user()->id,
+                'CourseLearningID' => $request->CourseLearningID,
+                'RoleID' => 2
+            ]);
+        }
+
+        return redirect()->route('dashboard');
+    }
+
     public function detail($courseID){
         $usercourse = UserCourse::where('CourseLearningID', $courseID)
         ->where('UserID', Auth::user()->id)
         ->first();
 
-
+        $userRole = $usercourse->RoleID;
         $course = $usercourse->courseLearning;
-        return view('CourseDetail', ['course' => $course]);
+        return view('CourseDetail', ['course' => $course, 'userRole' => $userRole]);
     }
 
     public function create(){
@@ -125,6 +143,6 @@ class CourseController extends Controller
         return redirect(route('course.management'));
     }
 
-    
+
 }
 

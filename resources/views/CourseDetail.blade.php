@@ -29,11 +29,13 @@
                         </a>
                     </li>
                 @endforeach
-                <li>
-                    <a class="nav-link" id="add-session" href="{{ route('session.management', ['CourseID' => $course->id]) }}">
-                        Add Session
-                    </a>
-                </li>
+                @if ($userRole == 1)
+                    <li>
+                        <a class="nav-link" id="add-session" href="{{ route('session.management', ['CourseID' => $course->id]) }}">
+                            Add Session
+                        </a>
+                    </li>
+                @endif
             </ul>
             @if ($course->sessionLearnings)
                 <div class="tab-content" id="sessionTabsContent">

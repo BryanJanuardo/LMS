@@ -38,5 +38,6 @@
     </div>
 
     <script src="/js/dashboard.js"></script>
+    @stack('scripts')
 </body>
 </html>

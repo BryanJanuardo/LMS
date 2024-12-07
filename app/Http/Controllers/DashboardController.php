@@ -7,13 +7,14 @@ use App\Models\UserCourse;
 use Carbon\Carbon;
 use App\Models\SessionLearning;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
+use Illuminate\Pagination\Paginator;
+use Illuminate\Support\Facades\DB;
 
 class DashboardController extends Controller
 {
     public function index()
     {
-        $classes = UserCourse::where('UserID', Auth::user()->id)
+        $todayCourses = UserCourse::where('UserID', Auth::user()->id)
         ->join('course_learnings', 'user_courses.CourseLearningID', '=', 'course_learnings.id')
         ->join('courses', 'course_learnings.CourseID', '=', 'courses.CourseID')
         ->join('session_learnings', 'course_learnings.id', '=', 'session_learnings.CourseLearningID')
@@ -21,7 +22,30 @@ class DashboardController extends Controller
         ->where('sessionses.SessionStart', '>=', Carbon::now())
         ->where('sessionses.SessionEnd', '<', Carbon::tomorrow())
         ->select('course_learnings.id', 'courses.CourseName', 'course_learnings.ClassName', 'sessionses.SessionStart', 'sessionses.SessionEnd')
-        ->get();
+        ->paginate(8);
+
+        $enrolledCourses = UserCourse::where('UserID', Auth::user()->id);
+
+        $availableCourses = UserCourse::join('course_learnings', 'user_courses.CourseLearningID', '=', 'course_learnings.id')
+        ->join('courses', 'course_learnings.CourseID', '=', 'courses.CourseID')
+        ->join('users', 'user_courses.UserID', '=', 'users.id')
+        ->where('user_courses.RoleID', 1)
+        ->whereNotIn('user_courses.id', $enrolledCourses->pluck('id'))
+        ->select(
+            'user_courses.id as UserCourseID',
+            'course_learnings.id as CourseLearningID',
+            'courses.CourseName',
+            'courses.CourseDescription',
+            'course_learnings.ClassName',
+            'course_learnings.created_at',
+            'users.UserName',
+            'user_courses.RoleID',
+            DB::raw('(SELECT COUNT(*) FROM user_courses WHERE user_courses.CourseLearningID = course_learnings.id) as TotalCountUserEnrolled'),
+            DB::raw('(SELECT COUNT(*) FROM session_learnings WHERE session_learnings.CourseLearningID = course_learnings.id) as TotalCountSessions')
+        )
+        ->paginate(8);
+
+        // dd($availableCourses->toArray(), $enrolledCourses->get()->toArray());
 
         $announcements = [
             [
@@ -42,27 +66,62 @@ class DashboardController extends Controller
             ],
         ];
 
-        return view('dashboard', compact('classes', 'announcements', 'forums'));
+        return view('Dashboard')->with(['todayCourses' => $todayCourses, 'availableCourses' => $availableCourses, 'announcements' => $announcements]);
     }
 
-    // app/Http/Controllers/DashboardController.php
     public function search(Request $request)
     {
-        $searchTerm = $request->input('search');  // Get the search term from the form
+        $searchTerm = $request->input('search');
 
-        // Fetch courses with the search term
-        $courses = CourseLearning::query()
-            ->leftJoin('user_courses', 'course_learnings.id', '=', 'user_courses.CourseLearningID')
-            ->where(function ($query) {
-                $query->whereNull('user_courses.UserID')
-                    ->orWhere('user_courses.UserID', '!=', Auth::id());
-            })
-            ->where('course_learnings.ClassName', 'like', '%' . $searchTerm . '%') // Filter by search term
-            ->select('course_learnings.*')
-            ->distinct()
-            ->get();
+        $todayCourses = UserCourse::where('UserID', Auth::user()->id)
+        ->join('course_learnings', 'user_courses.CourseLearningID', '=', 'course_learnings.id')
+        ->join('courses', 'course_learnings.CourseID', '=', 'courses.CourseID')
+        ->join('session_learnings', 'course_learnings.id', '=', 'session_learnings.CourseLearningID')
+        ->join('sessionses', 'session_learnings.SessionID', '=', 'sessionses.SessionID')
+        ->where('sessionses.SessionStart', '>=', Carbon::now())
+        ->where('sessionses.SessionEnd', '<', Carbon::tomorrow())
+        ->select('course_learnings.id', 'courses.CourseName', 'course_learnings.ClassName', 'sessionses.SessionStart', 'sessionses.SessionEnd')
+        ->paginate(8);
 
-        return view('dashboard', compact('courses'));
+        $availableCourses = UserCourse::join('course_learnings', 'user_courses.CourseLearningID', '=', 'course_learnings.id')
+        ->join('courses', 'course_learnings.CourseID', '=', 'courses.CourseID')
+        ->join('users', 'user_courses.UserID', '=', 'users.id')
+        ->whereNot('user_courses.UserID',  Auth::user()->id)
+        ->where('user_courses.RoleID', 1)
+        ->select(
+            'course_learnings.id as courselearningID',
+            'courses.CourseName',
+            'courses.CourseDescription',
+            'course_learnings.ClassName',
+            'course_learnings.created_at',
+            'users.UserName',
+            'user_courses.RoleID',
+            DB::raw('(SELECT COUNT(*) FROM user_courses WHERE user_courses.CourseLearningID = course_learnings.id) as TotalCountUserEnrolled'),
+            DB::raw('(SELECT COUNT(*) FROM session_learnings WHERE session_learnings.CourseLearningID = course_learnings.id) as TotalCountSessions')
+        )
+        ->where('courses.CourseName', 'like', '%' . $searchTerm . '%')
+        ->paginate(8);
+
+        $announcements = [
+            [
+                'title' => 'Open Enrollment SLC 2024',
+                'content' => 'Informasi dikit tentang announcementnya',
+            ],
+            [
+                'title' => 'Important Update on Course Materials',
+                'content' => 'Please check the updated syllabus on the portal.',
+            ],
+            [
+                'title' => 'Exam Schedule Released',
+                'content' => 'The exam schedule has been posted on the notice board.',
+            ],
+            [
+                'title' => 'Guest Lecture Next Week',
+                'content' => 'Join us for a guest lecture on Cloud Computing.',
+            ],
+        ];
+
+        return view('Dashboard')->with(['todayCourses' => $todayCourses, 'availableCourses' => $availableCourses, 'announcements' => $announcements]);
     }
 
 }
