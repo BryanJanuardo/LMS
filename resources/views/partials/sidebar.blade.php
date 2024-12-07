@@ -28,4 +28,11 @@
             <li><a class="dropdown-item py-2" href="{{ route('session.course') }}">Session Management</a></li>
         </ul>
     </li>
+
+    <li class="nav-item">
+        <a href="{{ route('logout') }}" class="nav-link">
+            <i class="bi bi-mortarboard-fill"></i>
+            <span class="nav-text">Logout</span>
+        </a>
+    </li>
 </ul>

@@ -9,74 +9,100 @@ use App\Http\Controllers\MaterialController;
 use App\Http\Controllers\SessionController;
 use App\Http\Controllers\TaskController;
 use App\Http\Controllers\UserController;
+use App\Http\Middleware\AuthenticationMiddleware;
+use App\Http\Middleware\GuestMiddleware;
+use App\Http\Middleware\ValidateCourseIDMiddleware;
+use App\Http\Middleware\ValidateForumIDMiddleware;
+use App\Http\Middleware\ValidateMaterialIDMiddleware;
+use App\Http\Middleware\ValidateSessionIDMiddleware;
+use App\Http\Middleware\ValidateTaskIDMiddleware;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
+Route::middleware(GuestMiddleware::class)->group(function () {
+    Route::get('/register', [UserController::class, 'register'])->name('register.index');
+    Route::post('/register', [UserController::class, 'create'])->name('register.store');
+    Route::get('/login', [UserController::class, 'login'])->name('login.index');
+    Route::post('/login', [UserController::class, 'auth'])->name('login.store');
+});
 
-Route::get('/schedule', [ScheduleController::class, 'index'])->name('schedule.index');
-Route::get('/schedule/getListCourses', [ScheduleController::class, 'getListCourses'])->name('schedule.getListCourses');
-Route::get('/task', [TaskController::class, 'index'])->name('task.index');
+Route::middleware(AuthenticationMiddleware::class)->group(function () {
+    Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
+    Route::get('/search', [DashboardController::class, 'search'])->name('dashboard.search');
+    Route::get('/schedule', [ScheduleController::class, 'index'])->name('schedule.index');
+    Route::get('/schedule/getListCourses', [ScheduleController::class, 'getListCourses'])->name('schedule.getListCourses');
+    Route::get('/task', [TaskController::class, 'index'])->name('task.index');
+    Route::get('/logout', [UserController::class, 'logout'])->name('logout');
 
-Route::get('/register', [UserController::class, 'register'])->name('register.index');
-Route::post('/register', [UserController::class, 'create'])->name('register.store');
+    Route::prefix('/course')->group(function () {
+        Route::get('/', [CourseController::class, 'index'])->name('course.index');
+        Route::get('/create', [CourseController::class, 'create'])->name('course.create');
+        Route::post('/store', [CourseController::class, 'store'])->name('course.store');
+        Route::get('/management', [CourseController::class, 'manage'])->name('course.management');
+        Route::get('/session', [SessionController::class, 'course'])->name('session.course');
+        Route::post('/enroll', [CourseController::class, 'enroll'])->name('course.enroll');
 
-Route::get('/login', [UserController::class, 'login'])->name('login.index');
-Route::post('/login', [UserController::class, 'auth'])->name('login.store');
+        Route::prefix('/{CourseID}')->group(function () {
+            Route::middleware(ValidateCourseIDMiddleware::class)->group(function () {
+                Route::get('/', [CourseController::class, 'detail'])->name('course.detail');
+                Route::get('/edit', [CourseController::class, 'edit'])->name('course.edit');
+                Route::put('/update', [CourseController::class, 'update'])->name('course.update');
+                Route::delete('/destroy', [CourseController::class, 'destroy'])->name('course.destroy');
+                Route::get('/session/management', [SessionController::class, 'manage'])->name('session.management');
 
-Route::get('/course/management', [CourseController::class, 'manage'])->name('course.management');
-Route::get('/course/session', [SessionController::class, 'course'])->name('session.course');
+                Route::prefix('/session')->group(function () {
+                    Route::get('/create', [SessionController::class, 'create'])->name('session.create');
+                    Route::post('/store', [SessionController::class, 'store'])->name('session.store');
 
-Route::prefix('/course')->group(function () {
-    Route::get('/', [CourseController::class, 'index'])->name('course.index');
-    Route::get('/create', [CourseController::class, 'create'])->name('course.create');
-    Route::post('/store', [CourseController::class, 'store'])->name('course.store');
-    Route::post('/enroll', [CourseController::class, 'enroll'])->name('course.enroll');
-    Route::get('/{CourseID}', [CourseController::class, 'detail'])->name('course.detail');
-    Route::get('/{CourseID}/edit', [CourseController::class, 'edit'])->name('course.edit');
-    Route::put('/{CourseID}/update', [CourseController::class, 'update'])->name('course.update');
-    Route::delete('/{CourseID}/destroy', [CourseController::class, 'destroy'])->name('course.destroy');
-    Route::get('{CourseID}/session/management', [SessionController::class, 'manage'])->name('session.management');
+                    Route::prefix('/{SessionID}')->group(function () {
+                        Route::middleware(ValidateSessionIDMiddleware::class)->group(function () {
+                            Route::get('/', [SessionController::class, 'index'])->name('session.show');
+                            Route::put('/', [SessionController::class, 'update'])->name('session.update');
+                            Route::delete('/', [SessionController::class, 'delete'])->name('session.delete');
 
+                            Route::prefix('/material')->group(function () {
+                                Route::get('/create', [MaterialController::class, 'create'])->name('material.create');
+                                Route::post('/store', [MaterialController::class, 'store'])->name('material.store');
+                                Route::get('/add', [MaterialController::class, 'add'])->name('material.add');
 
-    Route::prefix('/{CourseID}/session')->group(function () {
-        Route::get('/create', [SessionController::class, 'create'])->name('session.create');
-        Route::post('/store', [SessionController::class, 'store'])->name('session.store');
-        Route::get('/{SessionID}', [SessionController::class, 'index'])->name('session.show');
-        Route::put('/{SessionID}', [SessionController::class, 'update'])->name('session.update');
-        Route::delete('/{SessionID}', [SessionController::class, 'delete'])->name('session.delete');
+                                Route::prefix('/{MaterialID}')->group(function () {
+                                    Route::middleware(ValidateMaterialIDMiddleware::class)->group(function () {
+                                        Route::get('/edit', [MaterialController::class, 'edit'])->name('material.edit');
+                                        Route::put('/', [MaterialController::class, 'update'])->name('material.update');
+                                        Route::delete('/', [MaterialController::class, 'destroy'])->name('material.destroy');
+                                    });
+                                });
+                            });
 
-        Route::prefix('{SessionID}/material')->group(function () {
-            Route::get('/create', [MaterialController::class, 'create'])->name('material.create');
-            Route::post('/store', [MaterialController::class, 'store'])->name('material.store');
-            Route::get('/add', [MaterialController::class, 'add'])->name('material.add');
-            Route::put('/{MaterialID}', [MaterialController::class, 'update'])->name('material.update');
-            Route::delete('/{MaterialID}', [MaterialController::class, 'destroy'])->name('material.destroy');
-            Route::get('/edit/{MaterialID}', [MaterialController::class, 'edit'])->name('material.edit');
-        });
-        Route::prefix('{SessionID}/task')->group(function () {
-            Route::get('/create', [TaskController::class, 'create'])->name('task.create');
-            Route::post('/store', [TaskController::class, 'store'])->name('task.store');
-            Route::get('/add', [TaskController::class, 'add'])->name('task.add');
-            Route::put('/{TaskID}', [TaskController::class, 'update'])->name('task.update');
-            Route::delete('/{TaskID}', [TaskController::class, 'destroy'])->name('task.destroy');
-            Route::get('/edit/{TaskID}', [TaskController::class, 'edit'])->name('task.edit');
-        });
+                            Route::prefix('/task')->group(function () {
+                                Route::get('/create', [TaskController::class, 'create'])->name('task.create');
+                                Route::post('/store', [TaskController::class, 'store'])->name('task.store');
+                                Route::get('/add', [TaskController::class, 'add'])->name('task.add');
 
-        Route::prefix('/{SessionID}/forum')->group(function () {
-            Route::get('/', [ForumController::class, 'index'])->name('forum.index');
-            Route::post('/create', [ForumController::class, 'store'])->name('forum.store');
+                                Route::prefix('/{TaskID}')->group(function () {
+                                    Route::middleware(ValidateTaskIDMiddleware::class)->group(function () {
+                                        Route::get('/edit', [TaskController::class, 'edit'])->name('task.edit');
+                                        Route::put('/', [TaskController::class, 'update'])->name('task.update');
+                                        Route::delete('/', [TaskController::class, 'destroy'])->name('task.destroy');
+                                    });
+                                });
+                            });
 
-            // buat reply
-            Route::prefix('/{postId}/reply')->group(function () {
-                Route::post('/create', [ForumController::class, 'reply'])->name('forum.reply');
+                            Route::prefix('/forum')->group(function () {
+                                Route::get('/', [ForumController::class, 'index'])->name('forum.index');
+                                Route::post('/create', [ForumController::class, 'store'])->name('forum.store');
+
+                                Route::prefix('/{postId}/reply')->group(function () {
+                                    Route::middleware(ValidateForumIDMiddleware::class)->group(function () {
+                                        Route::post('/create', [ForumController::class, 'reply'])->name('forum.reply');
+                                    });
+                                });
+                            });
+                        });
+                    });
+                });
             });
         });
     });
-
 });
 
-
-
-Route::get('/dashboard/search', [DashboardController::class, 'search'])->name('dashboard.search');
-Route::post('/join-course', [CourseController::class, 'join'])->name('join.course');
 
