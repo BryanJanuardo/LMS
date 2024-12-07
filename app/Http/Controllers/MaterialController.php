@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Material;
+use App\Models\MaterialLearning;
 use Illuminate\Http\Request;
 
 class MaterialController extends Controller
@@ -15,54 +16,68 @@ class MaterialController extends Controller
         //
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
+    public function store(Request $request){
+        $data = $request->validate([
+            'MaterialName' => 'required',
+            'MaterialType' => 'required',
+            'MaterialPath' => 'required',
+        ]);
+
+        $latestMaterial = Material::latest('MaterialID')->first();
+        $latestMaterialID = $latestMaterial ? substr($latestMaterial->MaterialID, 1) : 0;
+        $newMaterialID = 'M' . str_pad((intval($latestMaterialID) + 1), 8, '0', STR_PAD_LEFT);
+
+        Material::create([
+            'MaterialID' => $newMaterialID,
+            'MaterialName' => $data['MaterialName'],
+            'MaterialType' => $data['MaterialType'],
+            'MaterialPath' => $data['MaterialPath'],
+        ]);
+
+        MaterialLearning::create([
+            'MaterialID' => $newMaterialID,
+            'SessionLearningID' => $request->SessionID
+        ]);
+
+        return redirect($request->PreviousURL)->with('success', 'Material added successfully');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
+    public function update(Request $request){
+        $data = $request->validate([
+            'MaterialName' => 'required',
+            'MaterialType' => 'required',
+            'MaterialPath' => 'required',
+        ]);
+
+        $material = Material::where('MaterialID', $request->MaterialID)->firstOrFail();
+
+        if($material){
+            $material->MaterialName = $data['MaterialName'];
+            $material->MaterialType = $data['MaterialType'];
+            $material->MaterialPath = $data['MaterialPath'];
+            $material->save();
+        }
+
+        return redirect($request->PreviousURL)->with('success', 'Data saved successfully');
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Material $material)
-    {
-        //
+    public function destroy(Request $request){
+        $material = Material::where('MaterialID', $request->MaterialID)->firstOrFail();
+        $material->delete();
+
+
+        return redirect($request->PreviousURL)->with('success', 'Data saved successfully');
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Material $material)
-    {
-        //
+    public function edit(Request $request){
+        $material = Material::where('MaterialID', $request->MaterialID)->firstOrFail();
+
+        return view('MaterialEdit', ['material' => $material, 'CourseID' => $request->CourseID, 'SessionID' => $request->SessionID, 'MaterialID' => $request->MaterialID]);
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Material $material)
-    {
-        //
+    public function add(Request $request){
+        return view('MaterialAdd', ['CourseID' => $request->CourseID, 'SessionID' => $request->SessionID]);
     }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Material $material)
-    {
-        //
-    }
-
     public function getMaterialById($id){
         $material = Material::where('MaterialID', '=', $id)->first();
         return $material;

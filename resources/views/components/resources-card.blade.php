@@ -17,6 +17,8 @@
             </ul>
 
             <div class="tab-content" id="resourceTabsContent-{{ $key }}">
+
+                <!-- Materials Tab -->
                 <div class="tab-pane fade show active" id="materials-{{ $key }}" role="tabpanel" aria-labelledby="materials-tab-{{ $key }}">
                     <table class="table table-striped mt-3">
                         <thead>
@@ -36,17 +38,23 @@
                                     <td>{{ $materialLearns->material->MaterialPath }}</td>
                                     <td>{{ $materialLearns->material->MaterialType }}</td>
                                     <td>
-                                        <button class="btn btn-secondary btn-sm" data-bs-toggle="modal" data-bs-target="#materialModal" onclick="editMaterial(1, 'Introduction to Topic', 'A brief overview of the topic.')">Edit</button>
-                                        <button class="btn btn-danger btn-sm" onclick="deleteMaterial(1)">Delete</button>
+                                        <a href="{{ route('material.edit', ['CourseID' => $sessionLearning->courseLearning->id, 'SessionID' => $sessionLearning->id, 'MaterialID' => $materialLearns->material->MaterialID]) }}" class="btn btn-secondary btn-sm">Edit</a>
+                                        <form action="{{ route('material.destroy', ['CourseID' => $sessionLearning->courseLearning->id, 'SessionID' => $sessionLearning->id, 'MaterialID' => $materialLearns->material->MaterialID, 'PreviousURL' => URL::previous()]) }}" method="POST" class="d-inline-block">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                                        </form>
                                     </td>
+                                </tr>
                             @endforeach
                         </tbody>
                     </table>
                     <div class="d-flex justify-content-end mt-3">
-                        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#materialModal" onclick="clearModal()">Add Material</button>
+                        <a href="{{ route('material.add', ['CourseID' => $sessionLearning->courseLearning->id, 'SessionID' => $sessionLearning->id]) }}" class="btn btn-primary"  data-bs-target="#materialModal">Add Material</a>
                     </div>
                 </div>
 
+                <!-- Quiz Tab -->
                 <div class="tab-pane fade" id="quiz-{{ $key }}" role="tabpanel" aria-labelledby="quiz-tab-{{ $key }}">
                     <table class="table table-striped mt-3">
                         <thead>
@@ -64,20 +72,25 @@
                                     <td>{{ $loop->iteration}}</td>
                                     <td>{{ $quizLearns->task->TaskName }}</td>
                                     <td>{{ $quizLearns->task->TaskDesc }}</td>
-                                    <td>{{ $quizLearns->task->TaskDueDate}}</td>
+                                    <td>{{ $quizLearns->task->TaskDueDate }}</td>
                                     <td>
-                                        <button class="btn btn-secondary btn-sm" data-bs-toggle="modal" data-bs-target="#materialModal" onclick="editMaterial(1, 'Introduction to Topic', 'A brief overview of the topic.')">Edit</button>
-                                        <button class="btn btn-danger btn-sm" onclick="deleteMaterial(1)">Delete</button>
+                                        <a href="{{ route('task.edit', ['CourseID' => $sessionLearning->courseLearning->id, 'SessionID' => $sessionLearning->id, 'TaskID' => $quizLearns->task->TaskID]) }}" class="btn btn-secondary btn-sm">Edit</a>
+                                        <form action="{{ route('task.destroy', ['CourseID' => $sessionLearning->courseLearning->id, 'SessionID' => $sessionLearning->id, 'TaskID' => $quizLearns->task->TaskID, 'PreviousURL' => URL::previous()]) }}" method="POST" class="d-inline-block">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                                        </form>
                                     </td>
+                                </tr>
                             @endforeach
                         </tbody>
                     </table>
-
                     <div class="d-flex justify-content-end mt-3">
-                        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#quizModal" onclick="clearQuizModal()">Add Quiz</button>
+                        <a class="btn btn-primary" href="{{ route('task.add', ['CourseID' => $sessionLearning->courseLearning->id, 'SessionID' => $sessionLearning->id, 'TaskType' => 'Quiz']) }}" >Add Quiz</a>
                     </div>
                 </div>
 
+                <!-- Task Tab -->
                 <div class="tab-pane fade" id="task-{{ $key }}" role="tabpanel" aria-labelledby="task-tab-{{ $key }}">
                     <table class="table table-striped mt-3">
                         <thead>
@@ -85,32 +98,40 @@
                                 <th>#</th>
                                 <th>Task Name</th>
                                 <th>Description</th>
+                                <th>Due Date</th>
                                 <th>Actions</th>
                             </tr>
                         </thead>
                         <tbody id="taskTableBody">
-                            <tr id="taskRow-1">
-                                <td>1</td>
-                                <td>Complete Assignment</td>
-                                <td>A task to complete the assignment.</td>
-                                <td>
-                                    <button class="btn btn-secondary btn-sm" data-bs-toggle="modal" data-bs-target="#taskModal" onclick="editTask(1, 'Complete Assignment', 'A task to complete the assignment.')">Edit</button>
-                                    <button class="btn btn-danger btn-sm" onclick="deleteTask(1)">Delete</button>
-                                </td>
-                            </tr>
+                            @foreach ($sessionLearning->taskLearnings->where('TaskType', 'Assignment') as $taskLearns)
+                                <tr id="taskRow-{{ $taskLearns->id }}">
+                                    <td>{{ $loop->iteration}}</td>
+                                    <td>{{ $taskLearns->task->TaskName }}</td>
+                                    <td>{{ $taskLearns->task->TaskDesc }}</td>
+                                    <td>{{ $taskLearns->task->TaskDueDate }}</td>
+                                    <td>
+                                        <a href="{{ route('task.edit', ['CourseID' => $sessionLearning->courseLearning->id, 'SessionID' => $sessionLearning->id, 'TaskID' => $taskLearns->task->TaskID]) }}" class="btn btn-secondary btn-sm">Edit</a>
+                                        <form action="{{ route('task.destroy', ['CourseID' => $sessionLearning->courseLearning->id, 'SessionID' => $sessionLearning->id, 'TaskID' => $taskLearns->task->TaskID, 'PreviousURL' => URL::previous()]) }}" method="POST" class="d-inline-block">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                                        </form>
+                                    </td>
+                                </tr>
+                            @endforeach
                         </tbody>
                     </table>
-
                     <div class="d-flex justify-content-end mt-3">
-                        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#taskModal" onclick="clearTaskModal()">Add Task</button>
+                        <a class="btn btn-primary" href="{{ route('task.add', ['CourseID' => $sessionLearning->courseLearning->id, 'SessionID' => $sessionLearning->id, 'TaskType' => 'Assignment']) }}">Add Task</a>
                     </div>
                 </div>
+
             </div>
         </div>
     </div>
 </div>
 
-<div class="modal fade" id="materialModal" tabindex="-1" aria-labelledby="materialModalLabel" aria-hidden="true">
+{{-- <div class="modal fade" id="materialModal" tabindex="-1" aria-labelledby="materialModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -188,68 +209,4 @@
             </div>
         </div>
     </div>
-</div>
-
-<script>
-    function clearModal() {
-        document.getElementById('materialForm').reset();
-    }
-    function saveMaterial() {
-        const name = document.getElementById('materialName').value;
-        const description = document.getElementById('materialDescription').value;
-
-        if (name && description) {
-            alert('Material saved: ' + name);
-        }
-    }
-    function editMaterial(id, name, description) {
-        document.getElementById('materialName').value = name;
-        document.getElementById('materialDescription').value = description;
-    }
-    function deleteMaterial(id) {
-        if (confirm('Are you sure you want to delete this material?')) {
-            alert('Material ' + id + ' deleted');
-        }
-    }
-    function clearQuizModal() {
-        document.getElementById('quizForm').reset();
-    }
-    function saveQuiz() {
-        const name = document.getElementById('quizName').value;
-        const description = document.getElementById('quizDescription').value;
-
-        if (name && description) {
-            alert('Quiz saved: ' + name);
-        }
-    }
-    function editQuiz(id, name, description) {
-        document.getElementById('quizName').value = name;
-        document.getElementById('quizDescription').value = description;
-    }
-    function deleteQuiz(id) {
-        if (confirm('Are you sure you want to delete this quiz?')) {
-            alert('Quiz ' + id + ' deleted');
-        }
-    }
-    function clearTaskModal() {
-        document.getElementById('taskForm').reset();
-    }
-
-    function saveTask() {
-        const name = document.getElementById('taskName').value;
-        const description = document.getElementById('taskDescription').value;
-
-        if (name && description) {
-            alert('Task saved: ' + name);
-        }
-    }
-    function editTask(id, name, description) {
-        document.getElementById('taskName').value = name;
-        document.getElementById('taskDescription').value = description;
-    }
-    function deleteTask(id) {
-        if (confirm('Are you sure you want to delete this task?')) {
-            alert('Task ' + id + ' deleted');
-        }
-    }
-</script>
+</div> --}}
