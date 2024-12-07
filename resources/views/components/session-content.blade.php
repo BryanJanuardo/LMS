@@ -9,9 +9,8 @@
             <p>No session information available.</p>
         @endif
     </div>
-
-    @include('components.resources-card', ['key' => 3, 'sessionLearning' => $sessionLearning])
+    @include('components.resources-card', ['key' => 3, 'sessionLearning' => $sessionLearning, 'roleId' => $roleId])
 </div>
 
 @include('components.forum', ['sessionLearning' => $sessionLearning])
-@include('components.AddPost', ['sessionLearning' => $sessionLearning])
+

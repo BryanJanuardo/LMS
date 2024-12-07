@@ -11,7 +11,7 @@
                     <p>{{ $post->ForumDescription }}</p>
                     <div class="d-flex flex-column">
                         <small class="text-muted"><span>Posted on {{ $post->CreatedDate }}</span> | <span>By: {{ $post->user->UserName }}</span></small>
-                        <small class="text-muted"><a href="{{ $post->FilePath }}"  target="_blank"></a></small>
+                        <small class="text-muted"><a href="{{ asset('Forums/' . basename($post->FilePath)) }}" target="_blank">{{ $post->FilePath }}</a></small>
                     </div>
 
                     <button type="button" id="replyBtn" style="my: 4; padding: 0" class="btn btn-link toggle-reply-btn">Reply</button>
@@ -20,12 +20,12 @@
                             <li class="d-flex flex-column">
                                 <p>{{ $reply->ReplyMessages }}</p>
                                 <small class="text-muted"><span>Replied on {{ $reply->CreatedDate }}</span> | <span>By: {{ $reply->user->UserName }}</span></small>
-                                <small class="text-muted"><a href="{{ $reply->FilePath }}"  target="_blank">{{ $reply->FilePath }}</a></small>
+                                <small class="text-muted"><a href="{{ asset('Forums/Replies/' . basename($reply->FilePath)) }}" target="_blank">{{ $reply->FilePath }}</a></small>
                             </li>
                         @endforeach
                     </ul>
 
-                    <form action="{{ route('forum.reply', ['CourseID' => $sessionLearning->courseLearning->id, 'SessionID' => $sessionLearning->id, 'postId' => $post->id]) }}" method="POST" class="mt-2 reply-form hidden"  enctype="multipart/form-data">
+                    <form action="{{ route('forum.reply', ['CourseID' => $sessionLearning->courseLearning->id, 'SessionID' => $sessionLearning->id, 'PostID' => $post->id]) }}" method="POST" class="mt-2 reply-form hidden"  enctype="multipart/form-data">
                         @method('POST')
                         @csrf
                         <div class="d-flex flex-column gap-2">
@@ -49,6 +49,7 @@
                 </li>
             @endforeach
         </ul>
+        @include('components.AddPost', ['sessionLearning' => $sessionLearning])
     </div>
 </div>
 

@@ -14,7 +14,7 @@ class TaskLearning extends Model
 
     public function task()
     {
-        return $this->hasOne(Task::class, 'TaskID');
+        return $this->belongsTo(Task::class, 'TaskID');
     }
 
     public function sessionLearning(){

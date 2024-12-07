@@ -17,7 +17,6 @@
             </ul>
 
             <div class="tab-content" id="resourceTabsContent-{{ $key }}">
-
                 <!-- Materials Tab -->
                 <div class="tab-pane fade show active" id="materials-{{ $key }}" role="tabpanel" aria-labelledby="materials-tab-{{ $key }}">
                     <table class="table table-striped mt-3">
@@ -27,7 +26,9 @@
                                 <th>Material Name</th>
                                 <th>Link</th>
                                 <th>Type</th>
-                                <th>Actions</th>
+                                @if ($roleId == 1)
+                                    <th>Actions</th>
+                                @endif
                             </tr>
                         </thead>
                         <tbody id="materialsTableBody">
@@ -37,21 +38,25 @@
                                     <td>{{ $materialLearns->material->MaterialName }}</td>
                                     <td>{{ $materialLearns->material->MaterialPath }}</td>
                                     <td>{{ $materialLearns->material->MaterialType }}</td>
-                                    <td>
-                                        <a href="{{ route('material.edit', ['CourseID' => $sessionLearning->courseLearning->id, 'SessionID' => $sessionLearning->id, 'MaterialID' => $materialLearns->material->MaterialID]) }}" class="btn btn-secondary btn-sm">Edit</a>
-                                        <form action="{{ route('material.destroy', ['CourseID' => $sessionLearning->courseLearning->id, 'SessionID' => $sessionLearning->id, 'MaterialID' => $materialLearns->material->MaterialID, 'PreviousURL' => URL::previous()]) }}" method="POST" class="d-inline-block">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button type="submit" class="btn btn-danger btn-sm">Delete</button>
-                                        </form>
-                                    </td>
+                                    @if($roleId == 1)
+                                        <td>
+                                            <a href="{{ route('material.edit', ['CourseID' => $sessionLearning->courseLearning->id, 'SessionID' => $sessionLearning->id, 'MaterialID' => $materialLearns->material->MaterialID]) }}" class="btn btn-secondary btn-sm">Edit</a>
+                                            <form action="{{ route('material.destroy', ['CourseID' => $sessionLearning->courseLearning->id, 'SessionID' => $sessionLearning->id, 'MaterialID' => $materialLearns->material->MaterialID, 'PreviousURL' => URL::previous()]) }}" method="POST" class="d-inline-block">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                                            </form>
+                                        </td>
+                                    @endif
                                 </tr>
                             @endforeach
                         </tbody>
                     </table>
-                    <div class="d-flex justify-content-end mt-3">
-                        <a href="{{ route('material.add', ['CourseID' => $sessionLearning->courseLearning->id, 'SessionID' => $sessionLearning->id]) }}" class="btn btn-primary"  data-bs-target="#materialModal">Add Material</a>
-                    </div>
+                    @if ($roleId == 1)
+                        <div class="d-flex justify-content-end mt-3">
+                            <a href="{{ route('material.add', ['CourseID' => $sessionLearning->courseLearning->id, 'SessionID' => $sessionLearning->id]) }}" class="btn btn-primary"  data-bs-target="#materialModal">Add Material</a>
+                        </div>
+                    @endif
                 </div>
 
                 <!-- Quiz Tab -->
@@ -63,7 +68,9 @@
                                 <th>Quiz Name</th>
                                 <th>Description</th>
                                 <th>Due Date</th>
-                                <th>Actions</th>
+                                @if ($roleId == 1)
+                                    <th>Actions</th>
+                                @endif
                             </tr>
                         </thead>
                         <tbody id="quizTableBody">
@@ -73,6 +80,7 @@
                                     <td>{{ $quizLearns->task->TaskName }}</td>
                                     <td>{{ $quizLearns->task->TaskDesc }}</td>
                                     <td>{{ $quizLearns->task->TaskDueDate }}</td>
+                                    @if ($roleId == 1)
                                     <td>
                                         <a href="{{ route('task.edit', ['CourseID' => $sessionLearning->courseLearning->id, 'SessionID' => $sessionLearning->id, 'TaskID' => $quizLearns->task->TaskID]) }}" class="btn btn-secondary btn-sm">Edit</a>
                                         <form action="{{ route('task.destroy', ['CourseID' => $sessionLearning->courseLearning->id, 'SessionID' => $sessionLearning->id, 'TaskID' => $quizLearns->task->TaskID, 'PreviousURL' => URL::previous()]) }}" method="POST" class="d-inline-block">
@@ -81,13 +89,16 @@
                                             <button type="submit" class="btn btn-danger btn-sm">Delete</button>
                                         </form>
                                     </td>
+                                    @endif
                                 </tr>
                             @endforeach
                         </tbody>
                     </table>
-                    <div class="d-flex justify-content-end mt-3">
-                        <a class="btn btn-primary" href="{{ route('task.add', ['CourseID' => $sessionLearning->courseLearning->id, 'SessionID' => $sessionLearning->id, 'TaskType' => 'Quiz']) }}" >Add Quiz</a>
-                    </div>
+                    @if($roleId == 1)
+                        <div class="d-flex justify-content-end mt-3">
+                            <a class="btn btn-primary" href="{{ route('task.add', ['CourseID' => $sessionLearning->courseLearning->id, 'SessionID' => $sessionLearning->id, 'TaskType' => 'Quiz']) }}" >Add Quiz</a>
+                        </div>
+                    @endif
                 </div>
 
                 <!-- Task Tab -->
@@ -99,7 +110,9 @@
                                 <th>Task Name</th>
                                 <th>Description</th>
                                 <th>Due Date</th>
-                                <th>Actions</th>
+                                @if ($roleId == 1)
+                                    <th>Actions</th>
+                                @endif
                             </tr>
                         </thead>
                         <tbody id="taskTableBody">
@@ -109,6 +122,7 @@
                                     <td>{{ $taskLearns->task->TaskName }}</td>
                                     <td>{{ $taskLearns->task->TaskDesc }}</td>
                                     <td>{{ $taskLearns->task->TaskDueDate }}</td>
+                                    @if ($roleId == 1)
                                     <td>
                                         <a href="{{ route('task.edit', ['CourseID' => $sessionLearning->courseLearning->id, 'SessionID' => $sessionLearning->id, 'TaskID' => $taskLearns->task->TaskID]) }}" class="btn btn-secondary btn-sm">Edit</a>
                                         <form action="{{ route('task.destroy', ['CourseID' => $sessionLearning->courseLearning->id, 'SessionID' => $sessionLearning->id, 'TaskID' => $taskLearns->task->TaskID, 'PreviousURL' => URL::previous()]) }}" method="POST" class="d-inline-block">
@@ -117,13 +131,16 @@
                                             <button type="submit" class="btn btn-danger btn-sm">Delete</button>
                                         </form>
                                     </td>
+                                    @endif
                                 </tr>
                             @endforeach
                         </tbody>
                     </table>
-                    <div class="d-flex justify-content-end mt-3">
-                        <a class="btn btn-primary" href="{{ route('task.add', ['CourseID' => $sessionLearning->courseLearning->id, 'SessionID' => $sessionLearning->id, 'TaskType' => 'Assignment']) }}">Add Task</a>
-                    </div>
+                    @if ($roleId == 1)
+                        <div class="d-flex justify-content-end mt-3">
+                            <a class="btn btn-primary" href="{{ route('task.add', ['CourseID' => $sessionLearning->courseLearning->id, 'SessionID' => $sessionLearning->id, 'TaskType' => 'Assignment']) }}">Add Task</a>
+                        </div>
+                    @endif
                 </div>
 
             </div>

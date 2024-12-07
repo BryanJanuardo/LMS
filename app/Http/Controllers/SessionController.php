@@ -19,8 +19,13 @@ class SessionController extends Controller
     public function index($CourseID, $SessionID)
     {
         $sessionLearning = SessionLearning::find($SessionID);
-
-        return view('components.session-content')->with('sessionLearning', $sessionLearning);
+        $roleId = UserCourse::where('UserID', Auth::user()->id)
+        ->where('CourseLearningID', $CourseID)
+        ->get();
+        // dd($roleId[0]->RoleID);
+        $roleId = $roleId[0]->RoleID;
+        // dd($roleId);
+        return view('components.session-content')->with(['sessionLearning' => $sessionLearning, 'roleId' => $roleId]);
     }
 
     public function course(){

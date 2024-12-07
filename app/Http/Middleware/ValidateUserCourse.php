@@ -2,12 +2,13 @@
 
 namespace App\Http\Middleware;
 
-use App\Models\ForumPost;
+use App\Models\UserCourse;
 use Closure;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpFoundation\Response;
 
-class ValidateForumIDMiddleware
+class ValidateUserCourse
 {
     /**
      * Handle an incoming request.
@@ -16,10 +17,17 @@ class ValidateForumIDMiddleware
      */
     public function handle(Request $request, Closure $next): Response
     {
-        $forumId = $request->route('PostID');
-        if (!ForumPost::where('id', $forumId)->first() || !$forumId || !is_numeric($forumId)) {
+        $userId = Auth::user()->id;
+        $courseId = $request->route('CourseID');
+
+        $userCourse = UserCourse::where('UserID', '=', $userId)
+        ->where('CourseLearningID', '=', $courseId)
+        ->first();
+
+        if(!$userCourse || $userCourse->RoleID != 1) {
             abort(404);
         }
+
         return $next($request);
     }
 }
