@@ -5,7 +5,7 @@
     <h2>Add Material</h2>
 
     <!-- Form to edit the material -->
-    <form action="{{ route('material.store', ['CourseID' => $CourseID, 'SessionID' => $SessionID, 'PreviousURL' => URL::previous()]) }}" method="POST">
+    <form action="{{ route('material.store', ['CourseID' => $CourseID, 'SessionID' => $SessionID, 'PreviousURL' => URL::previous()]) }}" method="POST" enctype="multipart/form-data">
         @csrf
 
         <div class="form-group">

@@ -16,8 +16,7 @@ class MaterialController extends Controller
         //
     }
 
-    public function store(Request $request){
-
+    public function store(Request $request, $courseID, $sessionID){
         $data = $request->validate([
             'MaterialName' => 'required',
             'MaterialType' => 'required',
@@ -47,10 +46,10 @@ class MaterialController extends Controller
             'SessionLearningID' => $request->SessionID
         ]);
 
-        return redirect($request->PreviousURL)->with('success', 'Material added successfully');
+        return redirect()->route('course.detail', ['CourseID' => $courseID]);
     }
 
-    public function update(Request $request){
+    public function update(Request $request, $courseID, $sessionI){
         $data = $request->validate([
             'MaterialName' => 'required',
             'MaterialType' => 'required',
@@ -74,15 +73,15 @@ class MaterialController extends Controller
             $material->save();
         }
 
-        return redirect($request->PreviousURL)->with('success', 'Data saved successfully');
+        return redirect()->route('course.detail', ['CourseID' => $courseID]);
     }
 
-    public function destroy(Request $request){
+    public function destroy(Request $request, $courseID, $sessionI){
         $material = Material::where('MaterialID', $request->MaterialID)->firstOrFail();
         $material->delete();
 
 
-        return redirect($request->PreviousURL)->with('success', 'Data saved successfully');
+        return redirect()->route('course.detail', ['CourseID' => $courseID]);
     }
 
     public function edit(Request $request){
