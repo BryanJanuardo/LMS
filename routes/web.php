@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AnnouncementController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ScheduleController;
 use App\Http\Controllers\ForumController;
@@ -32,6 +33,7 @@ Route::middleware(AuthenticationMiddleware::class)->group(function () {
     Route::get('/schedule', [ScheduleController::class, 'index'])->name('schedule.index');
     Route::get('/schedule/getListCourses', [ScheduleController::class, 'getListCourses'])->name('schedule.getListCourses');
     Route::get('/task', [TaskController::class, 'index'])->name('task.index');
+    Route::post('/announcement/{announcementID}', [AnnouncementController::class, 'markRead'])->name('announcement.markRead');
     Route::get('/logout', [UserController::class, 'logout'])->name('logout');
 
     Route::prefix('/course')->group(function () {

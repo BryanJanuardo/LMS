@@ -11,7 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        //
+        Schema::create('announcements', function (Blueprint $table) {
+            $table->id();
+            $table->unsignedBigInteger('UserID');
+            $table->text('AnnouncementMessage');
+            $table->foreign('UserID')->references('id')->on('users')->onDelete('cascade');
+            $table->timestamps();
+        });
     }
 
     /**

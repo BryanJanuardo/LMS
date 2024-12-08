@@ -15,7 +15,7 @@ return new class extends Migration
             $table->string('MaterialID')->primary();
             $table->string('MaterialName');
             $table->string('MaterialType');
-            $table->string('MaterialPath');
+            $table->string('MaterialPath')->nullable();
             $table->timestamps();
         });
     }

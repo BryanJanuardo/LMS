@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\NewAnnouncement;
 use App\Models\ForumPost;
 use App\Models\ForumReply;
 use Illuminate\Http\Request;
@@ -33,7 +34,7 @@ class ForumController extends Controller
             $request->file('FilePath')->move(public_path('storage/Forums'), $File);
         }
 
-        ForumPost::create([
+        $forum = ForumPost::create([
             'UserID' => Auth::user()->id,
             'SessionLearningID' => $SessionID,
             'ForumTitle' => $request->ForumTitle,
@@ -41,6 +42,9 @@ class ForumController extends Controller
             'CreatedDate' => now(),
             'FilePath' => $File,
         ]);
+
+        $sessionLearning = $forum->sessionLearning;
+        event(new NewAnnouncement($sessionLearning->courseLearning->id, "New Forum Posted! on Session: " . $sessionLearning->session->SessionName . " by " . Auth::user()->UserName));
 
         return redirect()->back()->with('success', 'Comment posted successfully.');
     }

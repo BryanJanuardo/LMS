@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->date('CreatedDate');
             $table->text('ReplyMessages');
-            $table->string('FilePath');
+            $table->string('FilePath')->nullable();
             $table->unsignedBigInteger('PostID');
             $table->unsignedBigInteger('UserID');
             $table->foreign('PostID')->references('id')->on('forum_posts')->onDelete('cascade');

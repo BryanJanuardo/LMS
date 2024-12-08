@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('ForumTitle');
             $table->text('ForumDescription');
             $table->date('CreatedDate');
-            $table->string('FilePath');
+            $table->string('FilePath')->nullable();
             $table->unsignedBigInteger('UserID');
             $table->unsignedBigInteger('SessionLearningID');
             $table->foreign('UserID')->references('id')->on('users')->onDelete('cascade');

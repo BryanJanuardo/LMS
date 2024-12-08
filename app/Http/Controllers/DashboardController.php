@@ -47,26 +47,7 @@ class DashboardController extends Controller
 
         // dd($availableCourses->toArray(), $enrolledCourses->get()->toArray());
 
-        $announcements = [
-            [
-                'title' => 'Open Enrollment SLC 2024',
-                'content' => 'Informasi dikit tentang announcementnya',
-            ],
-            [
-                'title' => 'Important Update on Course Materials',
-                'content' => 'Please check the updated syllabus on the portal.',
-            ],
-            [
-                'title' => 'Exam Schedule Released',
-                'content' => 'The exam schedule has been posted on the notice board.',
-            ],
-            [
-                'title' => 'Guest Lecture Next Week',
-                'content' => 'Join us for a guest lecture on Cloud Computing.',
-            ],
-        ];
-
-        return view('Dashboard')->with(['todayCourses' => $todayCourses, 'availableCourses' => $availableCourses, 'announcements' => $announcements]);
+        return view('Dashboard')->with(['todayCourses' => $todayCourses, 'availableCourses' => $availableCourses]);
     }
 
     public function search(Request $request)
@@ -107,26 +88,7 @@ class DashboardController extends Controller
 
         // dd($availableCourses->toArray());
 
-        $announcements = [
-            [
-                'title' => 'Open Enrollment SLC 2024',
-                'content' => 'Informasi dikit tentang announcementnya',
-            ],
-            [
-                'title' => 'Important Update on Course Materials',
-                'content' => 'Please check the updated syllabus on the portal.',
-            ],
-            [
-                'title' => 'Exam Schedule Released',
-                'content' => 'The exam schedule has been posted on the notice board.',
-            ],
-            [
-                'title' => 'Guest Lecture Next Week',
-                'content' => 'Join us for a guest lecture on Cloud Computing.',
-            ],
-        ];
-
-        return view('Dashboard')->with(['todayCourses' => $todayCourses, 'availableCourses' => $availableCourses, 'announcements' => $announcements]);
+        return view('Dashboard')->with(['todayCourses' => $todayCourses, 'availableCourses' => $availableCourses]);
     }
 
 }

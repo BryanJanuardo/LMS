@@ -2,9 +2,12 @@
 
 namespace App\Providers;
 
+use App\Events\NewAnnouncement;
+use App\Listeners\SendAnnouncement;
 use App\Models\User;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;
 
@@ -32,5 +35,10 @@ class AppServiceProvider extends ServiceProvider
         Gate::define('user', function(User $user){
             return Auth::check();
         });
+
+        Event::listen(
+            NewAnnouncement::class,
+            SendAnnouncement::class
+        );
     }
 }
