@@ -29,7 +29,7 @@ class ForumController extends Controller
         if ($request->hasFile('FilePath')) {
             $extension = $request->file('FilePath')->getClientOriginalExtension();
             $File = 'Form_' .  $postId . '_User_' . (Auth::user()->id) . '.' . $extension;
-            $request->file('FilePath')->storeAs('public/Forum', $File);
+            $request->file('FilePath')->move(public_path('storage/Forums'), $File);
         }
 
         ForumPost::create([
@@ -59,7 +59,7 @@ class ForumController extends Controller
             $File = 'Form_' .  $postId .
             '_Reply_' . $replyId .
             '_User_' . (Auth::user()->id) . '.' . $extension;
-            $request->file('FilePath')->storeAs('public/Forum', $File);
+            $request->file('FilePath')->move(public_path('Forums/Replies'), $File);
         }
 
         ForumReply::create([

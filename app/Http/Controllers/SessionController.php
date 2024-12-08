@@ -6,7 +6,9 @@ use App\Http\Controllers\Controller;
 use App\Models\Course;
 use App\Models\Session;
 use App\Models\SessionLearning;
+use App\Models\UserCourse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class SessionController extends Controller
 {
@@ -17,10 +19,28 @@ class SessionController extends Controller
     public function index($CourseID, $SessionID)
     {
         $sessionLearning = SessionLearning::find($SessionID);
-        
-        return view('components.session-content')->with('sessionLearning', $sessionLearning);
+        $roleId = UserCourse::where('UserID', Auth::user()->id)
+        ->where('CourseLearningID', $CourseID)
+        ->get();
+        // dd($roleId[0]->RoleID);
+        $roleId = $roleId[0]->RoleID;
+        // dd($roleId);
+        return view('components.session-content')->with(['sessionLearning' => $sessionLearning, 'roleId' => $roleId]);
     }
 
+    public function course(){
+        $userId = Auth::user()->id;
+        $courses = UserCourse::where('UserID', '=', $userId)
+        ->where('RoleID', '=', 1)
+        ->get();
+
+        return view('CourseSessions', ['courses' => $courses]);
+    }
+
+    public function manage($courseID){
+        $sessions = SessionLearning::where('CourseLearningID', '=', $courseID)->get();
+        return view('SessionsManagement', ['sessionLearnings' => $sessions, 'courseID' => $courseID]);
+    }
 
     public function store(Request $request, $CourseID){
         $data = $request->validate([

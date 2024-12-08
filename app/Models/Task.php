@@ -16,4 +16,4 @@ class task extends Model
     {
         return $this->hasOne(TaskLearning::class);
     }
-}   
+}

@@ -8,10 +8,12 @@ use Illuminate\Http\Request;
 
 class MaterialController extends Controller
 {
-    public function index(){
-        $materials = Material::all();
-
-        return view('material', ['materials' => $materials]);
+    /**
+     * Display a listing of the resource.
+     */
+    public function index()
+    {
+        //
     }
 
     public function store(Request $request){
@@ -91,5 +93,9 @@ class MaterialController extends Controller
 
     public function add(Request $request){
         return view('MaterialAdd', ['CourseID' => $request->CourseID, 'SessionID' => $request->SessionID]);
+    }
+    public function getMaterialById($id){
+        $material = Material::where('MaterialID', '=', $id)->first();
+        return $material;
     }
 }
