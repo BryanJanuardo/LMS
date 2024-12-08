@@ -20,9 +20,17 @@
 
         <div class="form-group">
             <label for="MaterialPath">File Path</label>
-            <textarea class="form-control" id="MaterialPath" name="MaterialPath" rows="4" placeholder="Enter material path" required></textarea>
+            <input name="MaterialPath" class="form-control" type="file">
         </div>
-
+        @if ($errors->any())
+            <div class="alert alert-danger">
+                <ul>
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
         <button type="submit" class="btn btn-primary">Save Material</button>
     </form>
 
