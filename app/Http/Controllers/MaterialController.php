@@ -31,7 +31,7 @@ class MaterialController extends Controller
         if ($request->hasFile('MaterialPath')) {
             $extension = $request->file('MaterialPath')->getClientOriginalExtension();
             $File = 'Material_' .  $newMaterialID . '.' . $extension;
-            $request->file('MaterialPath')->storeAs('public/Material', $File);
+            $request->file('MaterialPath')->move(public_path('storage/Materials'), $File);
         }
 
         Material::create([
@@ -63,7 +63,7 @@ class MaterialController extends Controller
         if ($request->hasFile('MaterialPath')) {
             $extension = $request->file('MaterialPath')->getClientOriginalExtension();
             $File = 'Material_' .  $request->MaterialID . '.' . $extension;
-            $request->file('MaterialPath')->storeAs('public/Material', $File);
+            $request->file('MaterialPath')->move(public_path('storage/Materials'), $File);
         }
 
         if($material){

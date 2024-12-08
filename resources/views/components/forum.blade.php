@@ -11,7 +11,7 @@
                     <p>{{ $post->ForumDescription }}</p>
                     <div class="d-flex flex-column">
                         <small class="text-muted"><span>Posted on {{ $post->CreatedDate }}</span> | <span>By: {{ $post->user->UserName }}</span></small>
-                        <small class="text-muted"><a href="{{ asset('Forums/' . basename($post->FilePath)) }}" target="_blank">{{ $post->FilePath }}</a></small>
+                        <small class="text-muted"><a href="{{ asset('storage/Forums/' . basename($post->FilePath)) }}" target="_blank">{{ $post->FilePath }}</a></small>
                     </div>
 
                     <button type="button" id="replyBtn" style="my: 4; padding: 0" class="btn btn-link toggle-reply-btn">Reply</button>
@@ -20,7 +20,7 @@
                             <li class="d-flex flex-column">
                                 <p>{{ $reply->ReplyMessages }}</p>
                                 <small class="text-muted"><span>Replied on {{ $reply->CreatedDate }}</span> | <span>By: {{ $reply->user->UserName }}</span></small>
-                                <small class="text-muted"><a href="{{ asset('Forums/Replies/' . basename($reply->FilePath)) }}" target="_blank">{{ $reply->FilePath }}</a></small>
+                                <small class="text-muted"><a href="{{ asset('storage/Forums/Replies/' . basename($reply->FilePath)) }}" target="_blank">{{ $reply->FilePath }}</a></small>
                             </li>
                         @endforeach
                     </ul>

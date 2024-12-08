@@ -5,7 +5,7 @@
     <h2>Edit Material</h2>
 
     <!-- Form to edit the material -->
-    <form action="{{ route('material.update', ['CourseID' => $CourseID, 'SessionID' => $SessionID, 'MaterialID' => $MaterialID, 'PreviousURL' => URL::previous()]) }}" method="POST">
+    <form action="{{ route('material.update', ['CourseID' => $CourseID, 'SessionID' => $SessionID, 'MaterialID' => $MaterialID, 'PreviousURL' => URL::previous()]) }}" method="POST" enctype="multipart/form-data">
         @csrf
         @method('PUT')
 
@@ -23,7 +23,15 @@
             <label for="MaterialPath">File Path</label>
             <input name="MaterialPath" class="form-control" type="file" value="{{ old('MaterialPath', $material->MaterialPath) }}">
         </div>
-
+        @if ($errors->any())
+        <div class="alert alert-danger">
+            <ul>
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+        @endif
         <button type="submit" class="btn btn-primary">Update Material</button>
     </form>
 
