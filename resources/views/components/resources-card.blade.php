@@ -1,3 +1,12 @@
+<style>
+    .text-wrap {
+        white-space: normal;
+        word-wrap: break-word;
+        word-break: break-word;
+        max-width: 200px;
+    }
+</style>
+
 <div class="col-md-6">
     <div class="card">
         <div class="card-header">
@@ -35,9 +44,9 @@
                             @foreach ($sessionLearning->materialLearnings as $materialLearns)
                                 <tr id="materialRow-{{ $materialLearns->id }}">
                                     <td>{{ $loop->iteration}}</td>
-                                    <td>{{ $materialLearns->material->MaterialName }}</td>
-                                    <td><a href="{{ asset('/storage/Materials/' . basename($materialLearns->material->MaterialPath)) }}" target="_blank">Link</a></td>
-                                    <td>{{ $materialLearns->material->MaterialType }}</td>
+                                    <td class="text-wrap">{{ $materialLearns->material->MaterialName }}</td>
+                                    <td><a href="{{ asset('/storage/Materials/' . basename($materialLearns->material->MaterialPath)) }}" download target="_blank">Link</a></td>
+                                    <td class="text-wrap">dawdawdawdwa{{ $materialLearns->material->MaterialType }}</td>
                                     @if($roleId == 1)
                                         <td>
                                             <a href="{{ route('material.edit', ['CourseID' => $sessionLearning->courseLearning->id, 'SessionID' => $sessionLearning->id, 'MaterialID' => $materialLearns->material->MaterialID]) }}" class="btn btn-secondary btn-sm">Edit</a>
@@ -77,8 +86,8 @@
                             @foreach ($sessionLearning->taskLearnings->where('TaskType', 'Quiz') as $quizLearns)
                                 <tr id="quizRow-{{ $quizLearns->id }}">
                                     <td>{{ $loop->iteration}}</td>
-                                    <td>{{ $quizLearns->task->TaskName }}</td>
-                                    <td>{{ $quizLearns->task->TaskDesc }}</td>
+                                    <td class="text-wrap">{{ $quizLearns->task->TaskName }}</td>
+                                    <td class="text-wrap">{{ $quizLearns->task->TaskDesc }}</td>
                                     <td>{{ $quizLearns->task->TaskDueDate }}</td>
                                     @if ($roleId == 1)
                                     <td>
@@ -119,8 +128,8 @@
                             @foreach ($sessionLearning->taskLearnings->where('TaskType', 'Assignment') as $taskLearns)
                                 <tr id="taskRow-{{ $taskLearns->id }}">
                                     <td>{{ $loop->iteration}}</td>
-                                    <td>{{ $taskLearns->task->TaskName }}</td>
-                                    <td>{{ $taskLearns->task->TaskDesc }}</td>
+                                    <td class="text-wrap">{{ $taskLearns->task->TaskName }}</td>
+                                    <td class="text-wrap">{{ $taskLearns->task->TaskDesc }}</td>
                                     <td>{{ $taskLearns->task->TaskDueDate }}</td>
                                     @if ($roleId == 1)
                                     <td>
@@ -147,83 +156,3 @@
         </div>
     </div>
 </div>
-
-{{-- <div class="modal fade" id="materialModal" tabindex="-1" aria-labelledby="materialModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="materialModalLabel">Add/Edit Material</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <form id="materialForm">
-                    <div class="mb-3">
-                        <label for="materialName" class="form-label">Material Name</label>
-                        <input type="text" class="form-control" id="materialName" placeholder="Enter material name">
-                    </div>
-                    <div class="mb-3">
-                        <label for="materialDescription" class="form-label">Description</label>
-                        <textarea class="form-control" id="materialDescription" rows="3" placeholder="Enter description"></textarea>
-                    </div>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                <button type="button" class="btn btn-primary" onclick="saveMaterial()">Save</button>
-            </div>
-        </div>
-    </div>
-</div>
-
-<div class="modal fade" id="quizModal" tabindex="-1" aria-labelledby="quizModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="quizModalLabel">Add/Edit Quiz</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <form id="quizForm">
-                    <div class="mb-3">
-                        <label for="quizName" class="form-label">Quiz Name</label>
-                        <input type="text" class="form-control" id="quizName" placeholder="Enter quiz name">
-                    </div>
-                    <div class="mb-3">
-                        <label for="quizDescription" class="form-label">Description</label>
-                        <textarea class="form-control" id="quizDescription" rows="3" placeholder="Enter description"></textarea>
-                    </div>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                <button type="button" class="btn btn-primary" onclick="saveQuiz()">Save</button>
-            </div>
-        </div>
-    </div>
-</div>
-<div class="modal fade" id="taskModal" tabindex="-1" aria-labelledby="taskModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="taskModalLabel">Add/Edit Task</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <form id="taskForm">
-                    <div class="mb-3">
-                        <label for="taskName" class="form-label">Task Name</label>
-                        <input type="text" class="form-control" id="taskName" placeholder="Enter task name">
-                    </div>
-                    <div class="mb-3">
-                        <label for="taskDescription" class="form-label">Description</label>
-                        <textarea class="form-control" id="taskDescription" rows="3" placeholder="Enter description"></textarea>
-                    </div>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                <button type="button" class="btn btn-primary" onclick="saveTask()">Save</button>
-            </div>
-        </div>
-    </div>
-</div> --}}

@@ -58,17 +58,14 @@ class CourseController extends Controller
 
     public function enroll(Request $request){
         $request->validate([
-            'CourseLearningID' => 'required',
+            'CourseLearningID' => 'required'
         ]);
 
         $validationCourse = UserCourse::where('CourseLearningID', $request->CourseLearningID)
         ->where('UserID', Auth::user()->id)
         ->get();
 
-        dd($validationCourse);
-
-        if(!$validationCourse){
-            dd("dwada");
+        if($validationCourse->isEmpty()){
             UserCourse::create([
                 'UserID' => Auth::user()->id,
                 'CourseLearningID' => $request->CourseLearningID,

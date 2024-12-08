@@ -94,7 +94,7 @@ class MaterialController extends Controller
         return view('MaterialAdd', ['CourseID' => $request->CourseID, 'SessionID' => $request->SessionID]);
     }
     public function getMaterialById($id){
-        $material = Material::where('MaterialID', '=', $id)->first();
+        $material = Material::where('MaterialID', '=', $id)->paginate(5);
         return $material;
     }
 }

@@ -17,6 +17,7 @@ class ForumController extends Controller
 
     public function store(Request $request, $CourseID, $SessionID)
     {
+        // dd($request->file('FilePath'));
         $request->validate([
             'ForumTitle' => 'required|string|max:255|min:5',
             'ForumDescription' => 'required|string|max:1000|min:10',

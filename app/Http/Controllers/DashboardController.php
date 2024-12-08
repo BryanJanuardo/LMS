@@ -24,15 +24,15 @@ class DashboardController extends Controller
         ->select('course_learnings.id', 'courses.CourseName', 'course_learnings.ClassName', 'sessionses.SessionStart', 'sessionses.SessionEnd')
         ->paginate(8);
 
-        $enrolledCourses = UserCourse::where('UserID', Auth::user()->id);
+        $enrolledCourses = UserCourse::where('UserID', Auth::user()->id)->get();
 
         $availableCourses = UserCourse::join('course_learnings', 'user_courses.CourseLearningID', '=', 'course_learnings.id')
         ->join('courses', 'course_learnings.CourseID', '=', 'courses.CourseID')
         ->join('users', 'user_courses.UserID', '=', 'users.id')
         ->where('user_courses.RoleID', 1)
-        ->whereNotIn('user_courses.id', $enrolledCourses->pluck('id'))
+        ->where('user_courses.UserID', '!=', Auth::user()->id)
+        ->whereNotIn('user_courses.CourseLearningID', $enrolledCourses->pluck('CourseLearningID'))
         ->select(
-            'user_courses.id as UserCourseID',
             'course_learnings.id as CourseLearningID',
             'courses.CourseName',
             'courses.CourseDescription',
@@ -83,13 +83,16 @@ class DashboardController extends Controller
         ->select('course_learnings.id', 'courses.CourseName', 'course_learnings.ClassName', 'sessionses.SessionStart', 'sessionses.SessionEnd')
         ->paginate(8);
 
+        $enrolledCourses = UserCourse::where('UserID', Auth::user()->id)->get();
+
         $availableCourses = UserCourse::join('course_learnings', 'user_courses.CourseLearningID', '=', 'course_learnings.id')
         ->join('courses', 'course_learnings.CourseID', '=', 'courses.CourseID')
         ->join('users', 'user_courses.UserID', '=', 'users.id')
-        ->whereNot('user_courses.UserID',  Auth::user()->id)
         ->where('user_courses.RoleID', 1)
+        ->where('user_courses.UserID', '!=', Auth::user()->id)
+        ->whereNotIn('user_courses.CourseLearningID', $enrolledCourses->pluck('CourseLearningID'))
         ->select(
-            'course_learnings.id as courselearningID',
+            'course_learnings.id as CourseLearningID',
             'courses.CourseName',
             'courses.CourseDescription',
             'course_learnings.ClassName',
@@ -101,6 +104,8 @@ class DashboardController extends Controller
         )
         ->where('courses.CourseName', 'like', '%' . $searchTerm . '%')
         ->paginate(8);
+
+        // dd($availableCourses->toArray());
 
         $announcements = [
             [

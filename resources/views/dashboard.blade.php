@@ -96,36 +96,39 @@
                         </div>
                     </form>
                 </div>
-                <div class="row row-cols-1 row-cols-md-3 row-cols-lg-4 g-4 d-flex">
-                    @foreach ($availableCourses as $index => $course)
-                        <div class="col">
-                            <div class="card shadow-sm border-0 rounded-lg clickable-card">
-                                <!-- Card Header -->
-                                <div class="card-header bg-primary text-white">
-                                    <h5 class="course-title mb-0">{{ $course->CourseName }} | {{ $course->ClassName }}</h5>
-                                </div>
+                <div class="flex-col">
+                    <div class="row row-cols-1 row-cols-md-3 row-cols-lg-4 g-4">
+                        @foreach ($availableCourses as $index => $course)
+                            <div class="col">
+                                <div class="card shadow-sm border-0 rounded-lg clickable-card">
+                                    <div class="card-header bg-primary text-white">
+                                        <h5 class="course-title mb-0">{{ $course->CourseName }} | {{ $course->ClassName }}</h5>
+                                    </div>
 
-                                <div class="card-body">
-                                    <p class="course-code mb-1"><strong>Instructor:</strong> {{ $course->UserName }}</p>
-                                    <p class="course-user mb-1"><strong>Enrolled:</strong> {{ $course->TotalCountUserEnrolled }} Students</p>
-                                    <p class="course-session mb-3"><strong>Sessions:</strong> {{ $course->TotalCountSessions }} Total Sessions</p>
-                                    <p class="course-description" style="max-height: 60px; overflow: hidden;" id="desc-{{$index}}">
-                                        {{ $course->CourseDescription }}
-                                    </p>
+                                    <div class="card-body">
+                                        <p class="course-code mb-1"><strong>Instructor:</strong> {{ $course->UserName }}</p>
+                                        <p class="course-user mb-1"><strong>Enrolled:</strong> {{ $course->TotalCountUserEnrolled }} Students</p>
+                                        <p class="course-session mb-3"><strong>Sessions:</strong> {{ $course->TotalCountSessions }} Total Sessions</p>
+                                        <p class="course-description" style="max-height: 60px; overflow: hidden;" id="desc-{{$index}}">
+                                            {{ $course->CourseDescription }}
+                                        </p>
 
-                                    <button class="btn btn-link p-0"
-                                    onclick="toggleDescription(this, '{{$index}}')">
-                                        <p>Read More</p>
-                                    </button>
-                                </div>
-                                <div class="card-footer text-muted d-flex justify-content-between align-items-center">
-                                    <span>Created at: {{ $course->created_at->format('d M Y') }}</span>
-                                    <button class="btn btn-outline-primary btn-sm" data-bs-toggle="modal" data-bs-target="#enrollCourseModal" data-class-id="{{ $course->CourseLearningID }}" data-class-name="{{ $course->CourseName }}">Enroll</button>
+                                        <button class="btn btn-link p-0"
+                                        onclick="toggleDescription(this, '{{$index}}')">
+                                            <p>Read More</p>
+                                        </button>
+                                    </div>
+                                    <div class="card-footer text-muted d-flex justify-content-between align-items-center">
+                                        <span>Created at: {{ $course->created_at->format('d M Y') }} </span>
+                                        <button class="btn btn-outline-primary btn-sm" data-bs-toggle="modal"  data-bs-target="#enrollCourseModal" data-class-id="{{ $course->CourseLearningID }}" data-class-name="{{ $course->CourseName }}"> {{ $course->CourseLearningID }} Enroll</button>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    @endforeach
-                    {{ $availableCourses->links() }}
+                        @endforeach
+                    </div>
+                    <div class="mt-4">
+                        {{ $availableCourses->links() }}
+                    </div>
                 </div>
             @endif
         </div>
@@ -167,7 +170,6 @@
                 description.style.maxHeight = '60px';
                 button.innerHTML = '<p>Read More</p>';
             } else {
-                // Show full description
                 description.style.maxHeight = 'none';
                 button.innerHTML = '<p>Read Less</p>';
             }
@@ -182,6 +184,7 @@
                 modalCourseName.textContent = className;
                 const modalCourseID = document.getElementById('modalCourseID');
                 modalCourseID.value = card.getAttribute('data-class-id');
+                console.log(card.getAttribute('data-class-id'));
             });
         })
     </script>
