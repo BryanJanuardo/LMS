@@ -46,7 +46,7 @@
                                     <td>{{ $loop->iteration}}</td>
                                     <td class="text-wrap">{{ $materialLearns->material->MaterialName }}</td>
                                     <td><a href="{{ asset('/storage/Materials/' . basename($materialLearns->material->MaterialPath)) }}" download target="_blank">Link</a></td>
-                                    <td class="text-wrap">dawdawdawdwa{{ $materialLearns->material->MaterialType }}</td>
+                                    <td class="text-wrap">{{ $materialLearns->material->MaterialType }}</td>
                                     @if($roleId == 1)
                                         <td>
                                             <a href="{{ route('material.edit', ['CourseID' => $sessionLearning->courseLearning->id, 'SessionID' => $sessionLearning->id, 'MaterialID' => $materialLearns->material->MaterialID]) }}" class="btn btn-secondary btn-sm">Edit</a>

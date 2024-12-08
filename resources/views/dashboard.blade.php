@@ -120,7 +120,7 @@
                                     </div>
                                     <div class="card-footer text-muted d-flex justify-content-between align-items-center">
                                         <span>Created at: {{ $course->created_at->format('d M Y') }} </span>
-                                        <button class="btn btn-outline-primary btn-sm" data-bs-toggle="modal"  data-bs-target="#enrollCourseModal" data-class-id="{{ $course->CourseLearningID }}" data-class-name="{{ $course->CourseName }}"> {{ $course->CourseLearningID }} Enroll</button>
+                                        <button class="btn btn-outline-primary btn-sm" data-bs-toggle="modal"  data-bs-target="#enrollCourseModal" data-class-id="{{ $course->CourseLearningID }}" data-class-name="{{ $course->CourseName }}">Enroll</button>
                                     </div>
                                 </div>
                             </div>
