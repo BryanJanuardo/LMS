@@ -21,7 +21,7 @@
 
         <div class="form-group">
             <label for="MaterialPath">File Path</label>
-            <textarea class="form-control" id="MaterialPath" name="MaterialPath" rows="4" required>{{ old('MaterialPath', $material->MaterialPath) }}</textarea>
+            <input name="MaterialPath" class="form-control" type="file" value="{{ old('MaterialPath', $material->MaterialPath) }}">
         </div>
 
         <button type="submit" class="btn btn-primary">Update Material</button>

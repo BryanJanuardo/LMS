@@ -35,7 +35,7 @@
                                 <tr id="materialRow-{{ $materialLearns->id }}">
                                     <td>{{ $loop->iteration}}</td>
                                     <td>{{ $materialLearns->material->MaterialName }}</td>
-                                    <td>{{ $materialLearns->material->MaterialPath }}</td>
+                                    <td><a href="{{ $materialLearns->material->MaterialLink }}">{{ $materialLearns->material->MaterialLink }}</a></td>
                                     <td>{{ $materialLearns->material->MaterialType }}</td>
                                     <td>
                                         <a href="{{ route('material.edit', ['CourseID' => $sessionLearning->courseLearning->id, 'SessionID' => $sessionLearning->id, 'MaterialID' => $materialLearns->material->MaterialID]) }}" class="btn btn-secondary btn-sm">Edit</a>
