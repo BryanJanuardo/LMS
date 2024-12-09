@@ -7,7 +7,7 @@
     <!-- Form to edit the task -->
     <form action="{{ route('task.store', ['CourseID' => $CourseID, 'SessionID' => $SessionID, 'TaskType' => $TaskType, 'PreviousURL' => URL::previous()]) }}" method="POST">
         @csrf
-
+        
         <div class="form-group">
             <label for="taskName">Task Name</label>
             <input type="text" class="form-control" id="TaskName" name="TaskName" placeholder="Enter task name" required>

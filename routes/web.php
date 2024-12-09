@@ -59,8 +59,9 @@ Route::middleware(AuthenticationMiddleware::class)->group(function () {
                     Route::prefix('/{SessionID}')->group(function () {
                         Route::middleware(ValidateSessionIDMiddleware::class)->group(function () {
                             Route::get('/', [SessionController::class, 'index'])->name('session.show');
-                            Route::put('/', [SessionController::class, 'update'])->name('session.update')->middleware(ValidateUserCourse::class);
-                            Route::delete('/', [SessionController::class, 'delete'])->name('session.delete')->middleware(ValidateUserCourse::class);
+                            Route::put('/update', [SessionController::class, 'update'])->name('session.update')->middleware(ValidateUserCourse::class);
+                            Route::delete('/delete', [SessionController::class, 'delete'])->name('session.delete')->middleware(ValidateUserCourse::class);
+                            Route::get('/edit', [SessionController::class, 'edit'])->name('session.edit');
 
                             Route::prefix('/material')->group(function () {
                                 Route::get('/create', [MaterialController::class, 'create'])->name('material.create')->middleware(ValidateUserCourse::class);

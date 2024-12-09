@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\NewAnnouncement;
 use App\Models\Material;
 use App\Models\MaterialLearning;
 use Illuminate\Http\Request;
@@ -34,17 +35,19 @@ class MaterialController extends Controller
             $request->file('MaterialPath')->move(public_path('storage/Materials'), $File);
         }
 
-        Material::create([
+        $material = Material::create([
             'MaterialID' => $newMaterialID,
             'MaterialName' => $data['MaterialName'],
             'MaterialType' => $data['MaterialType'],
             'MaterialPath' => $File,
         ]);
 
-        MaterialLearning::create([
+        $materialLearning = MaterialLearning::create([
             'MaterialID' => $newMaterialID,
             'SessionLearningID' => $request->SessionID
         ]);
+
+        event(new NewAnnouncement($courseID, "New Material Added! on Session: " . $materialLearning->sessionLearning->session->SessionName));
 
         return redirect()->route('course.detail', ['CourseID' => $courseID]);
     }
@@ -71,15 +74,22 @@ class MaterialController extends Controller
             $material->MaterialType = $data['MaterialType'];
             $material->MaterialPath = $File;
             $material->save();
+
+            // dd($material->materialLearning);
+
+            event(new NewAnnouncement($courseID, "Material Updated! on Session: " . $material->materialLearning->sessionLearning->session->SessionName));
         }
 
         return redirect()->route('course.detail', ['CourseID' => $courseID]);
     }
 
-    public function destroy(Request $request, $courseID, $sessionI){
+    public function destroy(Request $request, $courseID, $sessionID){
         $material = Material::where('MaterialID', $request->MaterialID)->firstOrFail();
-        $material->delete();
 
+        if($material){
+            event(new NewAnnouncement($courseID, "Material Deleted! on Session: " . $material->materialLearning->sessionLearning->session->SessionName));
+            $material->delete();
+        }
 
         return redirect()->route('course.detail', ['CourseID' => $courseID]);
     }

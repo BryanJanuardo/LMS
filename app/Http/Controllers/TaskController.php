@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\NewAnnouncement;
 use App\Http\Controllers;
 use Illuminate\Http\Request;
 Use App\Models\Task;
@@ -15,7 +16,7 @@ class TaskController extends Controller
         return view('task', ['tasks' => $tasks]);
     }
 
-    public function store(Request $request){
+    public function store(Request $request, $courseID, $sessionID){
         $data = $request->validate([
             'TaskName' => 'required',
             'TaskDesc' => 'required',
@@ -28,16 +29,18 @@ class TaskController extends Controller
             'TaskDueDate' => $data['TaskDueDate'],
         ]);
 
-        TaskLearning::create([
+        $taskLearning = TaskLearning::create([
             'SessionLearningID' => $request->SessionID,
             'TaskID' => $task->TaskID,
             'TaskType' => $request->TaskType
         ]);
 
+        event(new NewAnnouncement($courseID, "New Task Added! on Session: " . $taskLearning->sessionLearning->session->SessionName));
+
         return redirect($request->PreviousURL)->with('success', 'Task added successfully');
     }
 
-    public function update(Request $request){
+    public function update(Request $request, $courseID, $sessionID){
         $data = $request->validate([
             'TaskName' => 'required',
             'TaskDesc' => 'required',
@@ -51,16 +54,20 @@ class TaskController extends Controller
             $task->TaskDesc = $data['TaskDesc'];
             $task->TaskDueDate = $data['TaskDueDate'];
             $task->save();
+            event(new NewAnnouncement($courseID, "Task Updated! on Session: " . $task->taskLearning->sessionLearning->session->SessionName));
         }
+
 
         return redirect($request->PreviousURL)->with('success', 'Task saved successfully');
     }
 
-    public function destroy(Request $request){
+    public function destroy(Request $request, $courseID, $sessionID){
         $task = Task::where('TaskID', $request->TaskID)->firstOrFail();
         if($task){
+            event(new NewAnnouncement($courseID, "Task Deleted! on Session: " . $task->taskLearning->sessionLearning->session->SessionName));
             $task->delete();
         }
+
         return redirect($request->PreviousURL)->with('success', 'Task deleted successfully');
     }
 

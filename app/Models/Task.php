@@ -14,6 +14,6 @@ class task extends Model
 
     public function taskLearning()
     {
-        return $this->hasOne(TaskLearning::class);
+        return $this->hasOne(TaskLearning::class, 'TaskID');
     }
 }

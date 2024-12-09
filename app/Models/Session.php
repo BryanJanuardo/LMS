@@ -23,6 +23,6 @@ class Session extends Model
 
     public function sessionLearning()
     {
-        return $this->hasOne(SessionLearning::class);
+        return $this->hasOne(SessionLearning::class, 'SessionID');
     }
 }

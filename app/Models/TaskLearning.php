@@ -18,6 +18,6 @@ class TaskLearning extends Model
     }
 
     public function sessionLearning(){
-        return $this->belongsTo(SessionLearning::class, 'id');
+        return $this->hasOne(SessionLearning::class, 'id');
     }
 }

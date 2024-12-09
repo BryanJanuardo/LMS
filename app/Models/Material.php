@@ -16,6 +16,6 @@ class Material extends Model
 
     public function materialLearning()
     {
-        return $this->hasOne(MaterialLearning::class);
+        return $this->hasOne(MaterialLearning::class, 'MaterialID');
     }
 }

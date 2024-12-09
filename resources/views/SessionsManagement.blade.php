@@ -35,14 +35,14 @@
                             <td>{{ $sessionLearning->session->SessionStart }}</td>
                             <td>{{ $sessionLearning->session->SessionEnd }}</td>
                             <td>
-                                <a href="{{ route('course.edit', ['CourseID' => $courseID]) }}" class="btn btn-warning btn-sm">
+                                <a href="{{ route('session.edit', ['CourseID' => $courseID, 'SessionID' => $sessionLearning->id]) }}" class="btn btn-warning btn-sm">
                                     Edit
                                 </a>
                             </td>
                             <td>
-                                <form action="{{ route('course.destroy', ['CourseID' => $courseID]) }}" method="post" onsubmit="return confirm('Are you sure you want to delete this course?');">
+                                <form action="{{ route('session.delete', ['CourseID' => $courseID, 'SessionID' => $sessionLearning->id]) }}" method="post" onsubmit="return confirm('Are you sure you want to delete this course?');">
                                     @csrf
-                                    @method('delete')
+                                    @method('DELETE')
                                     <button type="submit" class="btn btn-danger btn-sm">Delete</button>
                                 </form>
                             </td>

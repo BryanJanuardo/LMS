@@ -67,7 +67,7 @@ class ForumController extends Controller
             $request->file('FilePath')->move(public_path('Forums/Replies'), $File);
         }
 
-        ForumReply::create([
+        $reply = ForumReply::create([
             'UserID' => Auth::user()->id,
             'PostID' => $postId,
             'CreatedDate' => now(),

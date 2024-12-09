@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\NewAnnouncement;
 use App\Http\Controllers\Controller;
 use App\Models\Course;
 use App\Models\Session;
@@ -42,6 +43,11 @@ class SessionController extends Controller
         return view('SessionsManagement', ['sessionLearnings' => $sessions, 'courseID' => $courseID]);
     }
 
+    public function edit($CourseID, $SessionID){
+        $sessionLearning = SessionLearning::find($SessionID);
+        return view('SessionEdit', ['CourseID' => $CourseID, 'session' => $sessionLearning->session]);
+    }
+
     public function store(Request $request, $CourseID){
         $data = $request->validate([
             'SessionName' => 'required',
@@ -64,15 +70,17 @@ class SessionController extends Controller
             'SessionEnd' => $data['SessionEnd'],
         ]);
 
-        SessionLearning::create([
+        $sessionLearning = SessionLearning::create([
             'CourseLearningID' => $CourseID,
             'SessionID' => $newSessionID
         ]);
 
-        return redirect()->route('course.detail', ['courseId' => $CourseID]);
+        event(new NewAnnouncement($CourseID, "New Session Added in" . $sessionLearning->courseLearning->course->CourseName));
+
+        return redirect()->route('course.detail', ['CourseID' => $CourseID]);
     }
 
-    public function update(Request $request, $SessionID){
+    public function update(Request $request, $CourseID, $SessionID){
         $data = $request->validate([
             'SessionName' => 'required',
             'SessionDescription' => 'required',
@@ -80,23 +88,28 @@ class SessionController extends Controller
             'SessionEnd' => 'required',
         ]);
 
-        $session = Session::where('SessionID', '=', $SessionID)->firstOrFail();
+        $sessionLearning = SessionLearning::find($SessionID);
+        $session = Session::where('SessionID', '=', $sessionLearning->session->SessionID)->get();
         if($session){
             $session->SessionName = $data['SessionName'];
             $session->SessionDescription = $data['SessionDescription'];
             $session->SessionStart = $data['SessionStart'];
             $session->SessionEnd = $data['SessionEnd'];
             $session->save();
+            event(new NewAnnouncement($CourseID, "Session Updated in " . $session->sessionLearning->courseLearning->course->CourseName));
         }
-        return redirect()->back();
+
+        return redirect()->route('course.detail', ['CourseID' => $CourseID]);
     }
 
-    public function delete($SessionID){
-        $session = Session::where('SessionID', '=', $SessionID)->firstOrFail();
+    public function delete($CourseID, $SessionID){
+        $sessionLearning = SessionLearning::find($SessionID);
+        $session = Session::where('SessionID', '=', $sessionLearning->session->SessionID)->firstOrFail();
         if($session){
+            event(new NewAnnouncement($CourseID, "Session Deleted in" . $sessionLearning->courseLearning->course->CourseName));
             $session->delete();
         }
-        return redirect()->back();
+        return redirect()->route('course.detail', ['CourseID' => $CourseID]);
     }
 
 
