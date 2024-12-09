@@ -71,7 +71,6 @@
         console.log(toggleButtons);
         toggleButtons.forEach(button => {
             button.addEventListener('click', function () {
-                console.log("dadw");
                 const replyForm = this.closest('li').querySelector('.reply-form');
                 replyForm.classList.toggle('hidden');
             });
