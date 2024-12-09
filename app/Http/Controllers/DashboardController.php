@@ -45,8 +45,6 @@ class DashboardController extends Controller
         )
         ->paginate(8);
 
-        // dd($availableCourses->toArray(), $enrolledCourses->get()->toArray());
-
         return view('Dashboard')->with(['todayCourses' => $todayCourses, 'availableCourses' => $availableCourses]);
     }
 
@@ -85,8 +83,6 @@ class DashboardController extends Controller
         )
         ->where('courses.CourseName', 'like', '%' . $searchTerm . '%')
         ->paginate(8);
-
-        // dd($availableCourses->toArray());
 
         return view('Dashboard')->with(['todayCourses' => $todayCourses, 'availableCourses' => $availableCourses]);
     }

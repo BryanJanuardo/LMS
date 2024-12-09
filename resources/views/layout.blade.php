@@ -60,16 +60,9 @@
 <script>
     $('#notificationButton').on('click', function (e) {
         e.preventDefault();
-        $('#notificationDropdown').toggleClass('show'); // Manually toggle the dropdown
+        $('#notificationDropdown').toggleClass('show'); 
     });
 
-    // $(document).on('click', function (e) {
-    //     if (!$(e.target).closest('#notificationButton').length) {
-    //         $('#notificationDropdown').removeClass('show');
-    //     }
-    // });
-
-    // Prevent closing the dropdown when clicking inside
     $(document).on('click', '.mark-as-read', function(e) {
 
         var announcementId = $(this).data('id');

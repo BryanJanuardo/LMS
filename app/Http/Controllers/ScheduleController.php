@@ -16,7 +16,6 @@ class ScheduleController extends Controller
         $dateStart = Carbon::parse($req->DateStart)->setTimezone('UTC');
         $dateEnd = Carbon::parse($req->DateEnd)->setTimezone('UTC');
 
-        // Optimized query to get the sessions directly based on user and date range
         $sessions = UserCourse::where('UserID', $userId)
             ->join('course_learnings', 'user_courses.CourseLearningID', '=', 'course_learnings.id')
             ->join('courses', 'course_learnings.CourseID', '=', 'courses.CourseID')
@@ -27,7 +26,6 @@ class ScheduleController extends Controller
             ->select('courses.CourseName', 'course_learnings.id', 'sessionses.SessionDescription', 'sessionses.SessionStart', 'sessionses.SessionEnd')
             ->get();
 
-        // Mapping the sessions to the events array
         $events = $sessions->map(function ($session) {
             return [
                 'id' => $session->id,

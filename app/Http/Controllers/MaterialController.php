@@ -75,8 +75,6 @@ class MaterialController extends Controller
             $material->MaterialPath = $File;
             $material->save();
 
-            // dd($material->materialLearning);
-
             event(new NewAnnouncement($courseID, "Material Updated! on Session: " . $material->materialLearning->sessionLearning->session->SessionName));
         }
 

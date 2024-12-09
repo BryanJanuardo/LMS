@@ -23,9 +23,8 @@ class SessionController extends Controller
         $roleId = UserCourse::where('UserID', Auth::user()->id)
         ->where('CourseLearningID', $CourseID)
         ->get();
-        // dd($roleId[0]->RoleID);
+
         $roleId = $roleId[0]->RoleID;
-        // dd($roleId);
         return view('components.session-content')->with(['sessionLearning' => $sessionLearning, 'roleId' => $roleId]);
     }
 
@@ -59,8 +58,6 @@ class SessionController extends Controller
         $latestSession = Session::latest('SessionID')->first();
         $latestSessionID = $latestSession ? substr($latestSession->SessionID, 1) : 0;
         $newSessionID = 'S' . str_pad((intval($latestSessionID) + 1), 8, '0', STR_PAD_LEFT);
-
-        // dd($newSessionID);
 
         $session = Session::create([
             'SessionID' => $newSessionID,
