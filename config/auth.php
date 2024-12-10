@@ -40,6 +40,11 @@ return [
             'driver' => 'session',
             'provider' => 'users',
         ],
+
+        'customAuth' => [
+            'driver' => 'session',
+            'provide' => 'customUsers',
+        ],
     ],
 
     /*
@@ -64,6 +69,10 @@ return [
             'driver' => 'eloquent',
             'model' => env('AUTH_MODEL', App\Models\User::class),
         ],
+
+        'customUsers' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\User::class,
 
         // 'users' => [
         //     'driver' => 'database',

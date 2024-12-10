@@ -6,7 +6,7 @@
 <div class="row justify-content-center">
     <div class="col-md-6">
         <h2 class="text-center mb-4">Register</h2>
-        <form action="{{ route('register.store') }}" method="POST">
+        <form action="{{ route('register.store') }}" method="POST" enctype="multipart/form-data">
             @csrf
             <div class="mb-3">
                 <label for="UserName" class="form-label">Name</label>
@@ -29,8 +29,17 @@
                 <input type="file" class="form-control" id="UserPhotoPath" name="UserPhotoPath" accept="image/*">
             </div>
             <div class="d-grid">
-                <button type="button" class="btn btn-primary">Register</button>
+                <button type="submit" class="btn btn-primary">Register</button>
             </div>
+            @if ($errors->any())
+            <div class="alert alert-danger">
+                <ul>
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
         </form>
     </div>
 </div>

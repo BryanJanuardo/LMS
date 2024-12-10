@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
@@ -25,19 +26,24 @@ class UserController extends Controller
             'UserDOB' => 'required|date',
         ]);
 
+        // dd($request->UserName);
+
+        $credentials = [
+            'email' => $request->UserEmail,
+            'password' => Hash::make($request->UserPassword)
+        ];
+
         $user = User::create([
             'UserName' => $request->UserName,
             'UserEmail' => $request->UserEmail,
-            'UserPassword' => $request->UserPassword,
+            'UserPassword' => Hash::make($request->UserPassword),
             'UserDOB' => $request->UserDOB,
             'UserPhotoPath' => null
         ]);
+        Auth::login($user);
+        $request->session()->regenerate();
+        return redirect()->route('dashboard');
 
-        if(Auth::attempt(['UserEmail' => $request->UserEmail, 'UserPassword' => $request->UserPassword])){
-            Auth::login($user);
-            $request->session()->regenerate();
-            return redirect()->route('dashboard');
-        }
     }
 
     public function auth(Request $request){
@@ -52,11 +58,17 @@ class UserController extends Controller
             return back();
         }
 
-        if($request->UserPassword == $user->UserPassword){
+        $credentials = [
+            'UserEmail' => $request->UserEmail,
+            'password' => Hash::make($request->UserPassword)
+        ];
+
+        if($user->UserEmail == $request->UserEmail && Hash::check($request->UserPassword, $user->UserPassword)){
             Auth::login($user);
             $request->session()->regenerate();
             return redirect()->route('dashboard');
         }
+        return redirect()->route('login.index');
     }
 
     public function logout(){

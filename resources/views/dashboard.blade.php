@@ -69,17 +69,6 @@
         </div>
 
         <div class="card-wrapper">
-            {{-- <h3>Announcement</h3>
-            @foreach ($announcements as $announcement)
-                <div class="announcement-block">
-                    <h5>{{ $announcement['title'] }}</h5>
-                    <p class="announcement-content">{{ $announcement['content'] }}</p>
-
-                </div>
-            @endforeach --}}
-
-
-
             <h3 class="mb-4">Available Courses</h3>
             @if($availableCourses == null)
                 <p>No available courses to display.</p>
