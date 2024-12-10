@@ -11,11 +11,11 @@ use Illuminate\Support\Facades\Hash;
 class UserController extends Controller
 {
     public function login(){
-        return view('login');
+        return view('Login');
     }
 
     public function register(){
-        return view('register');
+        return view('Register');
     }
 
     public function create(Request $request){
